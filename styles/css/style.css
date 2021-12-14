@@ -10,9 +10,37 @@
   font-size: 14px;
 }
 
-main {
-  width: 100vw;
+* h1 {
+  font-size: 60px;
+}
+
+body {
   height: 100vh;
+  width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: space-evenly;
+      -ms-flex-align: space-evenly;
+          align-items: space-evenly;
+}
+
+body nav {
+  height: 25vh;
+  width: 100vw;
+  background-color: purple;
+}
+
+body main {
+  height: 75vh;
+  width: 100vw;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -20,15 +48,59 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
-main h1 {
-  font-size: 60px;
+body main #players-section {
+  height: 100%;
+  width: 24vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body main #players-section #players-top {
+  height: 70%;
+  width: 100%;
+  background-color: lightgreen;
+}
+
+body main #players-section #players-bottom {
+  height: 30%;
+  width: 100%;
+  background-color: darkgreen;
+}
+
+body main #encounter-section {
+  height: 100%;
+  width: 38vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body main #encounter-section #encounter-top {
+  height: 70%;
+  width: 100%;
+  background-color: lightblue;
+}
+
+body main #encounter-section #encounter-bottom {
+  height: 30%;
+  width: 100%;
+  background-color: darkblue;
+}
+
+body main #monsters-section {
+  height: 100%;
+  width: 38vw;
+  background-color: red;
 }
 /*# sourceMappingURL=style.css.map */

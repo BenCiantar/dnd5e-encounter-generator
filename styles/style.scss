@@ -16,55 +16,60 @@
  
 body{
   height: 100vh;
-  width: 100vw,
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: space-evenly;
   nav{
-    height: 15vh;
+    height: 25vh;
     width: 100vw;
+    background-color: purple;
   }
-  main {
+  main{
+    height: 75vh;
     width: 100vw;
-    height: 100vh;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    #content{
-      height: 70vh;
-      width: 100vw;
-      #players-section{
-        height: 70vh;
-        width: 24vw;
-        #players-top{
-          height: 70%;
-          width: 100%;
-        }
-        #players-bottom{
-          height: 30%;
-          width: 100%;
-        }
+    #players-section{
+      height: 100%;
+      width: 24vw;
+      display: flex;
+      flex-direction: column;
+      #players-top{
+        height: 70%;
+        width: 100%;
+        background-color: lightgreen;
       }
-      #encounter-section{
-        height: 70vh;
-        width: 33vw;
-        #encounter-top{
-          height: 70%;
-          width: 100%;
-        }
-        #encounter-bottom{
-          height: 30%;
-          width: 100%;
-        }
-      }
-      #monsters-section{
-        height: 70vh;
-        width: 33vw;
+      #players-bottom{
+        height: 30%;
+        width: 100%;
+        background-color: darkgreen;
       }
     }
-    #difficulty-display{
-      height: 10vh;
-      width: 100vw;
+    #encounter-section{
+      height: 100%;
+      width: 38vw;
+      display: flex;
+      flex-direction: column;
+      #encounter-top{
+        height: 70%;
+        width: 100%;
+        background-color: lightblue;
+      }
+      #encounter-bottom{
+        height: 30%;
+        width: 100%;
+        background-color: darkblue;
+      }
+    }
+    #monsters-section{
+      height: 100%;
+      width: 38vw;
+      background-color: red;
     }
   }
 }
+
   
   
