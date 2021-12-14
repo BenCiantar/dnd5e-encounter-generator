@@ -48,8 +48,11 @@ body{
       #players-top{
         height: 70%;
         width: 100%;
-        padding: 10px;
+        padding: 15px;
         background-color: lightgreen;
+        .player-level-selector{
+          margin-top: 10px;
+        }
         #player-select{
           height: 15%;
           width: 100%;
@@ -62,7 +65,7 @@ body{
       #players-bottom{
         height: 30%;
         width: 100%;
-        padding: 10px;
+        padding: 15px;
         background-color: darkgreen;
       }
     }
@@ -74,7 +77,7 @@ body{
       #encounter-top{
         height: 70%;
         width: 100%;
-        padding: 10px;
+        padding: 15px;
         background-color: lightblue;
       }
       #encounter-bottom{
@@ -87,7 +90,7 @@ body{
     #monsters-section{
       height: 100%;
       width: 38vw;
-      padding: 10px;
+      padding: 15px;
       background-color: red;
     }
   }

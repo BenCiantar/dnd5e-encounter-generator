@@ -77,8 +77,12 @@ body main #players-section {
 body main #players-section #players-top {
   height: 70%;
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   background-color: lightgreen;
+}
+
+body main #players-section #players-top .player-level-selector {
+  margin-top: 10px;
 }
 
 body main #players-section #players-top #player-select {
@@ -94,7 +98,7 @@ body main #players-section #players-top #player-display {
 body main #players-section #players-bottom {
   height: 30%;
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   background-color: darkgreen;
 }
 
@@ -113,7 +117,7 @@ body main #encounter-section {
 body main #encounter-section #encounter-top {
   height: 70%;
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   background-color: lightblue;
 }
 
@@ -127,7 +131,7 @@ body main #encounter-section #encounter-bottom {
 body main #monsters-section {
   height: 100%;
   width: 38vw;
-  padding: 10px;
+  padding: 15px;
   background-color: red;
 }
 /*# sourceMappingURL=style.css.map */

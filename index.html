@@ -23,7 +23,7 @@
          <div id="players-top">
             <div id="player-select">
                <label for="number-of-players">Select number of players:</label>
-               <select name="players" id="number-of-players" onchange="refreshPlayerList()">
+               <select name="players" id="number-of-players" onchange="updateAll()">
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
@@ -35,8 +35,8 @@
                </select>
             </div>
             <div id="player-display">
-               <label for="player-one">Player One Level:</label>
-               <select name="players" class="player-lvl" id="player-one" onchange="updateXPThreshold()">
+               <label for="player-one">Player Level:</label>
+               <select name="players" class="player-lvl" id="player-one" onchange="updateXPThresholds()">
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
