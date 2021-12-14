@@ -77,12 +77,24 @@ body main #players-section {
 body main #players-section #players-top {
   height: 70%;
   width: 100%;
+  padding: 10px;
   background-color: lightgreen;
+}
+
+body main #players-section #players-top #player-select {
+  height: 15%;
+  width: 100%;
+}
+
+body main #players-section #players-top #player-display {
+  height: 85%;
+  width: 100%;
 }
 
 body main #players-section #players-bottom {
   height: 30%;
   width: 100%;
+  padding: 10px;
   background-color: darkgreen;
 }
 
@@ -101,18 +113,21 @@ body main #encounter-section {
 body main #encounter-section #encounter-top {
   height: 70%;
   width: 100%;
+  padding: 10px;
   background-color: lightblue;
 }
 
 body main #encounter-section #encounter-bottom {
   height: 30%;
   width: 100%;
+  padding: 10px;
   background-color: darkblue;
 }
 
 body main #monsters-section {
   height: 100%;
   width: 38vw;
+  padding: 10px;
   background-color: red;
 }
 /*# sourceMappingURL=style.css.map */
