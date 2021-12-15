@@ -215,10 +215,18 @@ function updateXPThresholds() {
   }
 
   document.getElementById("players-bottom").innerHTML = `
-  <p>Easy encounter: ${easyXPThreshold}XP</p>
-  <p>Medium encounter: ${mediumXPThreshold}XP</p>
-  <p>Hard encounter: ${hardXPThreshold}XP</p>
-  <p>Deadly encounter: ${deadlyXPThreshold}XP</p>
+  <div id="player-summary-left">
+    <p>Easy: </p>
+    <p>Medium: </p>
+    <p>Hard: </p>
+    <p>Deadly: </p>
+  </div>
+  <div id="player-summary-right">
+    <p>${easyXPThreshold}XP</p>
+    <p>${mediumXPThreshold}XP</p>
+    <p>${hardXPThreshold}XP</p>
+    <p>${deadlyXPThreshold}XP</p>
+  </div>
   `
 }
 
