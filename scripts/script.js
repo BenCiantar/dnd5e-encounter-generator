@@ -4,6 +4,7 @@ let mediumXPThreshold = 50;
 let hardXPThreshold = 75;
 let deadlyXPThreshold = 100;
 
+createCollapsibleMonsterSections();
 fetchMonsterData();
 
 
@@ -13,10 +14,26 @@ function fetchMonsterData() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        populateMonsterList(data);
         updateAll();
     })
 }
 
+// Generate collapsible monster sections
+let coll = document.getElementsByClassName("collapsible");
+let collI;
+
+for (collI = 0; collI < coll.length; collI++) {
+  coll[collI].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
 
 function updateAll() {
   refreshPlayerList();
@@ -73,8 +90,6 @@ function updateXPThresholds() {
   let playerLevels = document.querySelectorAll(".player-lvl");
 
   for (let i = 0; i < playerLevels.length; i++) {
-    console.log(playerLevels[i].value);
-
     switch (playerLevels[i].value) {
       case "1":
         easyXPThreshold += 25;
@@ -200,17 +215,75 @@ function updateXPThresholds() {
   }
 
   document.getElementById("players-bottom").innerHTML = `
-  Easy encounter: ${easyXPThreshold}XP
-  <br>
-  <br>
-  Medium encounter: ${mediumXPThreshold}XP
-  <br>
-  <br>
-  Hard encounter: ${hardXPThreshold}XP
-  <br>
-  <br>
-  Deadly encounter: ${deadlyXPThreshold}XP
+  <p>Easy encounter: ${easyXPThreshold}XP</p>
+  <p>Medium encounter: ${mediumXPThreshold}XP</p>
+  <p>Hard encounter: ${hardXPThreshold}XP</p>
+  <p>Deadly encounter: ${deadlyXPThreshold}XP</p>
   `
+}
+
+function populateMonsterList(data) {
+
+  for (let i = 0; i < data.results.length; i++){
+
+      let CR = eval(data.results[i].challenge_rating);
+
+      if (CR == 0.125) {
+        CR = "eighth";
+      } else if (CR == 0.25) {
+        CR = "quarter";
+      } else if (CR == 0.5) {
+        CR = "half";
+      }
+      // console.log(CR);
+
+      try {
+        document.getElementById(`cr-${CR}`).innerHTML += `
+        <div class="monster-item">
+          <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+        </div>
+      `
+      } catch (error) {
+        console.error(error);
+        console.log("Error with item: " + data.results[i].name);
+      }
+  }
+}
+
+function createCollapsibleMonsterSections() {
+  for (let i = 0; i < 31; i++) {
+
+    if (i == 0) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/8</button>
+      <div id="cr-eighth" class="monster-content">
+
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/4</button>
+      <div id="cr-quarter" class="monster-content">
+
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/2</button>
+      <div id="cr-half" class="monster-content">
+
+      </div>
+      `
+    }
+
+    if (i > 0 && (i < 28 || i == 30)) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
+      </div>
+      `
+    }
+  }
 }
 
 
@@ -244,3 +317,114 @@ function convertNumPlayersToString(numPlayersInt) {
       return numPlayersString;
   }
 }
+
+function calculateXP(CR){
+  let XP;
+
+  switch (CR){
+    case 0:
+      XP = 10;
+      return XP;
+    case "eighth":
+      XP = 25;
+      return XP;
+    case "quarter":
+      XP = 50;
+      return XP;
+    case "half":
+      XP = 100;
+      return XP;
+    case 1:
+      XP = 200;
+      return XP;
+    case 2:
+      XP = 450;
+      return XP;
+    case 3:
+      XP = 700;
+      return XP;
+    case 4:
+      XP = 1100;
+      return XP;
+    case 5:
+      XP = 1800;
+      return XP;
+    case 6:
+      XP = 2300;
+      return XP;
+    case 7:
+      XP = 2900;
+      return XP;
+    case 8:
+      XP = 3900;
+      return XP;
+    case 9:
+      XP = 5000;
+      return XP;
+    case 10:
+      XP = 5900;
+      return XP;
+    case 11:
+      XP = 7200;
+      return XP;
+    case 12:
+      XP = 8400;
+      return XP;
+    case 13:
+      XP = 10000;
+      return XP;
+    case 14:
+      XP = 11500;
+      return XP;
+    case 15:
+      XP = 13000;
+      return XP;
+    case 16:
+      XP = 15000;
+      return XP;
+    case 17:
+      XP = 18000;
+      return XP;
+    case 18:
+      XP = 20000;
+      return XP;
+    case 19:
+      XP = 22000;
+      return XP;
+    case 20:
+      XP = 25000;
+      return XP;
+    case 21:
+      XP = 33000;
+      return XP;
+    case 22:
+      XP = 41000;
+      return XP;
+    case 23:
+      XP = 50000;
+      return XP;
+    case 24:
+      XP = 62000;
+      return XP;
+    case 25:
+      XP = 75000;
+      return XP;
+    case 26:
+      XP = 90000;
+      return XP;
+    case 27:
+      XP = 105000;
+      return XP;
+    case 28:
+      XP = 120000;
+      return XP;
+    case 29:
+      XP = 135000;
+      return XP;
+    case 30:
+      XP = 155000;
+      return XP;
+  }
+}
+
+
