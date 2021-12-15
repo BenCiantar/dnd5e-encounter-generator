@@ -41,6 +41,14 @@ function updatedPlayerInfo() {
   updateDifficultyIndicator();
 }
 
+//Will contain all functions that run when a monster is added or removed from encounter section
+function updatedMonsterInfo() {
+
+  //function to update encounter totals
+  //function to compare current encounter difficulty to XP thresholds
+  updateDifficultyindicator();
+}
+
 function refreshPlayerList() {
   document.getElementById("player-display").innerHTML = ``
 
