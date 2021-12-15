@@ -4,6 +4,7 @@ let mediumXPThreshold = 50;
 let hardXPThreshold = 75;
 let deadlyXPThreshold = 100;
 
+createCollapsibleMonsterSections();
 fetchMonsterData();
 
 
@@ -13,6 +14,7 @@ function fetchMonsterData() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        populateMonsterList(data);
         updateAll();
     })
 }
@@ -213,6 +215,30 @@ function updateXPThresholds() {
   `
 }
 
+function populateMonsterList() {
+
+
+
+  for (let i = 0; i < data.results.length; i++){
+
+  }
+}
+
+function createCollapsibleMonsterSections() {
+  for (let i = 0; i < 31; i++) {
+    if (i < 26 || i == 30) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Open Collapsible CR ${i}</button>
+      <div class="monster-content">
+         <ul id="cr-${i}">
+          <li>test</li>
+         </ul>
+      </div>
+      `
+    }
+  }
+}
+
 
 function convertNumPlayersToString(numPlayersInt) {
   let numPlayersString;
@@ -244,3 +270,21 @@ function convertNumPlayersToString(numPlayersInt) {
       return numPlayersString;
   }
 }
+
+
+// Collapsible monster sections
+let coll = document.getElementsByClassName("collapsible");
+let collI;
+
+for (collI = 0; collI < coll.length; collI++) {
+  coll[collI].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+
