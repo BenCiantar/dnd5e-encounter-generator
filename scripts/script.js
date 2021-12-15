@@ -240,7 +240,12 @@ function populateMonsterList(data) {
       try {
         document.getElementById(`cr-${CR}`).innerHTML += `
         <div class="monster-item">
-          <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+          <div class="monster-summary">
+            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+          </div>
+          <div class="add-monster-section">
+            <button>Add</button>
+          </div>
         </div>
       `
       } catch (error) {
