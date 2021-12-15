@@ -215,16 +215,10 @@ function updateXPThresholds() {
   }
 
   document.getElementById("players-bottom").innerHTML = `
-  Easy encounter: ${easyXPThreshold}XP
-  <br>
-  <br>
-  Medium encounter: ${mediumXPThreshold}XP
-  <br>
-  <br>
-  Hard encounter: ${hardXPThreshold}XP
-  <br>
-  <br>
-  Deadly encounter: ${deadlyXPThreshold}XP
+  <p>Easy encounter: ${easyXPThreshold}XP</p>
+  <p>Medium encounter: ${mediumXPThreshold}XP</p>
+  <p>Hard encounter: ${hardXPThreshold}XP</p>
+  <p>Deadly encounter: ${deadlyXPThreshold}XP</p>
   `
 }
 
@@ -245,7 +239,9 @@ function populateMonsterList(data) {
 
       try {
         document.getElementById(`cr-${CR}`).innerHTML += `
-        <p>${data.results[i].name}</p><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p><br>
+        <div class="monster-item">
+          <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+        </div>
       `
       } catch (error) {
         console.error(error);
@@ -280,7 +276,7 @@ function createCollapsibleMonsterSections() {
       `
     }
 
-    if (i < 28 || i == 30) {
+    if (i > 0 && (i < 28 || i == 30)) {
       document.getElementById("monsters-section").innerHTML += `
       <button type="button" class="collapsible">Challenge Rating ${i}</button>
       <div id="cr-${i}" class="monster-content">
