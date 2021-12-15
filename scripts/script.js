@@ -19,6 +19,21 @@ function fetchMonsterData() {
     })
 }
 
+// Generate collapsible monster sections
+let coll = document.getElementsByClassName("collapsible");
+let collI;
+
+for (collI = 0; collI < coll.length; collI++) {
+  coll[collI].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
 
 function updateAll() {
   refreshPlayerList();
@@ -75,8 +90,6 @@ function updateXPThresholds() {
   let playerLevels = document.querySelectorAll(".player-lvl");
 
   for (let i = 0; i < playerLevels.length; i++) {
-    console.log(playerLevels[i].value);
-
     switch (playerLevels[i].value) {
       case "1":
         easyXPThreshold += 25;
@@ -215,24 +228,62 @@ function updateXPThresholds() {
   `
 }
 
-function populateMonsterList() {
-
-
+function populateMonsterList(data) {
 
   for (let i = 0; i < data.results.length; i++){
 
+      let CR = eval(data.results[i].challenge_rating);
+
+      if (CR == 0.125) {
+        CR = "eighth";
+      } else if (CR == 0.25) {
+        CR = "quarter";
+      } else if (CR == 0.5) {
+        CR = "half";
+      }
+      // console.log(CR);
+
+      try {
+        document.getElementById(`cr-${CR}`).innerHTML += `
+        <p>${data.results[i].name}</p><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p><br>
+      `
+      } catch (error) {
+        console.error(error);
+        console.log("Error with item: " + data.results[i].name);
+      }
   }
 }
 
 function createCollapsibleMonsterSections() {
   for (let i = 0; i < 31; i++) {
-    if (i < 26 || i == 30) {
+
+    if (i == 0) {
       document.getElementById("monsters-section").innerHTML += `
-      <button type="button" class="collapsible">Open Collapsible CR ${i}</button>
-      <div class="monster-content">
-         <ul id="cr-${i}">
-          <li>test</li>
-         </ul>
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/8</button>
+      <div id="cr-eighth" class="monster-content">
+
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/4</button>
+      <div id="cr-quarter" class="monster-content">
+
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/2</button>
+      <div id="cr-half" class="monster-content">
+
+      </div>
+      `
+    }
+
+    if (i < 28 || i == 30) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
       </div>
       `
     }
@@ -271,20 +322,113 @@ function convertNumPlayersToString(numPlayersInt) {
   }
 }
 
+function calculateXP(CR){
+  let XP;
 
-// Collapsible monster sections
-let coll = document.getElementsByClassName("collapsible");
-let collI;
-
-for (collI = 0; collI < coll.length; collI++) {
-  coll[collI].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
-    }
-  });
+  switch (CR){
+    case 0:
+      XP = 0;
+      return XP;
+    case "eighth":
+      XP = 0;
+      return XP;
+    case "quarter":
+      XP = 0;
+      return XP;
+    case "half":
+      XP = 0;
+      return XP;
+    case 1:
+      XP = 0;
+      return XP;
+    case 2:
+      XP = 0;
+      return XP;
+    case 3:
+      XP = 0;
+      return XP;
+    case 4:
+      XP = 0;
+      return XP;
+    case 5:
+      XP = 0;
+      return XP;
+    case 6:
+      XP = 0;
+      return XP;
+    case 7:
+      XP = 0;
+      return XP;
+    case 8:
+      XP = 0;
+      return XP;
+    case 9:
+      XP = 0;
+      return XP;
+    case 10:
+      XP = 0;
+      return XP;
+    case 11:
+      XP = 0;
+      return XP;
+    case 12:
+      XP = 0;
+      return XP;
+    case 13:
+      XP = 0;
+      return XP;
+    case 14:
+      XP = 0;
+      return XP;
+    case 15:
+      XP = 0;
+      return XP;
+    case 16:
+      XP = 0;
+      return XP;
+    case 17:
+      XP = 0;
+      return XP;
+    case 18:
+      XP = 0;
+      return XP;
+    case 19:
+      XP = 0;
+      return XP;
+    case 20:
+      XP = 0;
+      return XP;
+    case 21:
+      XP = 0;
+      return XP;
+    case 22:
+      XP = 0;
+      return XP;
+    case 23:
+      XP = 0;
+      return XP;
+    case 24:
+      XP = 0;
+      return XP;
+    case 25:
+      XP = 0;
+      return XP;
+    case 26:
+      XP = 0;
+      return XP;
+    case 27:
+      XP = 0;
+      return XP;
+    case 28:
+      XP = 0;
+      return XP;
+    case 29:
+      XP = 0;
+      return XP;
+    case 30:
+      XP = 0;
+      return XP;
+  }
 }
+
 

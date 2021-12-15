@@ -107,6 +107,20 @@ body{
       padding: 15px;
       background-color: red;
       overflow: scroll;
+      .monster-content{
+        p{
+          // display: inline-block;
+        }
+        h4{
+          // display: inline-block;
+        }
+        .left-align{
+          text-align: left;
+        }
+        .right-align{
+          text-align: right;
+        }
+      }
     }
   }
 }

@@ -153,6 +153,14 @@ body main #monsters-section {
   overflow: scroll;
 }
 
+body main #monsters-section .monster-content .left-align {
+  text-align: left;
+}
+
+body main #monsters-section .monster-content .right-align {
+  text-align: right;
+}
+
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
   background-color: #eee;
