@@ -15,7 +15,7 @@ function fetchMonsterData() {
       .then((data) => {
         console.log(data);
         populateMonsterList(data);
-        updateAll();
+        updatedPlayerInfo();
     })
 }
 
@@ -35,9 +35,10 @@ for (collI = 0; collI < coll.length; collI++) {
   });
 }
 
-function updateAll() {
+function updatedPlayerInfo() {
   refreshPlayerList();
   updateXPThresholds();
+  updateDifficultyIndicator();
 }
 
 function refreshPlayerList() {
