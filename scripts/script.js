@@ -15,7 +15,7 @@ function fetchMonsterData() {
       .then((data) => {
         console.log(data);
         populateMonsterList(data);
-        updateAll();
+        updatedPlayerInfo();
     })
 }
 
@@ -35,9 +35,18 @@ for (collI = 0; collI < coll.length; collI++) {
   });
 }
 
-function updateAll() {
+function updatedPlayerInfo() {
   refreshPlayerList();
   updateXPThresholds();
+  updateDifficultyIndicator();
+}
+
+//Will contain all functions that run when a monster is added or removed from encounter section
+function updatedMonsterInfo() {
+
+  //function to update encounter totals
+  //function to compare current encounter difficulty to XP thresholds
+  updateDifficultyindicator();
 }
 
 function refreshPlayerList() {
@@ -215,10 +224,18 @@ function updateXPThresholds() {
   }
 
   document.getElementById("players-bottom").innerHTML = `
-  <p>Easy encounter: ${easyXPThreshold}XP</p>
-  <p>Medium encounter: ${mediumXPThreshold}XP</p>
-  <p>Hard encounter: ${hardXPThreshold}XP</p>
-  <p>Deadly encounter: ${deadlyXPThreshold}XP</p>
+  <div id="player-summary-left">
+    <p>Easy: </p>
+    <p>Medium: </p>
+    <p>Hard: </p>
+    <p>Deadly: </p>
+  </div>
+  <div id="player-summary-right">
+    <p>${easyXPThreshold}XP</p>
+    <p>${mediumXPThreshold}XP</p>
+    <p>${hardXPThreshold}XP</p>
+    <p>${deadlyXPThreshold}XP</p>
+  </div>
   `
 }
 
@@ -240,7 +257,12 @@ function populateMonsterList(data) {
       try {
         document.getElementById(`cr-${CR}`).innerHTML += `
         <div class="monster-item">
-          <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+          <div class="monster-summary">
+            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+          </div>
+          <div class="add-monster-section">
+            <button>Add</button>
+          </div>
         </div>
       `
       } catch (error) {
