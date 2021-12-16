@@ -4,6 +4,9 @@
 html {
   overflow: scroll;
   overflow-x: hidden;
+  background-image: url('/assets/images/paper-background.jpg');
+  background-blend-mode: lighten;
+  background-size: cover;
 }
 ::-webkit-scrollbar {
   width: 0;  /* Remove scrollbar space */
@@ -48,7 +51,7 @@ body{
     #banner{
       height: 60%;
       width: 100vw;
-      background-color: pink;
+      background-color: transparent;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -65,10 +68,10 @@ body{
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: purple;
+      background-color: transparent;
       h2{
         display: inline-block;
-        font-size: 30px;
+        font-size: 25px;
       }
     }
   }
@@ -86,7 +89,7 @@ body{
         height: 70%;
         width: 100%;
         padding: 15px;
-        background-color: lightgreen;
+        background-color: transparent;
         .player-level-selector{
           margin-top: 10px;
         }
@@ -103,7 +106,7 @@ body{
         height: 30%;
         width: 100%;
         padding: 15px;
-        background-color: darkgreen;
+        background-color: transparent;
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -130,7 +133,7 @@ body{
         width: 100%;
         padding: 15px 10% 0 10%;
         overflow: scroll;
-        background-color: lightblue;
+        background-color: transparent;
         .encounter-list-item{
           height: auto;
           width: 100%;
@@ -165,7 +168,7 @@ body{
         height: 30%;
         width: 100%;
         padding: 10px;
-        background-color: darkblue;
+        background-color: transparent;
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -186,7 +189,7 @@ body{
     #monsters-section{
       height: 100%;
       width: 38vw;
-      background-color: red;
+      background-color: transparent;
       overflow-y: scroll;
       overflow-x: hidden;
       .monster-content{
