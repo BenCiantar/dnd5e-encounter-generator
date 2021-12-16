@@ -1,8 +1,15 @@
+//////////////////////////////Globals
+
 const body = document.getElementById("body");
+let monsterArray = [];
+
 let easyXPThreshold = 25;
 let mediumXPThreshold = 50;
 let hardXPThreshold = 75;
 let deadlyXPThreshold = 100;
+
+
+//////////////////////////////Populating the page
 
 createCollapsibleMonsterSections();
 fetchMonsterData();
@@ -14,8 +21,9 @@ function fetchMonsterData() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        monsterArray = (data);
         populateMonsterList(data);
-        updatedPlayerInfo();
+        updatePlayerInfo();
     })
 }
 
@@ -35,19 +43,14 @@ for (collI = 0; collI < coll.length; collI++) {
   });
 }
 
-function updatedPlayerInfo() {
+function updatePlayerInfo() {
   refreshPlayerList();
   updateXPThresholds();
   updateDifficultyIndicator();
 }
 
-//Will contain all functions that run when a monster is added or removed from encounter section
-function updatedMonsterInfo() {
 
-  //function to update encounter totals
-  //function to compare current encounter difficulty to XP thresholds
-  updateDifficultyindicator();
-}
+//////////////////////////////Player section
 
 function refreshPlayerList() {
   document.getElementById("player-display").innerHTML = ``
@@ -239,6 +242,52 @@ function updateXPThresholds() {
   `
 }
 
+
+//////////////////////////////Encounter Functions
+
+let encounterArray = [];
+
+function addToEncounter(name) {
+  for (let i = 0; i < monsterArray.results.length; i++) {
+    if (name == monsterArray.results[i].name) {
+      if (encounterArray.length == 0) {
+        console.log("Array empty, adding fist item");
+        encounterArray.push(
+          {
+            name: monsterArray.results[i].name,
+            xp: convertCRToXP(eval(monsterArray.results[i].challenge_rating)),
+            count: 1
+          }
+        )
+        break;
+      }
+
+      let monsterExists = false;
+
+      for (let j = 0; j < encounterArray.length; j++){
+        if (name == encounterArray[j].name){
+          encounterArray[j].count++;
+          monsterExists = true;
+        }
+      } 
+
+      if (!monsterExists) {
+        encounterArray.push(
+          {
+            name: monsterArray.results[i].name,
+            xp: convertCRToXP(eval(monsterArray.results[i].challenge_rating)),
+            count: 1
+          }
+        )
+      }
+    }
+  }
+  console.log(encounterArray);
+}
+  
+
+//////////////////////////////Monster list section
+
 function populateMonsterList(data) {
 
   for (let i = 0; i < data.results.length; i++){
@@ -252,21 +301,21 @@ function populateMonsterList(data) {
       } else if (CR == 0.5) {
         CR = "half";
       }
-      // console.log(CR);
 
       try {
+        // let monsterName = data.results[i].name.replace(/\s+/g, '');
+
         document.getElementById(`cr-${CR}`).innerHTML += `
         <div class="monster-item">
           <div class="monster-summary">
-            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${convertCRToXP(CR)}</p>
           </div>
           <div class="add-monster-section">
-            <button>Add</button>
+            <button onclick="addToEncounter('${data.results[i].name}')">Add</button>
           </div>
         </div>
       `
       } catch (error) {
-        console.error(error);
         console.log("Error with item: " + data.results[i].name);
       }
   }
@@ -309,6 +358,12 @@ function createCollapsibleMonsterSections() {
 }
 
 
+//////////////////////////////Tools
+
+function updateDifficultyIndicator() {
+
+}
+
 function convertNumPlayersToString(numPlayersInt) {
   let numPlayersString;
 
@@ -340,7 +395,7 @@ function convertNumPlayersToString(numPlayersInt) {
   }
 }
 
-function calculateXP(CR){
+function convertCRToXP(CR){
   let XP;
 
   switch (CR){
