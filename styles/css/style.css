@@ -266,6 +266,7 @@ body main #monsters-section .monster-content .monster-item {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  cursor: pointer;
 }
 
 body main #monsters-section .monster-content .monster-item p {
