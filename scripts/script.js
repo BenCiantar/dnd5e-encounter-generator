@@ -8,6 +8,9 @@ let mediumXPThreshold = 50;
 let hardXPThreshold = 75;
 let deadlyXPThreshold = 100;
 
+let XPTotal = 0;
+let monsterCount = 0;
+
 
 //////////////////////////////Populating the page
 
@@ -226,19 +229,11 @@ function updateXPThresholds() {
     }
   }
 
-  document.getElementById("players-bottom").innerHTML = `
-  <div id="player-summary-left">
-    <p>Easy: </p>
-    <p>Medium: </p>
-    <p>Hard: </p>
-    <p>Deadly: </p>
-  </div>
-  <div id="player-summary-right">
+  document.getElementById("players-summary-right").innerHTML = `
     <p>${easyXPThreshold}XP</p>
     <p>${mediumXPThreshold}XP</p>
     <p>${hardXPThreshold}XP</p>
     <p>${deadlyXPThreshold}XP</p>
-  </div>
   `
 }
 
@@ -250,12 +245,15 @@ let encounterArray = [];
 function addToEncounter(name) {
   for (let i = 0; i < monsterArray.results.length; i++) {
     if (name == monsterArray.results[i].name) {
+      let CR = convertCRToXP(monsterArray.results[i].challenge_rating);
+      XPTotal += CR;
+      monsterCount++;
+      updateMonsterSummary();
       if (encounterArray.length == 0) {
-        monsterArray.results[i].challenge_rating
         encounterArray.push(
           {
             name: monsterArray.results[i].name,
-            xp: convertCRToXP(monsterArray.results[i].challenge_rating),
+            xp: CR,
             count: 1
           }
         )
@@ -275,7 +273,7 @@ function addToEncounter(name) {
         encounterArray.push(
           {
             name: monsterArray.results[i].name,
-            xp: convertCRToXP(monsterArray.results[i].challenge_rating),
+            xp: CR,
             count: 1
           }
         )
@@ -304,6 +302,17 @@ function updateEncounterList(){
       </div>
     `
   }
+}
+
+function updateMonsterSummary() {
+  let multiplier = calculateMultiplier(monsterCount);
+
+  document.getElementById("encounter-summary-right").innerHTML = `
+    <br>
+    <p>${XPTotal}XP</p>
+    <p>x${multiplier}</p>
+    <p>${XPTotal * multiplier}XP</p>
+  `
 }
   
 
@@ -412,6 +421,10 @@ function convertNumPlayersToString(numPlayersInt) {
       numPlayersInt = "eight";
       return numPlayersString;
   }
+}
+
+function calculateMultiplier(count) {
+  //IF COUNT X MULTIPLIER Y
 }
 
 function convertCRToXP(CR){
