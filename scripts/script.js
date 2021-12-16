@@ -10,6 +10,7 @@ let deadlyXPThreshold = 100;
 
 let XPTotal = 0;
 let monsterCount = 0;
+let multiplier = 1;
 
 
 //////////////////////////////Populating the page
@@ -27,6 +28,7 @@ function fetchMonsterData() {
         monsterArray = (data);
         populateMonsterList(data);
         updatePlayerInfo();
+        hideLoadingScreen();
     })
 }
 
@@ -49,7 +51,6 @@ for (collI = 0; collI < coll.length; collI++) {
 function updatePlayerInfo() {
   refreshPlayerList();
   updateXPThresholds();
-  updateDifficultyIndicator();
 }
 
 
@@ -95,9 +96,7 @@ function refreshPlayerList() {
 }
 
 function updateXPThresholds() {
-  //Update the total of the XP threshold, totalling all level dropdowns and recalculating
-
-  easyXPThreshold = 0;
+easyXPThreshold = 0;
   mediumXPThreshold = 0;
   hardXPThreshold = 0;
   deadlyXPThreshold = 0;
@@ -235,6 +234,8 @@ function updateXPThresholds() {
     <p>${hardXPThreshold}XP</p>
     <p>${deadlyXPThreshold}XP</p>
   `
+
+  updateDifficultyIndicator();
 }
 
 
@@ -248,7 +249,6 @@ function addToEncounter(name) {
       let CR = convertCRToXP(monsterArray.results[i].challenge_rating);
       XPTotal += CR;
       monsterCount++;
-      updateMonsterSummary();
       if (encounterArray.length == 0) {
         encounterArray.push(
           {
@@ -280,6 +280,7 @@ function addToEncounter(name) {
       }
     }
   }
+  updateMonsterSummary();
   updateEncounterList();
 }
 
@@ -294,10 +295,10 @@ function updateEncounterList(){
           ${encounterArray[i].name} 
         </div>
         <div class="encounter-list-center">
-        x ${encounterArray[i].count}
+          x ${encounterArray[i].count}
         </div>
         <div class="encounter-list-right">
-        ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
+          ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
         </div>
       </div>
     `
@@ -305,7 +306,7 @@ function updateEncounterList(){
 }
 
 function updateMonsterSummary() {
-  let multiplier = calculateMultiplier(monsterCount);
+  multiplier = calculateMultiplier(monsterCount);
 
   document.getElementById("encounter-summary-right").innerHTML = `
     <br>
@@ -313,6 +314,8 @@ function updateMonsterSummary() {
     <p>x${multiplier}</p>
     <p>${XPTotal * multiplier}XP</p>
   `
+
+  updateDifficultyIndicator();
 }
   
 
@@ -322,21 +325,22 @@ function populateMonsterList(data) {
 
   for (let i = 0; i < data.results.length; i++){
 
-      let CR = eval(data.results[i].challenge_rating);
+      let CR = data.results[i].challenge_rating;
+      let CRid = CR;
 
-      if (CR == 0.125) {
-        CR = "eighth";
-      } else if (CR == 0.25) {
-        CR = "quarter";
-      } else if (CR == 0.5) {
-        CR = "half";
+      if (CR == "1/8") {
+        CRid = "eighth";
+      } else if (CR == "1/4") {
+        CRid = "quarter";
+      } else if (CR == "1/2") {
+        CRid = "half";
       }
 
       try {
-        document.getElementById(`cr-${CR}`).innerHTML += `
+        document.getElementById(`cr-${CRid}`).innerHTML += `
         <div class="monster-item">
           <div class="monster-summary">
-            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${convertCRToXP(CR)}</p>
+            <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCRToXP(CR)}</p>
           </div>
           <div class="add-monster-section">
             <button onclick="addToEncounter('${data.results[i].name}')">Add</button>
@@ -388,8 +392,31 @@ function createCollapsibleMonsterSections() {
 
 //////////////////////////////Tools
 
-function updateDifficultyIndicator() {
+function hideLoadingScreen(){
+  document.getElementById("loading-screen").style.display = "none";
+}
 
+function updateDifficultyIndicator() {
+  let finalTotal = XPTotal * multiplier;
+  if (encounterArray.length > 0) {
+    if (finalTotal <= easyXPThreshold) {
+      document.getElementById("difficulty-meter").innerHTML = `
+        <h2>This encounter will be <span style="color: green">EASY</span> for your players!</h2>
+      `
+    } else if (finalTotal <= mediumXPThreshold) {
+      document.getElementById("difficulty-meter").innerHTML = `
+        <h2>This encounter will be of <span style="color: yellow">MEDIUM</span> difficulty for your players!</h2>
+      `
+    } else if (finalTotal <= hardXPThreshold) {
+      document.getElementById("difficulty-meter").innerHTML = `
+        <h2>This encounter will be <span style="color: orange">HARD</span> for your players!</h2>
+      `
+    } else {
+      document.getElementById("difficulty-meter").innerHTML = `
+        <h2>This encounter will be <span style="color: red">DEADLY</span> for your players!</h2>
+      `
+    }
+  }
 }
 
 function convertNumPlayersToString(numPlayersInt) {

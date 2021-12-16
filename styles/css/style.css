@@ -11,6 +11,9 @@
 html {
   overflow: scroll;
   overflow-x: hidden;
+  background-image: url("/assets/images/paper-background.jpg");
+  background-blend-mode: lighten;
+  background-size: cover;
 }
 
 ::-webkit-scrollbar {
@@ -50,6 +53,38 @@ html {
   font-size: 15px;
 }
 
+#loading-screen {
+  height: 97vh;
+  width: 98vw;
+  margin: 1.5vh 1vw;
+  position: absolute;
+  background-color: white;
+  display: block;
+  z-index: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 25px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#loading-screen h1 {
+  font-size: 50px;
+}
+
+#loading-screen img {
+  height: 75%;
+}
+
 body {
   height: 100vh;
   width: 100vw;
@@ -77,7 +112,7 @@ body nav {
 body nav #banner {
   height: 60%;
   width: 100vw;
-  background-color: pink;
+  background-color: transparent;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -114,17 +149,18 @@ body nav #difficulty-meter {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: purple;
+  background-color: transparent;
 }
 
 body nav #difficulty-meter h2 {
   display: inline-block;
-  font-size: 30px;
+  font-size: 25px;
 }
 
 body main {
   height: 75vh;
   width: 100vw;
+  padding: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -144,13 +180,19 @@ body main #players-section {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  border-width: 0 2px 0 0;
+  border-style: solid;
+  border-color: #8A624A;
 }
 
 body main #players-section #players-top {
   height: 70%;
   width: 100%;
   padding: 15px;
-  background-color: lightgreen;
+  background-color: transparent;
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: #8A624A;
 }
 
 body main #players-section #players-top .player-level-selector {
@@ -171,7 +213,7 @@ body main #players-section #players-bottom {
   height: 30%;
   width: 100%;
   padding: 15px;
-  background-color: darkgreen;
+  background-color: transparent;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -201,6 +243,7 @@ body main #players-section #players-bottom #player-summary-right {
 body main #encounter-section {
   height: 100%;
   width: 38vw;
+  margin-right: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -213,9 +256,12 @@ body main #encounter-section {
 body main #encounter-section #encounter-top {
   height: 70%;
   width: 100%;
-  padding: 15px 10% 0 10%;
+  padding: 15px 15px 0 25px;
   overflow: scroll;
-  background-color: lightblue;
+  background-color: transparent;
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: #8A624A;
 }
 
 body main #encounter-section #encounter-top .encounter-list-item {
@@ -255,11 +301,18 @@ body main #encounter-section #encounter-top .encounter-list-item .encounter-list
   text-align: right;
 }
 
+body main #encounter-section #encounter-top .encounter-list-item .encounter-list-left:before {
+  margin-right: 10px;
+  content: "\2715";
+  /* Unicode character for "plus" sign (+) */
+  cursor: pointer;
+}
+
 body main #encounter-section #encounter-bottom {
   height: 30%;
   width: 100%;
-  padding: 10px;
-  background-color: darkblue;
+  padding: 15px;
+  background-color: transparent;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -288,9 +341,10 @@ body main #encounter-section #encounter-bottom #encounter-summary-right {
 }
 
 body main #monsters-section {
-  height: 100%;
+  height: 95%;
   width: 38vw;
-  background-color: red;
+  padding: 0;
+  background-color: transparent;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -318,7 +372,7 @@ body main #monsters-section .monster-content h4 {
 body main #monsters-section .monster-content .monster-item {
   padding: 5px 18px;
   width: 100%;
-  height: 50px;
+  height: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -330,6 +384,7 @@ body main #monsters-section .monster-content .monster-item {
       -ms-flex-pack: justify;
           justify-content: space-between;
   cursor: pointer;
+  background-color: rgba(241, 200, 89, 0.507);
 }
 
 body main #monsters-section .monster-content .monster-item p {
@@ -365,12 +420,12 @@ body main #monsters-section .monster-content .monster-item .add-monster-section 
 }
 
 body main #monsters-section .monster-content .monster-item:hover {
-  background-color: lightgreen;
+  background-color: rgba(243, 196, 66, 0.726);
 }
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-  background-color: #eee;
+  background-color: rgba(206, 144, 30, 0.582);
   color: #444;
   cursor: pointer;
   padding: 18px;
@@ -383,7 +438,7 @@ body main #monsters-section .monster-content .monster-item:hover {
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .collapsible:hover {
-  background-color: #ccc;
+  background-color: rgba(102, 73, 19, 0.726);
 }
 
 .collapsible:after {
