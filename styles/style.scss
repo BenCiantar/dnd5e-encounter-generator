@@ -162,6 +162,21 @@ body{
         width: 100%;
         padding: 10px;
         background-color: darkblue;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        p{
+          margin-bottom: 5px;
+        }
+        #encounter-summary-left{
+          width: 75%;
+          text-align: left;
+          padding-left: 30%;
+        }
+        #encounter-summary-right{
+          width: 25%;
+          text-align: right;
+        }
       }
     }
     #monsters-section{
