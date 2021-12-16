@@ -390,8 +390,31 @@ function createCollapsibleMonsterSections() {
 //////////////////////////////Tools
 
 function updateDifficultyIndicator() {
-
+  if (XPTotal < easyXPThreshold) {
+    document.getElementById("difficulty-meter").innerHTML = `
+      <h2>This encounter will be <span style="color: green">EASY</span> difficulty for your players!</h2>
+    `
+  } else if (XPTotal < mediumXPThreshold) {
+    document.getElementById("difficulty-meter").innerHTML = `
+      <h2>This encounter will be of <span style="color: yellow">MEDIUM</span> difficulty for your players!</h2>
+    `
+  } else if (XPTotal < hardXPThreshold) {
+    document.getElementById("difficulty-meter").innerHTML = `
+      <h2>This encounter will be <span style="color: orange">HARD</span> difficulty for your players!</h2>
+    `
+  } else {
+    document.getElementById("difficulty-meter").innerHTML = `
+      <h2>This encounter will be <span style="color: red">DEADLY</span> for your players!</h2>
+    `
+  }
 }
+
+let easyXPThreshold = 25;
+let mediumXPThreshold = 50;
+let hardXPThreshold = 75;
+let deadlyXPThreshold = 100;
+
+let XPTotal = 0;
 
 function convertNumPlayersToString(numPlayersInt) {
   let numPlayersString;
