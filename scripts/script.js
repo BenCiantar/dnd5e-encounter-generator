@@ -229,7 +229,7 @@ function updateXPThresholds() {
     }
   }
 
-  document.getElementById("players-summary-right").innerHTML = `
+  document.getElementById("player-summary-right").innerHTML = `
     <p>${easyXPThreshold}XP</p>
     <p>${mediumXPThreshold}XP</p>
     <p>${hardXPThreshold}XP</p>
@@ -424,7 +424,25 @@ function convertNumPlayersToString(numPlayersInt) {
 }
 
 function calculateMultiplier(count) {
-  //IF COUNT X MULTIPLIER Y
+  if (count == 1){
+    multiplier = 1;
+    return multiplier;
+  } else if (count == 2) {
+    multiplier = 1.5;
+    return multiplier;
+  } else if (count >= 3 && count <= 6) {
+    multiplier = 2;
+    return multiplier;
+  } else if (count >= 7 && count <= 10) {
+    multiplier = 2.5;
+    return multiplier;
+  } else if (count >= 11 && count <= 14) {
+    multiplier = 3;
+    return multiplier;
+  } else if (count >= 15) {
+    multiplier = 4;
+    return multiplier;
+  }
 }
 
 function convertCRToXP(CR){
