@@ -294,10 +294,10 @@ function updateEncounterList(){
           ${encounterArray[i].name} 
         </div>
         <div class="encounter-list-center">
-        x ${encounterArray[i].count}
+          x ${encounterArray[i].count}
         </div>
         <div class="encounter-list-right">
-        ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
+          ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
         </div>
       </div>
     `
@@ -322,21 +322,22 @@ function populateMonsterList(data) {
 
   for (let i = 0; i < data.results.length; i++){
 
-      let CR = eval(data.results[i].challenge_rating);
+      let CR = data.results[i].challenge_rating;
+      let CRid = CR;
 
-      if (CR == 0.125) {
-        CR = "eighth";
-      } else if (CR == 0.25) {
-        CR = "quarter";
-      } else if (CR == 0.5) {
-        CR = "half";
+      if (CR == "1/8") {
+        CRid = "eighth";
+      } else if (CR == "1/4") {
+        CRid = "quarter";
+      } else if (CR == "1/2") {
+        CRid = "half";
       }
 
       try {
-        document.getElementById(`cr-${CR}`).innerHTML += `
+        document.getElementById(`cr-${CRid}`).innerHTML += `
         <div class="monster-item">
           <div class="monster-summary">
-            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${convertCRToXP(CR)}</p>
+            <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCRToXP(CR)}</p>
           </div>
           <div class="add-monster-section">
             <button onclick="addToEncounter('${data.results[i].name}')">Add</button>
