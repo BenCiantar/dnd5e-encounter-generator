@@ -28,6 +28,7 @@ function fetchMonsterData() {
         monsterArray = (data);
         populateMonsterList(data);
         updatePlayerInfo();
+        hideLoadingScreen();
     })
 }
 
@@ -390,6 +391,10 @@ function createCollapsibleMonsterSections() {
 
 
 //////////////////////////////Tools
+
+function hideLoadingScreen(){
+  document.getElementById("loading-screen").style.display = "none";
+}
 
 function updateDifficultyIndicator() {
   let finalTotal = XPTotal * multiplier;
