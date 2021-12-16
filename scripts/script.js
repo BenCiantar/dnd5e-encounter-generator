@@ -251,7 +251,6 @@ function addToEncounter(name) {
   for (let i = 0; i < monsterArray.results.length; i++) {
     if (name == monsterArray.results[i].name) {
       if (encounterArray.length == 0) {
-        console.log("Array empty, adding fist item");
         encounterArray.push(
           {
             name: monsterArray.results[i].name,
