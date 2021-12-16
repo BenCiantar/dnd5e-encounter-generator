@@ -1,8 +1,18 @@
+//////////////////////////////Globals
+
 const body = document.getElementById("body");
+let monsterArray = [];
+
 let easyXPThreshold = 25;
 let mediumXPThreshold = 50;
 let hardXPThreshold = 75;
 let deadlyXPThreshold = 100;
+
+let XPTotal = 0;
+let monsterCount = 0;
+
+
+//////////////////////////////Populating the page
 
 createCollapsibleMonsterSections();
 fetchMonsterData();
@@ -14,8 +24,9 @@ function fetchMonsterData() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        monsterArray = (data);
         populateMonsterList(data);
-        updatedPlayerInfo();
+        updatePlayerInfo();
     })
 }
 
@@ -35,19 +46,14 @@ for (collI = 0; collI < coll.length; collI++) {
   });
 }
 
-function updatedPlayerInfo() {
+function updatePlayerInfo() {
   refreshPlayerList();
   updateXPThresholds();
   updateDifficultyIndicator();
 }
 
-//Will contain all functions that run when a monster is added or removed from encounter section
-function updatedMonsterInfo() {
 
-  //function to update encounter totals
-  //function to compare current encounter difficulty to XP thresholds
-  updateDifficultyindicator();
-}
+//////////////////////////////Player section
 
 function refreshPlayerList() {
   document.getElementById("player-display").innerHTML = ``
@@ -223,21 +229,94 @@ function updateXPThresholds() {
     }
   }
 
-  document.getElementById("players-bottom").innerHTML = `
-  <div id="player-summary-left">
-    <p>Easy: </p>
-    <p>Medium: </p>
-    <p>Hard: </p>
-    <p>Deadly: </p>
-  </div>
-  <div id="player-summary-right">
+  document.getElementById("player-summary-right").innerHTML = `
     <p>${easyXPThreshold}XP</p>
     <p>${mediumXPThreshold}XP</p>
     <p>${hardXPThreshold}XP</p>
     <p>${deadlyXPThreshold}XP</p>
-  </div>
   `
 }
+
+
+//////////////////////////////Encounter Functions
+
+let encounterArray = [];
+
+function addToEncounter(name) {
+  for (let i = 0; i < monsterArray.results.length; i++) {
+    if (name == monsterArray.results[i].name) {
+      let CR = convertCRToXP(monsterArray.results[i].challenge_rating);
+      XPTotal += CR;
+      monsterCount++;
+      updateMonsterSummary();
+      if (encounterArray.length == 0) {
+        encounterArray.push(
+          {
+            name: monsterArray.results[i].name,
+            xp: CR,
+            count: 1
+          }
+        )
+        break;
+      }
+
+      let monsterExists = false;
+
+      for (let j = 0; j < encounterArray.length; j++){
+        if (name == encounterArray[j].name){
+          encounterArray[j].count++;
+          monsterExists = true;
+        }
+      } 
+
+      if (!monsterExists) {
+        encounterArray.push(
+          {
+            name: monsterArray.results[i].name,
+            xp: CR,
+            count: 1
+          }
+        )
+      }
+    }
+  }
+  updateEncounterList();
+}
+
+function updateEncounterList(){
+  document.getElementById("encounter-top").innerHTML = "";
+
+  for (let i = 0; i < encounterArray.length; i++){
+    console.log(encounterArray[i].xp);
+    document.getElementById("encounter-top").innerHTML += `
+      <div class="encounter-list-item">
+        <div class="encounter-list-left">
+          ${encounterArray[i].name} 
+        </div>
+        <div class="encounter-list-center">
+        x ${encounterArray[i].count}
+        </div>
+        <div class="encounter-list-right">
+        ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
+        </div>
+      </div>
+    `
+  }
+}
+
+function updateMonsterSummary() {
+  let multiplier = calculateMultiplier(monsterCount);
+
+  document.getElementById("encounter-summary-right").innerHTML = `
+    <br>
+    <p>${XPTotal}XP</p>
+    <p>x${multiplier}</p>
+    <p>${XPTotal * multiplier}XP</p>
+  `
+}
+  
+
+//////////////////////////////Monster list section
 
 function populateMonsterList(data) {
 
@@ -252,21 +331,19 @@ function populateMonsterList(data) {
       } else if (CR == 0.5) {
         CR = "half";
       }
-      // console.log(CR);
 
       try {
         document.getElementById(`cr-${CR}`).innerHTML += `
         <div class="monster-item">
           <div class="monster-summary">
-            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${calculateXP(CR)}</p>
+            <h4>${data.results[i].name}</h4><p>CR: ${data.results[i].challenge_rating} - XP: ${convertCRToXP(CR)}</p>
           </div>
           <div class="add-monster-section">
-            <button>Add</button>
+            <button onclick="addToEncounter('${data.results[i].name}')">Add</button>
           </div>
         </div>
       `
       } catch (error) {
-        console.error(error);
         console.log("Error with item: " + data.results[i].name);
       }
   }
@@ -309,6 +386,12 @@ function createCollapsibleMonsterSections() {
 }
 
 
+//////////////////////////////Tools
+
+function updateDifficultyIndicator() {
+
+}
+
 function convertNumPlayersToString(numPlayersInt) {
   let numPlayersString;
 
@@ -340,110 +423,132 @@ function convertNumPlayersToString(numPlayersInt) {
   }
 }
 
-function calculateXP(CR){
+function calculateMultiplier(count) {
+  if (count == 1){
+    multiplier = 1;
+    return multiplier;
+  } else if (count == 2) {
+    multiplier = 1.5;
+    return multiplier;
+  } else if (count >= 3 && count <= 6) {
+    multiplier = 2;
+    return multiplier;
+  } else if (count >= 7 && count <= 10) {
+    multiplier = 2.5;
+    return multiplier;
+  } else if (count >= 11 && count <= 14) {
+    multiplier = 3;
+    return multiplier;
+  } else if (count >= 15) {
+    multiplier = 4;
+    return multiplier;
+  }
+}
+
+function convertCRToXP(CR){
   let XP;
 
   switch (CR){
-    case 0:
+    case "0":
       XP = 10;
       return XP;
-    case "eighth":
+    case "1/8":
       XP = 25;
       return XP;
-    case "quarter":
+    case "1/4":
       XP = 50;
       return XP;
-    case "half":
+    case "1/2":
       XP = 100;
       return XP;
-    case 1:
+    case "1":
       XP = 200;
       return XP;
-    case 2:
+    case "2":
       XP = 450;
       return XP;
-    case 3:
+    case "3":
       XP = 700;
       return XP;
-    case 4:
+    case "4":
       XP = 1100;
       return XP;
-    case 5:
+    case "5":
       XP = 1800;
       return XP;
-    case 6:
+    case "6":
       XP = 2300;
       return XP;
-    case 7:
+    case "7":
       XP = 2900;
       return XP;
-    case 8:
+    case "8":
       XP = 3900;
       return XP;
-    case 9:
+    case "9":
       XP = 5000;
       return XP;
-    case 10:
+    case "10":
       XP = 5900;
       return XP;
-    case 11:
+    case "11":
       XP = 7200;
       return XP;
-    case 12:
+    case "12":
       XP = 8400;
       return XP;
-    case 13:
+    case "13":
       XP = 10000;
       return XP;
-    case 14:
+    case "14":
       XP = 11500;
       return XP;
-    case 15:
+    case "15":
       XP = 13000;
       return XP;
-    case 16:
+    case "16":
       XP = 15000;
       return XP;
-    case 17:
+    case "17":
       XP = 18000;
       return XP;
-    case 18:
+    case "18":
       XP = 20000;
       return XP;
-    case 19:
+    case "19":
       XP = 22000;
       return XP;
-    case 20:
+    case "20":
       XP = 25000;
       return XP;
-    case 21:
+    case "21":
       XP = 33000;
       return XP;
-    case 22:
+    case "22":
       XP = 41000;
       return XP;
-    case 23:
+    case "23":
       XP = 50000;
       return XP;
-    case 24:
+    case "24":
       XP = 62000;
       return XP;
-    case 25:
+    case "25":
       XP = 75000;
       return XP;
-    case 26:
+    case "26":
       XP = 90000;
       return XP;
-    case 27:
+    case "27":
       XP = 105000;
       return XP;
-    case 28:
+    case "28":
       XP = 120000;
       return XP;
-    case 29:
+    case "29":
       XP = 135000;
       return XP;
-    case 30:
+    case "30":
       XP = 155000;
       return XP;
   }
