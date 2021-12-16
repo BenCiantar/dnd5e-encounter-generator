@@ -281,7 +281,29 @@ function addToEncounter(name) {
       }
     }
   }
-  console.log(encounterArray);
+  updateEncounterList();
+}
+
+function updateEncounterList(){
+  document.getElementById("encounter-top").innerHTML = "";
+
+  // console.log(typeof encounterArray[i].count, typeof)
+
+  for (let i = 0; i < encounterArray.length; i++){
+    document.getElementById("encounter-top").innerHTML += `
+      <div class="encounter-list-item">
+        <div class="encounter-list-left">
+          ${encounterArray[i].name} 
+        </div>
+        <div class="encounter-list-center">
+        x ${encounterArray[i].count}
+        </div>
+        <div class="encounter-list-right">
+        ${encounterArray[i].xp * encounterArray[i].count}xp
+        </div>
+      </div>
+    `
+  }
 }
   
 

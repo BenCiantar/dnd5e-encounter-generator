@@ -128,8 +128,34 @@ body{
       #encounter-top{
         height: 70%;
         width: 100%;
-        padding: 15px;
+        padding: 15px 10% 0 10%;
+        overflow: scroll;
         background-color: lightblue;
+        .encounter-list-item{
+          height: auto;
+          width: 100%;
+          margin-bottom: 15px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          .encounter-list-left{
+            height: 100%;
+            width: 50%;
+            text-align: left;
+          }
+          .encounter-list-center{
+            height: 100%;
+            width: 15%;
+            text-align: center;
+          }
+          .encounter-list-right{
+            height: 100%;
+            width: 35%;
+            text-align: right;
+
+          }
+        }
       }
       #encounter-bottom{
         height: 30%;

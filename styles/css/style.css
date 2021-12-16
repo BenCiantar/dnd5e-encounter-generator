@@ -213,8 +213,46 @@ body main #encounter-section {
 body main #encounter-section #encounter-top {
   height: 70%;
   width: 100%;
-  padding: 15px;
+  padding: 15px 10% 0 10%;
+  overflow: scroll;
   background-color: lightblue;
+}
+
+body main #encounter-section #encounter-top .encounter-list-item {
+  height: auto;
+  width: 100%;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body main #encounter-section #encounter-top .encounter-list-item .encounter-list-left {
+  height: 100%;
+  width: 50%;
+  text-align: left;
+}
+
+body main #encounter-section #encounter-top .encounter-list-item .encounter-list-center {
+  height: 100%;
+  width: 15%;
+  text-align: center;
+}
+
+body main #encounter-section #encounter-top .encounter-list-item .encounter-list-right {
+  height: 100%;
+  width: 35%;
+  text-align: right;
 }
 
 body main #encounter-section #encounter-bottom {
