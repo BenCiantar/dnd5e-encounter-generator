@@ -332,7 +332,7 @@ function removeMonster(i) {
   encounterArray[i].count--;
   multiplier = calculateMultiplier(monsterCount);
   if (encounterArray[i].count == 0) {
-    encounterArray.splice(i);
+    encounterArray.splice(i, 1);
   }
   updateEncounterList();
   updateMonsterSummary();
