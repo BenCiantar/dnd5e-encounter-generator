@@ -186,10 +186,12 @@ body{
           }
           .encounter-list-right{
             height: 100%;
-            width: 35%;
+            width: 30%;
             text-align: right;
           }
-          .encounter-list-left:before{
+          .encounter-list-close{
+            height: 100%;
+            width: 5%;
             margin-right: 10px;
             content: "\2715"; /* Unicode character for "plus" sign (+) */
             cursor: pointer;
