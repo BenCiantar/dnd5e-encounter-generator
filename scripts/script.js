@@ -2,6 +2,7 @@
 
 const body = document.getElementById("body");
 let monsterArray = [];
+let encounterArray = [];
 
 let easyXPThreshold = 25;
 let mediumXPThreshold = 50;
@@ -227,6 +228,7 @@ easyXPThreshold = 0;
         break;
     }
   }
+  updateDifficultyIndicator();
 
   document.getElementById("player-summary-right").innerHTML = `
     <p>${easyXPThreshold}XP</p>
@@ -234,14 +236,10 @@ easyXPThreshold = 0;
     <p>${hardXPThreshold}XP</p>
     <p>${deadlyXPThreshold}XP</p>
   `
-
-  updateDifficultyIndicator();
 }
 
 
 //////////////////////////////Encounter Functions
-
-let encounterArray = [];
 
 function addToEncounter(name) {
   for (let i = 0; i < monsterArray.results.length; i++) {
@@ -288,9 +286,11 @@ function updateEncounterList(){
   document.getElementById("encounter-top").innerHTML = "";
 
   for (let i = 0; i < encounterArray.length; i++){
-    console.log(encounterArray[i].xp);
     document.getElementById("encounter-top").innerHTML += `
       <div class="encounter-list-item">
+        <div class="encounter-list-close" onclick="removeMonster(${i})">
+        &#10005;
+        </div>
         <div class="encounter-list-left">
           ${encounterArray[i].name} 
         </div>
@@ -315,6 +315,27 @@ function updateMonsterSummary() {
     <p>${XPTotal * multiplier}XP</p>
   `
 
+  if (encounterArray.length == 0) {
+    document.getElementById("encounter-summary-right").innerHTML = `
+    <br>
+    <p>-</p>
+    <p>-</p>
+    <p>-</p>
+  `
+  }
+  updateDifficultyIndicator();
+}
+
+function removeMonster(i) {
+  XPTotal -= encounterArray[i].xp;
+  monsterCount--;
+  encounterArray[i].count--;
+  multiplier = calculateMultiplier(monsterCount);
+  if (encounterArray[i].count == 0) {
+    encounterArray.splice(i);
+  }
+  updateEncounterList();
+  updateMonsterSummary();
   updateDifficultyIndicator();
 }
   
@@ -397,7 +418,13 @@ function hideLoadingScreen(){
 }
 
 function updateDifficultyIndicator() {
+
   let finalTotal = XPTotal * multiplier;
+  if (encounterArray.length == 0) {
+    document.getElementById("difficulty-meter").innerHTML = `
+      <h2>Add some monsters to begin!</h2>
+    `
+  }
   if (encounterArray.length > 0) {
     if (finalTotal <= easyXPThreshold) {
       document.getElementById("difficulty-meter").innerHTML = `
