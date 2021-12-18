@@ -54,10 +54,15 @@ html {
 }
 
 #loading-screen {
-  height: 97vh;
-  width: 98vw;
-  margin: 1.5vh 1vw;
+  margin-top: calc(max(1.5vh, 10px));
+  margin-bottom: calc(max(1.5vh, 10px));
+  margin-left: calc(max(1vw, 10px));
+  margin-right: calc(max(1vw, 10px));
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-color: white;
   display: block;
   z-index: 1;
@@ -83,8 +88,34 @@ html {
 
 #loading-screen img {
   width: 75%;
-  max-width: 600px;
+  max-width: 720px;
   max-height: 600px;
+  min-width: 120px;
+  min-height: 100px;
+}
+
+@media only screen and (max-width: 760px) {
+  #loading-screen h1 {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #loading-screen h1 {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  #loading-screen h1 {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-height: 550px) {
+  #loading-screen img {
+    width: 30%;
+  }
 }
 
 body {
