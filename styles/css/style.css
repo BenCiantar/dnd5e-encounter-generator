@@ -53,6 +53,18 @@ html {
   font-size: 15px;
 }
 
+@media only screen and (max-width: 760px) {
+  * p {
+    font-size: 10px;
+  }
+  * select {
+    font-size: 10px;
+  }
+  * label {
+    font-size: 10px;
+  }
+}
+
 #loading-screen {
   margin-top: calc(max(1.5vh, 10px));
   margin-bottom: calc(max(1.5vh, 10px));
@@ -190,6 +202,12 @@ body nav #difficulty-meter h2 {
   font-size: 25px;
 }
 
+@media only screen and (max-width: 760px) {
+  body nav #difficulty-meter h2 {
+    font-size: 18px;
+  }
+}
+
 body main {
   height: 75vh;
   width: 100vw;
@@ -206,6 +224,7 @@ body main {
 body main #players-section {
   height: 100%;
   width: 24vw;
+  min-width: 142px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -229,12 +248,13 @@ body main #players-section #players-top {
 }
 
 body main #players-section #players-top .player-level-selector {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 body main #players-section #players-top #player-select {
   height: 10%;
   width: 100%;
+  margin-bottom: 15px;
 }
 
 body main #players-section #players-top #player-display {
@@ -276,6 +296,7 @@ body main #players-section #players-bottom #player-summary-right {
 body main #encounter-section {
   height: 100%;
   width: 38vw;
+  min-width: 218px;
   margin-right: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -367,7 +388,6 @@ body main #encounter-section #encounter-bottom p {
 body main #encounter-section #encounter-bottom #encounter-summary-left {
   width: 75%;
   text-align: left;
-  padding-left: 30%;
 }
 
 body main #encounter-section #encounter-bottom #encounter-summary-right {
@@ -378,6 +398,7 @@ body main #encounter-section #encounter-bottom #encounter-summary-right {
 body main #monsters-section {
   height: 95%;
   width: 38vw;
+  min-width: 158px;
   padding: 0;
   background-color: transparent;
   overflow-y: scroll;
@@ -404,6 +425,12 @@ body main #monsters-section .monster-content h4 {
   font-size: 14px;
 }
 
+@media only screen and (max-width: 760px) {
+  body main #monsters-section .monster-content h4 {
+    font-size: 9px;
+  }
+}
+
 body main #monsters-section .monster-content .monster-item {
   padding: 5px 18px;
   width: 100%;
@@ -424,6 +451,12 @@ body main #monsters-section .monster-content .monster-item {
 
 body main #monsters-section .monster-content .monster-item p {
   font-size: 13px;
+}
+
+@media only screen and (max-width: 760px) {
+  body main #monsters-section .monster-content .monster-item p {
+    font-size: 9px;
+  }
 }
 
 body main #monsters-section .monster-content .monster-item .monster-summary {
@@ -454,6 +487,12 @@ body main #monsters-section .monster-content .monster-item .add-monster-section 
   padding: 0.5px;
 }
 
+@media only screen and (max-width: 760px) {
+  body main #monsters-section .monster-content .monster-item .add-monster-section button {
+    font-size: 9px;
+  }
+}
+
 body main #monsters-section .monster-content .monster-item:hover {
   background-color: rgba(243, 196, 66, 0.726);
 }
@@ -471,6 +510,12 @@ body main #monsters-section .monster-content .monster-item:hover {
   font-size: 15px;
 }
 
+@media only screen and (max-width: 760px) {
+  .collapsible {
+    font-size: 10px;
+  }
+}
+
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .collapsible:hover {
   background-color: rgba(102, 73, 19, 0.726);
@@ -483,6 +528,12 @@ body main #monsters-section .monster-content .monster-item:hover {
   color: white;
   float: right;
   margin-left: 5px;
+}
+
+@media only screen and (max-width: 760px) {
+  .collapsible:after {
+    font-size: 8px;
+  }
 }
 
 .active:after {
