@@ -193,7 +193,7 @@ body nav #difficulty-meter h2 {
 body main {
   height: 75vh;
   width: 100vw;
-  padding: 10px;
+  padding: 10px 15px 10px 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

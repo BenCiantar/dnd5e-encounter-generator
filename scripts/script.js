@@ -310,7 +310,6 @@ function updateMonsterSummary() {
   multiplier = calculateMultiplier(monsterCount);
 
   document.getElementById("encounter-summary-right").innerHTML = `
-    <br>
     <p>${XPTotal}XP</p>
     <p>x${multiplier}</p>
     <p>${XPTotal * multiplier}XP</p>
@@ -318,7 +317,6 @@ function updateMonsterSummary() {
 
   if (encounterArray.length == 0) {
     document.getElementById("encounter-summary-right").innerHTML = `
-    <br>
     <p>-</p>
     <p>-</p>
     <p>-</p>
