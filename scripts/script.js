@@ -1,5 +1,6 @@
 //////////////////////////////Globals
 
+//CODE CHECK Make several of these into const, and check variables within functions
 const body = document.getElementById("body");
 let monsterArray = [];
 let encounterArray = [];
@@ -349,6 +350,7 @@ function populateMonsterList(data) {
       let CR = data.results[i].challenge_rating;
       let CRid = CR;
 
+      //CODE CHECK move fraction converter into a separate function
       if (CR == "1/8") {
         CRid = "eighth";
       } else if (CR == "1/4") {
@@ -446,6 +448,7 @@ function updateDifficultyIndicator() {
   }
 }
 
+//CODE CHECK Move these long switches into modules
 function convertNumPlayersToString(numPlayersInt) {
   let numPlayersString;
 
@@ -499,6 +502,7 @@ function calculateMultiplier(count) {
   }
 }
 
+//CODE CHECK move to a utilities javascript module
 function convertCRToXP(CR){
   let XP;
 
