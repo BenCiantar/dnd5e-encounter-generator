@@ -245,6 +245,8 @@ body main #players-section #players-top {
   border-width: 0 0 2px 0;
   border-style: solid;
   border-color: #8A624A;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 body main #players-section #players-top .player-level-selector {
