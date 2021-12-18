@@ -189,6 +189,7 @@ body{
       }
       #players-bottom{
         height: 30%;
+        min-height: 75px;
         width: 100%;
         padding: 15px;
         background-color: transparent;
@@ -258,6 +259,7 @@ body{
       }
       #encounter-bottom{
         height: 30%;
+        min-height: 75px;
         width: 100%;
         padding: 15px;
         background-color: transparent;
@@ -275,6 +277,11 @@ body{
           width: 25%;
           text-align: right;
         }
+      }
+    }
+    @media only screen and (max-width: 760px) {
+      #encounter-section {
+        font-size: 10px; 
       }
     }
     #monsters-section{

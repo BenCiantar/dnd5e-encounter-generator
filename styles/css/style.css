@@ -264,6 +264,7 @@ body main #players-section #players-top #player-display {
 
 body main #players-section #players-bottom {
   height: 30%;
+  min-height: 75px;
   width: 100%;
   padding: 15px;
   background-color: transparent;
@@ -366,6 +367,7 @@ body main #encounter-section #encounter-top .encounter-list-item .encounter-list
 
 body main #encounter-section #encounter-bottom {
   height: 30%;
+  min-height: 75px;
   width: 100%;
   padding: 15px;
   background-color: transparent;
@@ -393,6 +395,12 @@ body main #encounter-section #encounter-bottom #encounter-summary-left {
 body main #encounter-section #encounter-bottom #encounter-summary-right {
   width: 25%;
   text-align: right;
+}
+
+@media only screen and (max-width: 760px) {
+  body main #encounter-section {
+    font-size: 10px;
+  }
 }
 
 body main #monsters-section {
