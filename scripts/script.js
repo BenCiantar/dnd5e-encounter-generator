@@ -18,11 +18,12 @@ let multiplier = 1;
 //////////////////////////////Populating the page
 
 document.addEventListener("DOMContentLoaded", function() {
+  fetchApi();
   createCollapsibleMonsterSections();
-  fetchMonsterDataFromAPI();
+  updatePlayerInfo();
 });
 
-function fetchMonsterDataFromAPI() {
+function fetchApi() {
     fetch(apiLink, {
       })
       .then((response) => response.json())
@@ -30,11 +31,9 @@ function fetchMonsterDataFromAPI() {
         monsterArray = (data);
 
         populateMonsterList(monsterArray);
-        updatePlayerInfo();
         hideLoadingScreen();
     })
 }
-
 
 function updatePlayerInfo() {
   refreshPlayerList();
@@ -266,7 +265,17 @@ function addToEncounter(name) {
       }
     }
   }
-  updateMonsterSummary();
+  updateEncounterList();
+}
+
+function removeFromEncounter(i) {
+  XPTotal -= encounterArray[i].xp;
+  monsterCount--;
+  encounterArray[i].count--;
+  multiplier = calculateMultiplier(monsterCount);
+  if (encounterArray[i].count == 0) {
+    encounterArray.splice(i, 1);
+  }
   updateEncounterList();
 }
 
@@ -276,7 +285,7 @@ function updateEncounterList(){
   for (let i = 0; i < encounterArray.length; i++){
     document.getElementById("encounter-top").innerHTML += `
       <div class="encounter-list-item">
-        <div class="encounter-list-close" onclick="removeMonster(${i})">
+        <div class="encounter-list-close" onclick="removeFromEncounter(${i})">
         &#10005;
         </div>
         <div class="encounter-list-left">
@@ -291,6 +300,7 @@ function updateEncounterList(){
       </div>
     `
   }
+  updateMonsterSummary();
 }
 
 function updateMonsterSummary() {
@@ -301,7 +311,6 @@ function updateMonsterSummary() {
     <p>x${multiplier}</p>
     <p>${XPTotal * multiplier}XP</p>
   `
-
   if (encounterArray.length == 0) {
     document.getElementById("encounter-summary-right").innerHTML = `
     <p>-</p>
@@ -312,54 +321,8 @@ function updateMonsterSummary() {
   updateDifficultyIndicator();
 }
 
-function removeMonster(i) {
-  XPTotal -= encounterArray[i].xp;
-  monsterCount--;
-  encounterArray[i].count--;
-  multiplier = calculateMultiplier(monsterCount);
-  if (encounterArray[i].count == 0) {
-    encounterArray.splice(i, 1);
-  }
-  updateEncounterList();
-  updateMonsterSummary();
-  updateDifficultyIndicator();
-}
-  
 
 //////////////////////////////Monster list section
-
-function populateMonsterList(data) {
-
-  for (let i = 0; i < data.results.length; i++){
-
-      let CR = data.results[i].challenge_rating;
-      let CRid = CR;
-
-      //CODE CHECK move fraction converter into a separate function
-      if (CR == "1/8") {
-        CRid = "eighth";
-      } else if (CR == "1/4") {
-        CRid = "quarter";
-      } else if (CR == "1/2") {
-        CRid = "half";
-      }
-
-      try {
-        document.getElementById(`cr-${CRid}`).innerHTML += `
-        <div class="monster-item">
-          <div class="monster-summary">
-            <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCRToXP(CR)}</p>
-          </div>
-          <div class="add-monster-section">
-            <button onclick="addToEncounter('${data.results[i].name}')">Add</button>
-          </div>
-        </div>
-      `
-      } catch (error) {
-        console.log("Error with item: " + data.results[i].name);
-      }
-  }
-}
 
 function createCollapsibleMonsterSections() {
   for (let i = 0; i < 31; i++) {
@@ -412,6 +375,39 @@ function addEventListenersToCollapsibles() {
         content.style.display = "block";
       }
     });
+  }
+}
+
+function populateMonsterList(data) {
+
+  for (let i = 0; i < data.results.length; i++){
+
+      let CR = data.results[i].challenge_rating;
+      let CRid = CR;
+
+      //CODE CHECK move fraction converter into a separate function
+      if (CR == "1/8") {
+        CRid = "eighth";
+      } else if (CR == "1/4") {
+        CRid = "quarter";
+      } else if (CR == "1/2") {
+        CRid = "half";
+      }
+
+      try {
+        document.getElementById(`cr-${CRid}`).innerHTML += `
+        <div class="monster-item">
+          <div class="monster-summary">
+            <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCRToXP(CR)}</p>
+          </div>
+          <div class="add-monster-section">
+            <button onclick="addToEncounter('${data.results[i].name}')">Add</button>
+          </div>
+        </div>
+      `
+      } catch (error) {
+        console.log("Error with item: " + data.results[i].name);
+      }
   }
 }
 
