@@ -1,4 +1,4 @@
-import { convertCrToXp } from './modules/tools.js';
+import { convertCrToXp, addListener } from './modules/tools.js';
 
 //////////////////////////////Globals
 
@@ -529,11 +529,5 @@ function calculateMultiplier(count) {
   }
 }
 
-//CODE CHECK move to a utilities javascript module
-function addListener(type, id, callback, param){
-  document.getElementById(id).addEventListener(type, function (){
-    callback(param);
-  });
-}
 
 

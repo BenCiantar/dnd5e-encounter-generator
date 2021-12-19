@@ -1,5 +1,9 @@
 
-
+export function addListener(type, id, callback, param){
+    document.getElementById(id).addEventListener(type, function (){
+      callback(param);
+    });
+  }
 
 export function convertCrToXp(CR){
     let XP;
