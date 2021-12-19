@@ -5,14 +5,18 @@ const apiLink = "https://api.open5e.com/monsters/?limit=2000";
 let monsterArray = [];
 let encounterArray = [];
 
-let easyXPThreshold = 25;
-let mediumXPThreshold = 50;
-let hardXPThreshold = 75;
-let deadlyXPThreshold = 100;
+let xpThresholds = {
+  easyXpThreshold: 25,
+  mediumXpThreshold: 50,
+  hardXpThreshold: 75,
+  deadlyXpThreshold: 100
+}
 
-let XPTotal = 0;
-let monsterCount = 0;
-let multiplier = 1;
+let keyStats = {
+  xpTotal: 0,
+  monsterCount: 0,
+  groupMultiplier: 1
+}
 
 
 //////////////////////////////Populating the page
@@ -83,145 +87,145 @@ function refreshPlayerList() {
 }
 
 function updateXPThresholds() {
-  //Reset thresholds to zero
-  easyXPThreshold = 0;
-  mediumXPThreshold = 0;
-  hardXPThreshold = 0;
-  deadlyXPThreshold = 0;
+
+  xpThresholds.easyXpThreshold = 0;
+  xpThresholds.mediumXpThreshold = 0;
+  xpThresholds.hardXpThreshold = 0;
+  xpThresholds.deadlyXpThreshold = 0;
 
   let playerLevels = document.querySelectorAll(".player-lvl");
 
   for (let i = 0; i < playerLevels.length; i++) {
     switch (playerLevels[i].value) {
       case "1":
-        easyXPThreshold += 25;
-        mediumXPThreshold += 50;
-        hardXPThreshold += 75;
-        deadlyXPThreshold += 100;
+        xpThresholds.easyXpThreshold += 25;
+        xpThresholds.mediumXpThreshold += 50;
+        xpThresholds.hardXpThreshold += 75;
+        xpThresholds.deadlyXpThreshold += 100;
         break;
       case "2":
-        easyXPThreshold += 50;
-        mediumXPThreshold += 100;
-        hardXPThreshold += 150;
-        deadlyXPThreshold += 200;
+        xpThresholds.easyXpThreshold += 50;
+        xpThresholds.mediumXpThreshold += 100;
+        xpThresholds.hardXpThreshold += 150;
+        xpThresholds.deadlyXpThreshold += 200;
         break;
       case "3":
-        easyXPThreshold += 75;
-        mediumXPThreshold += 150;
-        hardXPThreshold += 225;
-        deadlyXPThreshold += 400;
+        xpThresholds.easyXpThreshold += 75;
+        xpThresholds.mediumXpThreshold += 150;
+        xpThresholds.hardXpThreshold += 225;
+        xpThresholds.deadlyXpThreshold += 400;
         break;
       case "4":
-        easyXPThreshold += 125;
-        mediumXPThreshold += 250;
-        hardXPThreshold += 375;
-        deadlyXPThreshold += 500;
+        xpThresholds.easyXpThreshold += 125;
+        xpThresholds.mediumXpThreshold += 250;
+        xpThresholds.hardXpThreshold += 375;
+        xpThresholds.deadlyXpThreshold += 500;
         break;
       case "5":
-        easyXPThreshold += 250;
-        mediumXPThreshold += 500;
-        hardXPThreshold += 750;
-        deadlyXPThreshold += 1000;
+        xpThresholds.easyXpThreshold += 250;
+        xpThresholds.mediumXpThreshold += 500;
+        xpThresholds.hardXpThreshold += 750;
+        xpThresholds.deadlyXpThreshold += 1000;
         break;
       case "6":
-        easyXPThreshold += 300;
-        mediumXPThreshold += 600;
-        hardXPThreshold += 900;
-        deadlyXPThreshold += 1400;
+        xpThresholds.easyXpThreshold += 300;
+        xpThresholds.mediumXpThreshold += 600;
+        xpThresholds.hardXpThreshold += 900;
+        xpThresholds.deadlyXpThreshold += 1400;
         break;
       case "7":
-        easyXPThreshold += 350;
-        mediumXPThreshold += 750;
-        hardXPThreshold += 1100;
-        deadlyXPThreshold += 1700;
+        xpThresholds.easyXpThreshold += 350;
+        xpThresholds.mediumXpThreshold += 750;
+        xpThresholds.hardXpThreshold += 1100;
+        xpThresholds.deadlyXpThreshold += 1700;
         break;
       case "8":
-        easyXPThreshold += 450;
-        mediumXPThreshold += 900;
-        hardXPThreshold += 1400;
-        deadlyXPThreshold += 2100;
+        xpThresholds.easyXpThreshold += 450;
+        xpThresholds.mediumXpThreshold += 900;
+        xpThresholds.hardXpThreshold += 1400;
+        xpThresholds.deadlyXpThreshold += 2100;
         break;
       case "9":
-        easyXPThreshold += 550;
-        mediumXPThreshold += 1100;
-        hardXPThreshold += 1600;
-        deadlyXPThreshold += 2400;
+        xpThresholds.easyXpThreshold += 550;
+        xpThresholds.mediumXpThreshold += 1100;
+        xpThresholds.hardXpThreshold += 1600;
+        xpThresholds.deadlyXpThreshold += 2400;
         break;
       case "10":
-        easyXPThreshold += 600;
-        mediumXPThreshold += 1200;
-        hardXPThreshold += 1900;
-        deadlyXPThreshold += 2800;
+        xpThresholds.easyXpThreshold += 600;
+        xpThresholds.mediumXpThreshold += 1200;
+        xpThresholds.hardXpThreshold += 1900;
+        xpThresholds.deadlyXpThreshold += 2800;
         break;
       case "11":
-        easyXPThreshold += 800;
-        mediumXPThreshold += 1600;
-        hardXPThreshold += 2400;
-        deadlyXPThreshold += 3600;
+        xpThresholds.easyXpThreshold += 800;
+        xpThresholds.mediumXpThreshold += 1600;
+        xpThresholds.hardXpThreshold += 2400;
+        xpThresholds.deadlyXpThreshold += 3600;
         break;
       case "12":
-        easyXPThreshold += 1000;
-        mediumXPThreshold += 2000;
-        hardXPThreshold += 3000;
-        deadlyXPThreshold += 4000;
+        xpThresholds.easyXpThreshold += 1000;
+        xpThresholds.mediumXpThreshold += 2000;
+        xpThresholds.hardXpThreshold += 3000;
+        xpThresholds.deadlyXpThreshold += 4000;
         break;
       case "13":
-        easyXPThreshold += 1100;
-        mediumXPThreshold += 2200;
-        hardXPThreshold += 3400;
-        deadlyXPThreshold += 5100;
+        xpThresholds.easyXpThreshold += 1100;
+        xpThresholds.mediumXpThreshold += 2200;
+        xpThresholds.hardXpThreshold += 3400;
+        xpThresholds.deadlyXpThreshold += 5100;
         break;
       case "14":
-        easyXPThreshold += 1250;
-        mediumXPThreshold += 2500;
-        hardXPThreshold += 3800;
-        deadlyXPThreshold += 5700;
+        xpThresholds.easyXpThreshold += 1250;
+        xpThresholds.mediumXpThreshold += 2500;
+        xpThresholds.hardXpThreshold += 3800;
+        xpThresholds.deadlyXpThreshold += 5700;
         break;
       case "15":
-        easyXPThreshold += 1400;
-        mediumXPThreshold += 2800;
-        hardXPThreshold += 4300;
-        deadlyXPThreshold += 6400;
+        xpThresholds.easyXpThreshold += 1400;
+        xpThresholds.mediumXpThreshold += 2800;
+        xpThresholds.hardXpThreshold += 4300;
+        xpThresholds.deadlyXpThreshold += 6400;
         break;
       case "16":
-        easyXPThreshold += 1600;
-        mediumXPThreshold += 3200;
-        hardXPThreshold += 4800;
-        deadlyXPThreshold += 7200;
+        xpThresholds.easyXpThreshold += 1600;
+        xpThresholds.mediumXpThreshold += 3200;
+        xpThresholds.hardXpThreshold += 4800;
+        xpThresholds.deadlyXpThreshold += 7200;
         break;
       case "17":
-        easyXPThreshold += 2000;
-        mediumXPThreshold += 3900;
-        hardXPThreshold += 5900;
-        deadlyXPThreshold += 8800;
+        xpThresholds.easyXpThreshold += 2000;
+        xpThresholds.mediumXpThreshold += 3900;
+        xpThresholds.hardXpThreshold += 5900;
+        xpThresholds.deadlyXpThreshold += 8800;
         break;
       case "18":
-        easyXPThreshold += 2100;
-        mediumXPThreshold += 4200;
-        hardXPThreshold += 6300;
-        deadlyXPThreshold += 9500;
+        xpThresholds.easyXpThreshold += 2100;
+        xpThresholds.mediumXpThreshold += 4200;
+        xpThresholds.hardXpThreshold += 6300;
+        xpThresholds.deadlyXpThreshold += 9500;
         break;
       case "19":
-        easyXPThreshold += 2400;
-        mediumXPThreshold += 4900;
-        hardXPThreshold += 7300;
-        deadlyXPThreshold += 10900;
+        xpThresholds.easyXpThreshold += 2400;
+        xpThresholds.mediumXpThreshold += 4900;
+        xpThresholds.hardXpThreshold += 7300;
+        xpThresholds.deadlyXpThreshold += 10900;
         break;
       case "20":
-        easyXPThreshold += 2800;
-        mediumXPThreshold += 5700;
-        hardXPThreshold += 8500;
-        deadlyXPThreshold += 12700;
+        xpThresholds.easyXpThreshold += 2800;
+        xpThresholds.mediumXpThreshold += 5700;
+        xpThresholds.hardXpThreshold += 8500;
+        xpThresholds.deadlyXpThreshold += 12700;
         break;
     }
   }
   updateDifficultyIndicator();
 
   document.getElementById("player-summary-right").innerHTML = `
-    <p>${easyXPThreshold}XP</p>
-    <p>${mediumXPThreshold}XP</p>
-    <p>${hardXPThreshold}XP</p>
-    <p>${deadlyXPThreshold}XP</p>
+    <p>${xpThresholds.easyXpThreshold}XP</p>
+    <p>${xpThresholds.mediumXpThreshold}XP</p>
+    <p>${xpThresholds.hardXpThreshold}XP</p>
+    <p>${xpThresholds.deadlyXpThreshold}XP</p>
   `
 }
 
@@ -232,8 +236,8 @@ function addToEncounter(name) {
   for (let i = 0; i < monsterArray.results.length; i++) {
     if (name == monsterArray.results[i].name) {
       let CR = convertCRToXP(monsterArray.results[i].challenge_rating);
-      XPTotal += CR;
-      monsterCount++;
+      keyStats.xpTotal += CR;
+      keyStats.monsterCount++;
       if (encounterArray.length == 0) {
         encounterArray.push(
           {
@@ -269,10 +273,10 @@ function addToEncounter(name) {
 }
 
 function removeFromEncounter(i) {
-  XPTotal -= encounterArray[i].xp;
-  monsterCount--;
+  keyStats.xpTotal -= encounterArray[i].xp;
+  keyStats.monsterCount--;
   encounterArray[i].count--;
-  multiplier = calculateMultiplier(monsterCount);
+  keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
   if (encounterArray[i].count == 0) {
     encounterArray.splice(i, 1);
   }
@@ -304,12 +308,12 @@ function updateEncounterList(){
 }
 
 function updateMonsterSummary() {
-  multiplier = calculateMultiplier(monsterCount);
+  keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
 
   document.getElementById("encounter-summary-right").innerHTML = `
-    <p>${XPTotal}XP</p>
-    <p>x${multiplier}</p>
-    <p>${XPTotal * multiplier}XP</p>
+    <p>${keyStats.xpTotal}XP</p>
+    <p>x${keyStats.groupMultiplier}</p>
+    <p>${keyStats.xpTotal * keyStats.groupMultiplier}XP</p>
   `
   if (encounterArray.length == 0) {
     document.getElementById("encounter-summary-right").innerHTML = `
@@ -420,22 +424,22 @@ function hideLoadingScreen(){
 
 function updateDifficultyIndicator() {
 
-  let finalTotal = XPTotal * multiplier;
+  let finalTotal = keyStats.xpTotal * keyStats.groupMultiplier;
   if (encounterArray.length == 0) {
     document.getElementById("difficulty-meter").innerHTML = `
       <h2>Add some monsters to begin!</h2>
     `
   }
   if (encounterArray.length > 0) {
-    if (finalTotal <= easyXPThreshold) {
+    if (finalTotal <= xpThresholds.easyXpThreshold) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be <span style="color: green">EASY</span> for your players!</h2>
       `
-    } else if (finalTotal <= mediumXPThreshold) {
+    } else if (finalTotal <= xpThresholds.mediumXpThreshold) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be of <span style="color: yellow">MEDIUM</span> difficulty for your players!</h2>
       `
-    } else if (finalTotal <= hardXPThreshold) {
+    } else if (finalTotal <= xpThresholds.hardXpThreshold) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be <span style="color: orange">HARD</span> for your players!</h2>
       `
@@ -481,23 +485,23 @@ function convertNumPlayersToString(numPlayersInt) {
 
 function calculateMultiplier(count) {
   if (count == 1){
-    multiplier = 1;
-    return multiplier;
+    keyStats.groupMultiplier = 1;
+    return keyStats.groupMultiplier;
   } else if (count == 2) {
-    multiplier = 1.5;
-    return multiplier;
+    keyStats.groupMultiplier = 1.5;
+    return keyStats.groupMultiplier;
   } else if (count >= 3 && count <= 6) {
-    multiplier = 2;
-    return multiplier;
+    keyStats.groupMultiplier = 2;
+    return keyStats.groupMultiplier;
   } else if (count >= 7 && count <= 10) {
-    multiplier = 2.5;
-    return multiplier;
+    keyStats.groupMultiplier = 2.5;
+    return keyStats.groupMultiplier;
   } else if (count >= 11 && count <= 14) {
-    multiplier = 3;
-    return multiplier;
+    keyStats.groupMultiplier = 3;
+    return keyStats.groupMultiplier;
   } else if (count >= 15) {
-    multiplier = 4;
-    return multiplier;
+    keyStats.groupMultiplier = 4;
+    return keyStats.groupMultiplier;
   }
 }
 
