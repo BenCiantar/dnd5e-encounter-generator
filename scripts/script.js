@@ -1,7 +1,7 @@
 //////////////////////////////Globals
 
-//CODE CHECK Make several of these into const, and check variables within functions
-const body = document.getElementById("body");
+const apiLink = "https://api.open5e.com/monsters/?limit=2000";
+
 let monsterArray = [];
 let encounterArray = [];
 
@@ -17,38 +17,24 @@ let multiplier = 1;
 
 //////////////////////////////Populating the page
 
-createCollapsibleMonsterSections();
-fetchMonsterData();
+document.addEventListener("DOMContentLoaded", function() {
+  createCollapsibleMonsterSections();
+  fetchMonsterDataFromAPI();
+});
 
-
-function fetchMonsterData() {
-    fetch("https://api.open5e.com/monsters/?limit=2000", {
+function fetchMonsterDataFromAPI() {
+    fetch(apiLink, {
       })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         monsterArray = (data);
-        populateMonsterList(data);
+
+        populateMonsterList(monsterArray);
         updatePlayerInfo();
         hideLoadingScreen();
     })
 }
 
-// Generate collapsible monster sections
-let coll = document.getElementsByClassName("collapsible");
-let collI;
-
-for (collI = 0; collI < coll.length; collI++) {
-  coll[collI].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
-    }
-  });
-}
 
 function updatePlayerInfo() {
   refreshPlayerList();
@@ -98,7 +84,8 @@ function refreshPlayerList() {
 }
 
 function updateXPThresholds() {
-easyXPThreshold = 0;
+  //Reset thresholds to zero
+  easyXPThreshold = 0;
   mediumXPThreshold = 0;
   hardXPThreshold = 0;
   deadlyXPThreshold = 0;
@@ -407,6 +394,24 @@ function createCollapsibleMonsterSections() {
       </div>
       `
     }
+  }
+  addEventListenersToCollapsibles();
+}
+
+function addEventListenersToCollapsibles() {
+  let coll = document.getElementsByClassName("collapsible");
+  let collI;
+
+  for (collI = 0; collI < coll.length; collI++) {
+    coll[collI].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
   }
 }
 
