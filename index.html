@@ -28,7 +28,7 @@
          <div id="players-top">
             <div id="player-select">
                <label for="number-of-players">Party Size:</label>
-               <select name="players" id="number-of-players" onchange="updatePlayerInfo()">
+               <select name="players" id="number-of-players">
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
@@ -42,7 +42,7 @@
             <div id="player-display">
                <div class="player-level-selector">
                   <label for="player-one">Player Level:</label>
-                  <select name="players" class="player-lvl" id="player-one" onchange="updateXPThresholds()">
+                  <select name="players" class="player-lvl" id="player-one">
                      <option value="1">1</option>
                      <option value="2">2</option>
                      <option value="3">3</option>
@@ -106,6 +106,6 @@
    </main>
    <footer>
    </footer>
-    <script src="../scripts/script.js"></script>  
+    <script type="module" src="./scripts/script.js"></script>  
  </body>
 </html>
