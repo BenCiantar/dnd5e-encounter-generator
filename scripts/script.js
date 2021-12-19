@@ -1,4 +1,4 @@
-import { convertCrToXp, addListener } from './modules/tools.js';
+import { convertCrToXp, addListener, fetchApi } from './modules/tools.js';
 
 //////////////////////////////Globals
 
@@ -24,7 +24,7 @@ let keyStats = {
 //////////////////////////////Populating the page
 
 document.addEventListener("DOMContentLoaded", function() {
-  fetchApi();
+  passOutData(fetchApi(apiLink));
   createCollapsibleMonsterSections();
   updatePlayerInfo();
 });
@@ -32,16 +32,13 @@ document.addEventListener("DOMContentLoaded", function() {
 addListener("change", "number-of-players", updatePlayerInfo);
 addListener("change", "player-one", updateXpThresholds);
 
-function fetchApi() {
-    fetch(apiLink, {
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        monsterArray = (data);
+async function passOutData(data){
+  //MAKE THIS ASYNC - POPULATE TRIGGERS AFTER DATA ARRIVES
+  //USE A PROMISE?
+  monsterArray = data;
 
-        populateMonsterList(monsterArray);
-        hideLoadingScreen();
-    })
+  populateMonsterList(monsterArray);
+  hideLoadingScreen();
 }
 
 function updatePlayerInfo() {
