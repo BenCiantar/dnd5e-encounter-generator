@@ -9,7 +9,6 @@ let encounterArray = [];
 let keyStats = {
   xpTotal: 0,
   monsterCount: 0,
-  // groupMultiplier: 1
 }
 
 
@@ -376,7 +375,6 @@ function removeFromEncounter(i) {
   keyStats.xpTotal -= encounterArray[i].xp;
   keyStats.monsterCount--;
   encounterArray[i].count--;
-  // keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
   if (encounterArray[i].count == 0) {
     encounterArray.splice(i, 1);
   }
@@ -409,22 +407,8 @@ function updateEncounterList(){
   document.getElementById("encounter-top").innerHTML = "";
 
   for (let i = 0; i < encounterArray.length; i++){
-    document.getElementById("encounter-top").innerHTML += `
-      <div class="encounter-list-item">
-        <div id="close-${i}" class="encounter-list-close">
-        &#10005;
-        </div>
-        <div class="encounter-list-left">
-          ${encounterArray[i].name} 
-        </div>
-        <div class="encounter-list-center">
-          x ${encounterArray[i].count}
-        </div>
-        <div class="encounter-list-right">
-          ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
-        </div>
-      </div>
-    `
+    const xpToInt = parseInt(encounterArray[i].xp);
+    renderEncounterList(i, encounterArray[i].name, encounterArray[i].count, xpToInt);
   }
   for (let i = 0; i < encounterArray.length; i++){
     addListener("click", `close-${i}`, removeFromEncounter, `${i}`);
@@ -432,19 +416,39 @@ function updateEncounterList(){
   updateMonsterSummary();
 }
 
+function renderEncounterList(i, name, count, xp){
+  document.getElementById("encounter-top").innerHTML += `
+    <div class="encounter-list-item">
+      <div id="close-${i}" class="encounter-list-close">
+      &#10005;
+      </div>
+      <div class="encounter-list-left">
+        ${encounterArray[i].name} 
+      </div>
+      <div class="encounter-list-center">
+        x ${encounterArray[i].count}
+      </div>
+      <div class="encounter-list-right">
+        ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
+      </div>
+    </div>
+  `
+}
+
 function updateMonsterSummary() {
   const multiplier = calculateMultiplier(keyStats.monsterCount);
 
-  document.getElementById("encounter-summary-right").innerHTML = `
-    <p>${keyStats.xpTotal}XP</p>
-    <p>x${multiplier}</p>
-    <p>${keyStats.xpTotal * multiplier}XP</p>
-  `
   if (encounterArray.length == 0) {
     document.getElementById("encounter-summary-right").innerHTML = `
     <p>-</p>
     <p>-</p>
     <p>-</p>
+  `
+  } else {
+    document.getElementById("encounter-summary-right").innerHTML = `
+    <p>${keyStats.xpTotal}XP</p>
+    <p>x${multiplier}</p>
+    <p>${keyStats.xpTotal * multiplier}XP</p>
   `
   }
   updateDifficultyIndicator();
