@@ -1,7 +1,6 @@
-import { convertCrToXp, addListener } from './modules/tools.js';
+import { convertCrToXp, addListener, getXpValueFromPlayerSummary, convertNumPlayersToString, calculateMultiplier } from './modules/tools.js';
 
-//////////////////////////////Globals
-
+//--Global Variables
 const apiLink = "https://api.open5e.com/monsters/?limit=2000";
 
 let monsterArray = [];
@@ -16,6 +15,7 @@ let keyStats = {
 
 //////////////////////////////Populating the page
 
+//--Event Listeners
 document.addEventListener("DOMContentLoaded", function() {
   fetchApi(apiLink);
   createCollapsibleMonsterSections();
@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
 addListener("change", "number-of-players", updatePlayerList);
 addListener("change", "player-one", updateXpThresholds);
 
+//--Data Retrieval
 function fetchApi(url) {
   fetch(url, {
     })
@@ -44,8 +45,100 @@ function initAfterFetch(){
   hideLoadingScreen();
 }
 
+//--Page Structure
+function hideLoadingScreen(){
+  document.getElementById("loading-screen").style.display = "none";
+}
 
-//////////////////////////////Player section
+function createCollapsibleMonsterSections() {
+  for (let i = 0; i < 31; i++) {
+
+    if (i == 0) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/8</button>
+      <div id="cr-eighth" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/4</button>
+      <div id="cr-quarter" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/2</button>
+      <div id="cr-half" class="monster-content">
+      </div>
+      `
+    }
+
+    if (i > 0 && (i < 28 || i == 30)) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
+      </div>
+      `
+    }
+  }
+  addEventListenersToCollapsibles();
+}
+
+function addEventListenersToCollapsibles() {
+  let coll = document.getElementsByClassName("collapsible");
+
+  for (let i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      let content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+}
+
+function populateMonsterList(data) {
+
+  for (let i = 0; i < data.results.length; i++){
+
+    let CR = data.results[i].challenge_rating;
+    let CRId;
+
+    if (CR == "1/8") {
+      CRId = "eighth";
+    } else if (CR == "1/4") {
+      CRId = "quarter";
+    } else if (CR == "1/2") {
+      CRId = "half";
+    } else {
+      CRId = CR;
+    }
+
+    try {
+      document.getElementById(`cr-${CRId}`).innerHTML += `
+      <div class="monster-item">
+        <div class="monster-summary">
+          <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCrToXp(CR)}</p>
+        </div>
+        <div class="add-monster-section">
+          <button id="${data.results[i].name}-btn">Add</button>
+        </div>
+      </div>
+    `
+    } catch (error) {
+      console.log("Error with item: " + data.results[i].name);
+    }
+  }
+  for (let i = 0; i < data.results.length; i++){
+    addListener("click", `${data.results[i].name}-btn`, addToEncounter, `${data.results[i].name}`);
+  }
+}
+
+
+//////////////////////////////Player Section//////////////////////////////
 
 function updatePlayerList() {
   document.getElementById("player-display").innerHTML = ``
@@ -244,7 +337,7 @@ function updateXpThresholds() {
 }
 
 
-//////////////////////////////Encounter Functions
+//////////////////////////////Encounter Section//////////////////////////////
 
 function addToEncounter(name) {
   for (let i = 0; i < monsterArray.results.length; i++) {
@@ -347,103 +440,7 @@ function updateMonsterSummary() {
 }
 
 
-//////////////////////////////Monster list section
-
-function createCollapsibleMonsterSections() {
-  for (let i = 0; i < 31; i++) {
-
-    if (i == 0) {
-      document.getElementById("monsters-section").innerHTML += `
-      <button type="button" class="collapsible">Challenge Rating ${i}</button>
-      <div id="cr-${i}" class="monster-content">
-      </div>
-
-      <button type="button" class="collapsible">Challenge Rating 1/8</button>
-      <div id="cr-eighth" class="monster-content">
-
-      </div>
-
-      <button type="button" class="collapsible">Challenge Rating 1/4</button>
-      <div id="cr-quarter" class="monster-content">
-
-      </div>
-
-      <button type="button" class="collapsible">Challenge Rating 1/2</button>
-      <div id="cr-half" class="monster-content">
-
-      </div>
-      `
-    }
-
-    if (i > 0 && (i < 28 || i == 30)) {
-      document.getElementById("monsters-section").innerHTML += `
-      <button type="button" class="collapsible">Challenge Rating ${i}</button>
-      <div id="cr-${i}" class="monster-content">
-      </div>
-      `
-    }
-  }
-  addEventListenersToCollapsibles();
-}
-
-function addEventListenersToCollapsibles() {
-  let coll = document.getElementsByClassName("collapsible");
-  let collI;
-
-  for (collI = 0; collI < coll.length; collI++) {
-    coll[collI].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var content = this.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    });
-  }
-}
-
-function populateMonsterList(data) {
-
-  for (let i = 0; i < data.results.length; i++){
-
-    let CR = data.results[i].challenge_rating;
-    let CRid = CR;
-
-    if (CR == "1/8") {
-      CRid = "eighth";
-    } else if (CR == "1/4") {
-      CRid = "quarter";
-    } else if (CR == "1/2") {
-      CRid = "half";
-    }
-
-    try {
-      document.getElementById(`cr-${CRid}`).innerHTML += `
-      <div class="monster-item">
-        <div class="monster-summary">
-          <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCrToXp(CR)}</p>
-        </div>
-        <div class="add-monster-section">
-          <button id="${data.results[i].name}-btn">Add</button>
-        </div>
-      </div>
-    `
-    } catch (error) {
-      console.log("Error with item: " + data.results[i].name);
-    }
-  }
-  for (let i = 0; i < data.results.length; i++){
-    addListener("click", `${data.results[i].name}-btn`, addToEncounter, `${data.results[i].name}`);
-  }
-}
-
-
-//////////////////////////////Tools
-
-function hideLoadingScreen(){
-  document.getElementById("loading-screen").style.display = "none";
-}
+//////////////////////////////Difficulty Indicator//////////////////////////////
 
 function updateDifficultyIndicator() {
 
@@ -473,67 +470,5 @@ function updateDifficultyIndicator() {
     }
   }
 }
-
-function getXpValueFromPlayerSummary(id) {
-  let xpValue = document.getElementById(id).innerHTML;
-  xpValue = xpValue.replace(/\D/g,'');
-  xpValue = parseInt(xpValue);
-  return xpValue;
-}
-
-//CODE CHECK Move these long switches into modules
-function convertNumPlayersToString(numPlayersInt) {
-  let numPlayersString;
-
-  switch (numPlayersInt + 1) {
-    case 1:
-      numPlayersString = "one";
-      return numPlayersString;
-    case 2:
-      numPlayersString = "two";
-      return numPlayersString;
-    case 3:
-      numPlayersString = "three";
-      return numPlayersString;
-    case 4:
-      numPlayersString = "four";
-      return numPlayersString;
-    case 5:
-      numPlayersString = "five";
-      return numPlayersString;
-    case 6:
-      numPlayersString = "six";
-      return numPlayersString;
-    case 7:
-      numPlayersString = "seven";
-      return numPlayersString;
-    case 8:
-      numPlayersInt = "eight";
-      return numPlayersString;
-  }
-}
-
-function calculateMultiplier(count) {
-  if (count == 1){
-    keyStats.groupMultiplier = 1;
-    return keyStats.groupMultiplier;
-  } else if (count == 2) {
-    keyStats.groupMultiplier = 1.5;
-    return keyStats.groupMultiplier;
-  } else if (count >= 3 && count <= 6) {
-    keyStats.groupMultiplier = 2;
-    return keyStats.groupMultiplier;
-  } else if (count >= 7 && count <= 10) {
-    keyStats.groupMultiplier = 2.5;
-    return keyStats.groupMultiplier;
-  } else if (count >= 11 && count <= 14) {
-    keyStats.groupMultiplier = 3;
-    return keyStats.groupMultiplier;
-  } else if (count >= 15) {
-    keyStats.groupMultiplier = 4;
-    return keyStats.groupMultiplier;
-  }
-}
-
 
 

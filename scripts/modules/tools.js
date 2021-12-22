@@ -124,7 +124,65 @@ export function convertCrToXp(CR){
     }
   }
 
+export function getXpValueFromPlayerSummary(id) {
+  let xpValue = document.getElementById(id).innerHTML;
+  xpValue = xpValue.replace(/\D/g,'');
+  xpValue = parseInt(xpValue);
+  return xpValue;
+}
+  
+export function convertNumPlayersToString(numPlayersInt) {
+  let numPlayersString;
 
+  switch (numPlayersInt + 1) {
+    case 1:
+      numPlayersString = "one";
+      return numPlayersString;
+    case 2:
+      numPlayersString = "two";
+      return numPlayersString;
+    case 3:
+      numPlayersString = "three";
+      return numPlayersString;
+    case 4:
+      numPlayersString = "four";
+      return numPlayersString;
+    case 5:
+      numPlayersString = "five";
+      return numPlayersString;
+    case 6:
+      numPlayersString = "six";
+      return numPlayersString;
+    case 7:
+      numPlayersString = "seven";
+      return numPlayersString;
+    case 8:
+      numPlayersInt = "eight";
+      return numPlayersString;
+  }
+}
+
+export function calculateMultiplier(count) {
+  if (count == 1){
+    keyStats.groupMultiplier = 1;
+    return keyStats.groupMultiplier;
+  } else if (count == 2) {
+    keyStats.groupMultiplier = 1.5;
+    return keyStats.groupMultiplier;
+  } else if (count >= 3 && count <= 6) {
+    keyStats.groupMultiplier = 2;
+    return keyStats.groupMultiplier;
+  } else if (count >= 7 && count <= 10) {
+    keyStats.groupMultiplier = 2.5;
+    return keyStats.groupMultiplier;
+  } else if (count >= 11 && count <= 14) {
+    keyStats.groupMultiplier = 3;
+    return keyStats.groupMultiplier;
+  } else if (count >= 15) {
+    keyStats.groupMultiplier = 4;
+    return keyStats.groupMultiplier;
+  }
+}
 
 
 
