@@ -9,7 +9,7 @@ let encounterArray = [];
 let keyStats = {
   xpTotal: 0,
   monsterCount: 0,
-  groupMultiplier: 1
+  // groupMultiplier: 1
 }
 
 
@@ -376,7 +376,7 @@ function removeFromEncounter(i) {
   keyStats.xpTotal -= encounterArray[i].xp;
   keyStats.monsterCount--;
   encounterArray[i].count--;
-  keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
+  // keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
   if (encounterArray[i].count == 0) {
     encounterArray.splice(i, 1);
   }
@@ -433,12 +433,12 @@ function updateEncounterList(){
 }
 
 function updateMonsterSummary() {
-  keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
+  const multiplier = calculateMultiplier(keyStats.monsterCount);
 
   document.getElementById("encounter-summary-right").innerHTML = `
     <p>${keyStats.xpTotal}XP</p>
-    <p>x${keyStats.groupMultiplier}</p>
-    <p>${keyStats.xpTotal * keyStats.groupMultiplier}XP</p>
+    <p>x${multiplier}</p>
+    <p>${keyStats.xpTotal * multiplier}XP</p>
   `
   if (encounterArray.length == 0) {
     document.getElementById("encounter-summary-right").innerHTML = `
