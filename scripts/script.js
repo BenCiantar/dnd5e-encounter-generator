@@ -1,4 +1,4 @@
-import { convertCrToXp, addListener, getXpValueFromPlayerSummary, convertNumPlayersToString, calculateMultiplier } from './modules/tools.js';
+import { convertCrToXp, addListener, getXpValueFromPlayerSummary, convertNumPlayersToString } from './modules/tools.js';
 
 //--Global Variables
 const apiLink = "https://api.open5e.com/monsters/?limit=2000";
@@ -390,7 +390,30 @@ function removeFromEncounter(i) {
   updateEncounterList();
 }
 
+function calculateMultiplier(count) {
+  if (count == 1){
+    keyStats.groupMultiplier = 1;
+    return keyStats.groupMultiplier;
+  } else if (count == 2) {
+    keyStats.groupMultiplier = 1.5;
+    return keyStats.groupMultiplier;
+  } else if (count >= 3 && count <= 6) {
+    keyStats.groupMultiplier = 2;
+    return keyStats.groupMultiplier;
+  } else if (count >= 7 && count <= 10) {
+    keyStats.groupMultiplier = 2.5;
+    return keyStats.groupMultiplier;
+  } else if (count >= 11 && count <= 14) {
+    keyStats.groupMultiplier = 3;
+    return keyStats.groupMultiplier;
+  } else if (count >= 15) {
+    keyStats.groupMultiplier = 4;
+    return keyStats.groupMultiplier;
+  }
+}
+
 function updateEncounterList(){
+  console.log("running updateEncounterList");
   document.getElementById("encounter-top").innerHTML = "";
 
   for (let i = 0; i < encounterArray.length; i++){

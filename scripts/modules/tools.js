@@ -162,27 +162,5 @@ export function convertNumPlayersToString(numPlayersInt) {
   }
 }
 
-export function calculateMultiplier(count) {
-  if (count == 1){
-    keyStats.groupMultiplier = 1;
-    return keyStats.groupMultiplier;
-  } else if (count == 2) {
-    keyStats.groupMultiplier = 1.5;
-    return keyStats.groupMultiplier;
-  } else if (count >= 3 && count <= 6) {
-    keyStats.groupMultiplier = 2;
-    return keyStats.groupMultiplier;
-  } else if (count >= 7 && count <= 10) {
-    keyStats.groupMultiplier = 2.5;
-    return keyStats.groupMultiplier;
-  } else if (count >= 11 && count <= 14) {
-    keyStats.groupMultiplier = 3;
-    return keyStats.groupMultiplier;
-  } else if (count >= 15) {
-    keyStats.groupMultiplier = 4;
-    return keyStats.groupMultiplier;
-  }
-}
-
 
 
