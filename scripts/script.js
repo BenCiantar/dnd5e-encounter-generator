@@ -1,7 +1,7 @@
-import { convertCrToXp, addListener, getXpValueFromPlayerSummary, convertNumPlayersToString } from './modules/tools.js';
+import { convertCrToXp, addListener, getXpValueFromPlayerSummary, convertNumPlayersToString, convertChallengeRating } from './modules/tools.js';
 
 //--Global Variables
-const apiLink = "https://api.open5e.com/monsters/?limit=2000";
+const defaultApiUrl = "https://api.open5e.com/monsters/?limit=2000";
 
 let monsterArray = [];
 let encounterArray = [];
@@ -17,7 +17,7 @@ let keyStats = {
 
 //--Event Listeners
 document.addEventListener("DOMContentLoaded", function() {
-  fetchApi(apiLink);
+  fetchMonsters(defaultApiUrl);
   createCollapsibleMonsterSections();
   updatePlayerList();
 });
@@ -44,7 +44,7 @@ async function initApp(){
   //Still need to store the api data globally to access it in the 
   //add/remove monster from encounter. Haven't found a way around this yet
   monsterArray = await monsters;
-  renderMonsters(monsters);
+  renderMonsters(monsters.results);
   hideLoadingScreen();
 }
 
@@ -105,40 +105,30 @@ function addEventListenersToCollapsibles() {
   }
 }
 
-function renderMonsters(data) {
-
-  for (let i = 0; i < data.results.length; i++){
-
-    const CR = data.results[i].challenge_rating;
-    let CRId;
-
-    if (CR == "1/8") {
-      CRId = "eighth";
-    } else if (CR == "1/4") {
-      CRId = "quarter";
-    } else if (CR == "1/2") {
-      CRId = "half";
-    } else {
-      CRId = CR;
-    }
-
+function renderMonsters(monsters) {
+  console.log(monsters);
+  for (let monster of monsters){
+    const CR = monster.challenge_rating;
+    const XP = convertCrToXp(CR);
+    const ID = convertChallengeRating(CR);
+    
     try {
-      document.getElementById(`cr-${CRId}`).innerHTML += `
+      document.getElementById(`cr-${ID}`).innerHTML += `
       <div class="monster-item">
         <div class="monster-summary">
-          <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCrToXp(CR)}</p>
+          <h4>${monster.name}</h4><p>CR: ${CR} - XP: ${XP}</p>
         </div>
         <div class="add-monster-section">
-          <button id="${data.results[i].name}-btn">Add</button>
+          <button id="${monster.name}-btn">Add</button>
         </div>
       </div>
     `
     } catch (error) {
-      console.log("Error with item: " + data.results[i].name);
+      console.log("Error with item: " + monster.name);
     }
   }
-  for (let i = 0; i < data.results.length; i++){
-    addListener("click", `${data.results[i].name}-btn`, addToEncounter, `${data.results[i].name}`);
+  for (let monster of monsters){
+    addListener("click", `${monster.name}-btn`, addToEncounter, `${monster.name}`);
   }
 }
 
@@ -418,7 +408,6 @@ function calculateMultiplier(count) {
 }
 
 function updateEncounterList(){
-  console.log("running updateEncounterList");
   document.getElementById("encounter-top").innerHTML = "";
 
   for (let i = 0; i < encounterArray.length; i++){
