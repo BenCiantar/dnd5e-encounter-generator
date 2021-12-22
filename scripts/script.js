@@ -26,24 +26,29 @@ addListener("change", "number-of-players", updatePlayerList);
 addListener("change", "player-one", updateXpThresholds);
 
 //--Data Retrieval
-function fetchApi(url) {
-  fetch(url, {
-    })
+async function fetchMonsters() {
+  return fetch(defaultApiUrl, {})
     .then((response) => response.json())
-    .then((data) => {
+    .then((data) => data);
 
-    passOutData(data).then(initAfterFetch());
-  })
+    // passOutData(data).then(initAfterFetch());
+  // })
 }
 
-async function passOutData(data){
-  monsterArray = (data);
-}
+// async function passOutData(data){
+//   monsterArray = (data);
+// }
 
-function initAfterFetch(){
-  renderMonsters(monsterArray);
+async function initApp(){
+  const monsters = await fetchMonsters();
+  //Still need to store the api data globally to access it in the 
+  //add/remove monster from encounter. Haven't found a way around this yet
+  monsterArray = await monsters;
+  renderMonsters(monsters);
   hideLoadingScreen();
 }
+
+initApp();
 
 //--Page Structure
 function hideLoadingScreen(){
