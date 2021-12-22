@@ -43,7 +43,7 @@ async function initApp(){
   const monsters = await fetchMonsters();
   //Still need to store the api data globally to access it in the 
   //add/remove monster from encounter. Haven't found a way around this yet
-  monsterArray = await monsters;
+  monsterArray = monsters;
   renderMonsters(monsters.results);
   hideLoadingScreen();
 }
@@ -427,10 +427,6 @@ function updateEncounterList(){
         </div>
       </div>
     `
-
-    document.getElementById(`close-${i}`).addEventListener("click", function() {
-      removeFromEncounter();
-    });
   }
   for (let i = 0; i < encounterArray.length; i++){
     addListener("click", `close-${i}`, removeFromEncounter, `${i}`);
