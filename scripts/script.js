@@ -1,4 +1,4 @@
-import { convertCrToXp, addListener, fetchApi } from './modules/tools.js';
+import { convertCrToXp, addListener } from './modules/tools.js';
 
 //////////////////////////////Globals
 
@@ -20,36 +20,46 @@ let keyStats = {
   groupMultiplier: 1
 }
 
+//Try to access these with innerHTML values instead of using global variables
 
 //////////////////////////////Populating the page
 
 document.addEventListener("DOMContentLoaded", function() {
-  passOutData(fetchApi(apiLink));
+  fetchApi(apiLink);
   createCollapsibleMonsterSections();
-  updatePlayerInfo();
+  updatePlayerList();
 });
 
-addListener("change", "number-of-players", updatePlayerInfo);
+addListener("change", "number-of-players", updatePlayerList);
 addListener("change", "player-one", updateXpThresholds);
 
-async function passOutData(data){
-  //MAKE THIS ASYNC - POPULATE TRIGGERS AFTER DATA ARRIVES
-  //USE A PROMISE?
-  monsterArray = data;
+function fetchApi(url) {
+  fetch(url, {
+    })
+    .then((response) => response.json())
+    .then((data) => {
 
+    passOutData(data).then(initAfterFetch());
+  })
+}
+
+async function passOutData(data){
+  monsterArray = (data);
+}
+
+function initAfterFetch(){
   populateMonsterList(monsterArray);
   hideLoadingScreen();
 }
-
-function updatePlayerInfo() {
-  refreshPlayerList();
-  updateXpThresholds();
-}
+// function updatePlayerList() {
+//   refreshPlayerList();
+//   updateXpThresholds();
+// }
 
 
 //////////////////////////////Player section
 
-function refreshPlayerList() {
+function updatePlayerList() {
   document.getElementById("player-display").innerHTML = ``
 
   let numPlayersInt = document.getElementById('number-of-players').value;
@@ -61,6 +71,8 @@ function refreshPlayerList() {
 
     addListener("change", `player-${playerNumString}`, updateXpThresholds);
   }
+
+  updateXpThresholds();
 }
 
 function createLevelSelectors(numPlayersInt){
