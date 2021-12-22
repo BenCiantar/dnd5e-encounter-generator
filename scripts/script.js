@@ -85,12 +85,12 @@ function createCollapsibleMonsterSections() {
 }
 
 function addEventListenersToCollapsibles() {
-  let coll = document.getElementsByClassName("collapsible");
+  const coll = document.getElementsByClassName("collapsible");
 
   for (let i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function() {
       this.classList.toggle("active");
-      let content = this.nextElementSibling;
+      const content = this.nextElementSibling;
       if (content.style.display === "block") {
         content.style.display = "none";
       } else {
@@ -104,7 +104,7 @@ function populateMonsterList(data) {
 
   for (let i = 0; i < data.results.length; i++){
 
-    let CR = data.results[i].challenge_rating;
+    const CR = data.results[i].challenge_rating;
     let CRId;
 
     if (CR == "1/8") {
@@ -143,12 +143,12 @@ function populateMonsterList(data) {
 function updatePlayerList() {
   document.getElementById("player-display").innerHTML = ``
 
-  let numPlayersInt = document.getElementById('number-of-players').value;
+  const numPlayersInt = document.getElementById('number-of-players').value;
 
   createLevelSelectors(numPlayersInt);
 
   for (let i = 0; i < numPlayersInt; i++) {
-    let playerNumString = convertNumPlayersToString(i);
+    const playerNumString = convertNumPlayersToString(i);
 
     addListener("change", `player-${playerNumString}`, updateXpThresholds);
   }
@@ -159,7 +159,7 @@ function updatePlayerList() {
 function createLevelSelectors(numPlayersInt){
   for (let i = 0; i < numPlayersInt; i++) {
 
-    let playerNumString = convertNumPlayersToString(i);
+    const playerNumString = convertNumPlayersToString(i);
 
     document.getElementById("player-display").innerHTML += `
     <div class="player-level-selector">
@@ -200,7 +200,7 @@ function updateXpThresholds() {
     deadlyXpThreshold: 0
   }
 
-  let playerLevels = document.querySelectorAll(".player-lvl");
+  const playerLevels = document.querySelectorAll(".player-lvl");
 
   for (let i = 0; i < playerLevels.length; i++) {
     switch (playerLevels[i].value) {
@@ -342,7 +342,7 @@ function updateXpThresholds() {
 function addToEncounter(name) {
   for (let i = 0; i < monsterArray.results.length; i++) {
     if (name == monsterArray.results[i].name) {
-      let CR = convertCrToXp(monsterArray.results[i].challenge_rating);
+      const CR = convertCrToXp(monsterArray.results[i].challenge_rating);
       keyStats.xpTotal += CR;
       keyStats.monsterCount++;
       if (encounterArray.length == 0) {
@@ -467,7 +467,7 @@ function updateMonsterSummary() {
 
 function updateDifficultyIndicator() {
 
-  let finalTotal = keyStats.xpTotal * keyStats.groupMultiplier;
+  const finalTotal = keyStats.xpTotal * keyStats.groupMultiplier;
   if (encounterArray.length == 0) {
     document.getElementById("difficulty-meter").innerHTML = `
       <h2>Add some monsters to begin!</h2>
