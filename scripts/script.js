@@ -7,20 +7,12 @@ const apiLink = "https://api.open5e.com/monsters/?limit=2000";
 let monsterArray = [];
 let encounterArray = [];
 
-let xpThresholds = {
-  easyXpThreshold: 25,
-  mediumXpThreshold: 50,
-  hardXpThreshold: 75,
-  deadlyXpThreshold: 100
-}
-
 let keyStats = {
   xpTotal: 0,
   monsterCount: 0,
   groupMultiplier: 1
 }
 
-//Try to access these with innerHTML values instead of using global variables
 
 //////////////////////////////Populating the page
 
@@ -51,10 +43,6 @@ function initAfterFetch(){
   populateMonsterList(monsterArray);
   hideLoadingScreen();
 }
-// function updatePlayerList() {
-//   refreshPlayerList();
-//   updateXpThresholds();
-// }
 
 
 //////////////////////////////Player section
@@ -111,10 +99,13 @@ function createLevelSelectors(numPlayersInt){
 }
 
 function updateXpThresholds() {
-  xpThresholds.easyXpThreshold = 0;
-  xpThresholds.mediumXpThreshold = 0;
-  xpThresholds.hardXpThreshold = 0;
-  xpThresholds.deadlyXpThreshold = 0;
+
+  let xpThresholds = {
+    easyXpThreshold: 0,
+    mediumXpThreshold: 0,
+    hardXpThreshold: 0,
+    deadlyXpThreshold: 0
+  }
 
   let playerLevels = document.querySelectorAll(".player-lvl");
 
@@ -245,10 +236,10 @@ function updateXpThresholds() {
   updateDifficultyIndicator();
 
   document.getElementById("player-summary-right").innerHTML = `
-    <p>${xpThresholds.easyXpThreshold}XP</p>
-    <p>${xpThresholds.mediumXpThreshold}XP</p>
-    <p>${xpThresholds.hardXpThreshold}XP</p>
-    <p>${xpThresholds.deadlyXpThreshold}XP</p>
+    <p id="easy-xp">${xpThresholds.easyXpThreshold}XP</p>
+    <p id="medium-xp">${xpThresholds.mediumXpThreshold}XP</p>
+    <p id="hard-xp">${xpThresholds.hardXpThreshold}XP</p>
+    <p id="deadly-xp">${xpThresholds.deadlyXpThreshold}XP</p>
   `
 }
 
@@ -419,7 +410,6 @@ function populateMonsterList(data) {
     let CR = data.results[i].challenge_rating;
     let CRid = CR;
 
-    //CODE CHECK move fraction converter into a separate function
     if (CR == "1/8") {
       CRid = "eighth";
     } else if (CR == "1/4") {
@@ -464,15 +454,15 @@ function updateDifficultyIndicator() {
     `
   }
   if (encounterArray.length > 0) {
-    if (finalTotal <= xpThresholds.easyXpThreshold) {
+    if (finalTotal <= getXpValueFromPlayerSummary("easy-xp")) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be <span style="color: green">EASY</span> for your players!</h2>
       `
-    } else if (finalTotal <= xpThresholds.mediumXpThreshold) {
+    } else if (finalTotal <= getXpValueFromPlayerSummary("medium-xp")) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be of <span style="color: yellow">MEDIUM</span> difficulty for your players!</h2>
       `
-    } else if (finalTotal <= xpThresholds.hardXpThreshold) {
+    } else if (finalTotal <= getXpValueFromPlayerSummary("hard-xp")) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be <span style="color: orange">HARD</span> for your players!</h2>
       `
@@ -482,6 +472,13 @@ function updateDifficultyIndicator() {
       `
     }
   }
+}
+
+function getXpValueFromPlayerSummary(id) {
+  let xpValue = document.getElementById(id).innerHTML;
+  xpValue = xpValue.replace(/\D/g,'');
+  xpValue = parseInt(xpValue);
+  return xpValue;
 }
 
 //CODE CHECK Move these long switches into modules
