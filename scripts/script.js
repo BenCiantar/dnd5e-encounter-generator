@@ -106,7 +106,6 @@ function renderMonsters(monsters) {
     const ID = convertChallengeRating(CR);
     
     try {
-
       renderMonsterItem(`cr-${ID}`, `${monster.name}`, XP, CR);
     } catch (error) {
       console.log("Error with item: " + monster.name);
@@ -117,11 +116,11 @@ function renderMonsters(monsters) {
   }
 }
 
-function renderMonsterItem(id, name, xp, cr) {
-  document.getElementById(id).innerHTML += `
+function renderMonsterItem(ID, name, XP, CR) {
+  document.getElementById(ID).innerHTML += `
   <div class="monster-item">
     <div class="monster-summary">
-      <h4>${name}</h4><p>CR: ${cr} - XP: ${xp}</p>
+      <h4>${name}</h4><p>CR: ${CR} - XP: ${XP}</p>
     </div>
     <div class="add-monster-section">
       <button id="${name}-btn">Add</button>
