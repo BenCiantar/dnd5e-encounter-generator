@@ -135,28 +135,27 @@ function renderMonsterItem(ID, name, XP, CR) {
 function updatePlayerList() {
   document.getElementById("player-display").innerHTML = ``
 
-  const numPlayersInt = document.getElementById('number-of-players').value;
+  const numPlayers = document.getElementById('number-of-players').value;
 
-  createLevelSelectors(numPlayersInt);
+  renderLevelSelectorsList(numPlayers);
 
-  for (let i = 0; i < numPlayersInt; i++) {
-    const playerNumString = convertNumPlayersToString(i);
+  for (let i = 0; i < numPlayers; i++) {
+    const numPlayersString = convertNumPlayersToString(i);
 
-    addListener("change", `player-${playerNumString}`, updateXpThresholds);
+    addListener("change", `player-${numPlayersString}`, updateXpThresholds);
   }
-
   updateXpThresholds();
 }
 
-function createLevelSelectors(numPlayersInt){
-  for (let i = 0; i < numPlayersInt; i++) {
+function renderLevelSelectorsList(numPlayers){
+  for (let i = 0; i < numPlayers; i++) {
 
-    const playerNumString = convertNumPlayersToString(i);
+    const numPlayersString = convertNumPlayersToString(i);
 
     document.getElementById("player-display").innerHTML += `
     <div class="player-level-selector">
-      <label for="player-${playerNumString}">Player Level:</label>
-      <select name="players" class="player-lvl" id="player-${playerNumString}">
+      <label for="player-${numPlayersString}">Player Level:</label>
+      <select name="players" class="player-lvl" id="player-${numPlayersString}">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
