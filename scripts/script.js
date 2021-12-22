@@ -41,7 +41,7 @@ async function passOutData(data){
 }
 
 function initAfterFetch(){
-  populateMonsterList(monsterArray);
+  renderMonsters(monsterArray);
   hideLoadingScreen();
 }
 
@@ -100,7 +100,7 @@ function addEventListenersToCollapsibles() {
   }
 }
 
-function populateMonsterList(data) {
+function renderMonsters(data) {
 
   for (let i = 0; i < data.results.length; i++){
 
