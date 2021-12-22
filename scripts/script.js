@@ -416,20 +416,20 @@ function updateEncounterList(){
   updateMonsterSummary();
 }
 
-function renderEncounterList(i, name, count, xp){
+function renderEncounterList(i, name, count, XP){
   document.getElementById("encounter-top").innerHTML += `
     <div class="encounter-list-item">
       <div id="close-${i}" class="encounter-list-close">
       &#10005;
       </div>
       <div class="encounter-list-left">
-        ${encounterArray[i].name} 
+        ${name} 
       </div>
       <div class="encounter-list-center">
-        x ${encounterArray[i].count}
+        x ${count}
       </div>
       <div class="encounter-list-right">
-        ${parseInt(encounterArray[i].xp) * encounterArray[i].count}xp
+        ${XP * count}xp
       </div>
     </div>
   `
