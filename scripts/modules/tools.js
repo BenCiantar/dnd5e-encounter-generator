@@ -151,5 +151,17 @@ export function convertNumPlayersToString(numPlayersInt) {
   }
 }
 
+export function convertChallengeRating(rating) {
+  switch (rating) {
+    case "1/8":
+      return "eighth";
+    case "1/4":
+      return "quarter";
+    case "1/2":
+      return "half";
+    default:
+      return rating;
+  }
+}
 
 
