@@ -30,14 +30,7 @@ async function fetchMonsters() {
   return fetch(defaultApiUrl, {})
     .then((response) => response.json())
     .then((data) => data);
-
-    // passOutData(data).then(initAfterFetch());
-  // })
 }
-
-// async function passOutData(data){
-//   monsterArray = (data);
-// }
 
 async function initApp(){
   const monsters = await fetchMonsters();
