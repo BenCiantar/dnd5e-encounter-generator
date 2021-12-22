@@ -99,7 +99,6 @@ function addEventListenersToCollapsibles() {
 }
 
 function renderMonsters(monsters) {
-  console.log(monsters);
   for (let monster of monsters){
     const CR = monster.challenge_rating;
     const XP = convertCrToXp(CR);
@@ -194,6 +193,7 @@ function updateXpThresholds() {
   const playerLevels = document.querySelectorAll(".player-lvl");
 
   for (let i = 0; i < playerLevels.length; i++) {
+    //MOVE TO MODULAR FUNCTION
     switch (playerLevels[i].value) {
       case "1":
         xpThresholds.easyXpThreshold += 25;
@@ -319,6 +319,7 @@ function updateXpThresholds() {
   }
   updateDifficultyIndicator();
 
+  //MOVE TO MODULAR FUNCTION
   document.getElementById("player-summary-right").innerHTML = `
     <p id="easy-xp">${xpThresholds.easyXpThreshold}XP</p>
     <p id="medium-xp">${xpThresholds.mediumXpThreshold}XP</p>
@@ -331,43 +332,47 @@ function updateXpThresholds() {
 //////////////////////////////Encounter Section//////////////////////////////
 
 function addToEncounter(name) {
-  for (let i = 0; i < monsterArray.results.length; i++) {
-    if (name == monsterArray.results[i].name) {
-      const CR = convertCrToXp(monsterArray.results[i].challenge_rating);
+  const monsters = monsterArray.results;
+
+  for (let monster of monsters) {
+    //Add monster details to key stats
+    if (name == monster.name) {
+      const CR = convertCrToXp(monster.challenge_rating);
       keyStats.xpTotal += CR;
       keyStats.monsterCount++;
+
+      //If encounterArray is emtpty, create object for the monster and break
       if (encounterArray.length == 0) {
-        encounterArray.push(
-          {
-            name: monsterArray.results[i].name,
-            xp: CR,
-            count: 1
-          }
-        )
+        addEntry(name, CR);
         break;
       }
 
       let monsterExists = false;
-
-      for (let j = 0; j < encounterArray.length; j++){
-        if (name == encounterArray[j].name){
-          encounterArray[j].count++;
+      //If the monster exists in encounterArray, add one to count
+      for (let entry of encounterArray){
+        if (name == entry.name){
+          entry.count++;
           monsterExists = true;
         }
       } 
 
+      //If monster not present in array, create an entry for the monster
       if (!monsterExists) {
-        encounterArray.push(
-          {
-            name: monsterArray.results[i].name,
-            xp: CR,
-            count: 1
-          }
-        )
+        addEntry(name, CR);
       }
     }
   }
   updateEncounterList();
+}
+
+function addEntry(name, CR) {
+  encounterArray.push(
+    {
+      name: name,
+      xp: CR,
+      count: 1
+    }
+  )
 }
 
 function removeFromEncounter(i) {
