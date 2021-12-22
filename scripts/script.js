@@ -335,20 +335,18 @@ function addToEncounter(name) {
   const monsters = monsterArray.results;
 
   for (let monster of monsters) {
-    //Add monster details to key stats
     if (name == monster.name) {
-      const CR = convertCrToXp(monster.challenge_rating);
-      keyStats.xpTotal += CR;
+      const XP = convertCrToXp(monster.challenge_rating);
+      keyStats.xpTotal += XP;
       keyStats.monsterCount++;
 
-      //If encounterArray is emtpty, create object for the monster and break
       if (encounterArray.length == 0) {
-        addEntry(name, CR);
+        addEntry(name, XP);
         break;
       }
 
       let monsterExists = false;
-      //If the monster exists in encounterArray, add one to count
+
       for (let entry of encounterArray){
         if (name == entry.name){
           entry.count++;
@@ -356,7 +354,6 @@ function addToEncounter(name) {
         }
       } 
 
-      //If monster not present in array, create an entry for the monster
       if (!monsterExists) {
         addEntry(name, CR);
       }
@@ -365,11 +362,11 @@ function addToEncounter(name) {
   updateEncounterList();
 }
 
-function addEntry(name, CR) {
+function addEntry(name, XP) {
   encounterArray.push(
     {
       name: name,
-      xp: CR,
+      xp: XP,
       count: 1
     }
   )
