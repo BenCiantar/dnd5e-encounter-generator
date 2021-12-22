@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
   fetchMonsters(defaultApiUrl);
   createCollapsibleMonsterSections();
   updatePlayerList();
+  initApp();
 });
 
 addListener("change", "number-of-players", updatePlayerList);
@@ -39,8 +40,6 @@ async function initApp(){
   renderMonsters(monsters.results);
   hideLoadingScreen();
 }
-
-initApp();
 
 //--Page Structure
 function hideLoadingScreen(){
