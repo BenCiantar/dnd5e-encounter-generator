@@ -12,7 +12,7 @@ let keyStats = {
 }
 
 
-//////////////////////////////Populating the page
+//////////////////////////////Render Page//////////////////////////////
 
 //--Event Listeners
 document.addEventListener("DOMContentLoaded", function() {
