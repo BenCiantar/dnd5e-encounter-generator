@@ -1,62 +1,170 @@
-//////////////////////////////Globals
+import { convertCrToXp, addListener, getXpValueFromPlayerSummary, convertNumPlayersToString } from './modules/tools.js';
 
+//--Global Variables
 const apiLink = "https://api.open5e.com/monsters/?limit=2000";
 
 let monsterArray = [];
 let encounterArray = [];
 
-let easyXPThreshold = 25;
-let mediumXPThreshold = 50;
-let hardXPThreshold = 75;
-let deadlyXPThreshold = 100;
-
-let XPTotal = 0;
-let monsterCount = 0;
-let multiplier = 1;
+let keyStats = {
+  xpTotal: 0,
+  monsterCount: 0,
+  groupMultiplier: 1
+}
 
 
 //////////////////////////////Populating the page
 
+//--Event Listeners
 document.addEventListener("DOMContentLoaded", function() {
+  fetchApi(apiLink);
   createCollapsibleMonsterSections();
-  fetchMonsterDataFromAPI();
+  updatePlayerList();
 });
 
-function fetchMonsterDataFromAPI() {
-    fetch(apiLink, {
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        monsterArray = (data);
+addListener("change", "number-of-players", updatePlayerList);
+addListener("change", "player-one", updateXpThresholds);
 
-        populateMonsterList(monsterArray);
-        updatePlayerInfo();
-        hideLoadingScreen();
+//--Data Retrieval
+function fetchApi(url) {
+  fetch(url, {
     })
+    .then((response) => response.json())
+    .then((data) => {
+
+    passOutData(data).then(initAfterFetch());
+  })
+}
+
+async function passOutData(data){
+  monsterArray = (data);
+}
+
+function initAfterFetch(){
+  populateMonsterList(monsterArray);
+  hideLoadingScreen();
+}
+
+//--Page Structure
+function hideLoadingScreen(){
+  document.getElementById("loading-screen").style.display = "none";
+}
+
+function createCollapsibleMonsterSections() {
+  for (let i = 0; i < 31; i++) {
+
+    if (i == 0) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/8</button>
+      <div id="cr-eighth" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/4</button>
+      <div id="cr-quarter" class="monster-content">
+      </div>
+
+      <button type="button" class="collapsible">Challenge Rating 1/2</button>
+      <div id="cr-half" class="monster-content">
+      </div>
+      `
+    }
+
+    if (i > 0 && (i < 28 || i == 30)) {
+      document.getElementById("monsters-section").innerHTML += `
+      <button type="button" class="collapsible">Challenge Rating ${i}</button>
+      <div id="cr-${i}" class="monster-content">
+      </div>
+      `
+    }
+  }
+  addEventListenersToCollapsibles();
+}
+
+function addEventListenersToCollapsibles() {
+  let coll = document.getElementsByClassName("collapsible");
+
+  for (let i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      let content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+}
+
+function populateMonsterList(data) {
+
+  for (let i = 0; i < data.results.length; i++){
+
+    let CR = data.results[i].challenge_rating;
+    let CRId;
+
+    if (CR == "1/8") {
+      CRId = "eighth";
+    } else if (CR == "1/4") {
+      CRId = "quarter";
+    } else if (CR == "1/2") {
+      CRId = "half";
+    } else {
+      CRId = CR;
+    }
+
+    try {
+      document.getElementById(`cr-${CRId}`).innerHTML += `
+      <div class="monster-item">
+        <div class="monster-summary">
+          <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCrToXp(CR)}</p>
+        </div>
+        <div class="add-monster-section">
+          <button id="${data.results[i].name}-btn">Add</button>
+        </div>
+      </div>
+    `
+    } catch (error) {
+      console.log("Error with item: " + data.results[i].name);
+    }
+  }
+  for (let i = 0; i < data.results.length; i++){
+    addListener("click", `${data.results[i].name}-btn`, addToEncounter, `${data.results[i].name}`);
+  }
 }
 
 
-function updatePlayerInfo() {
-  refreshPlayerList();
-  updateXPThresholds();
-}
+//////////////////////////////Player Section//////////////////////////////
 
-
-//////////////////////////////Player section
-
-function refreshPlayerList() {
+function updatePlayerList() {
   document.getElementById("player-display").innerHTML = ``
 
   let numPlayersInt = document.getElementById('number-of-players').value;
 
-  for (i = 0; i < numPlayersInt; i++) {
+  createLevelSelectors(numPlayersInt);
+
+  for (let i = 0; i < numPlayersInt; i++) {
+    let playerNumString = convertNumPlayersToString(i);
+
+    addListener("change", `player-${playerNumString}`, updateXpThresholds);
+  }
+
+  updateXpThresholds();
+}
+
+function createLevelSelectors(numPlayersInt){
+  for (let i = 0; i < numPlayersInt; i++) {
 
     let playerNumString = convertNumPlayersToString(i);
 
     document.getElementById("player-display").innerHTML += `
     <div class="player-level-selector">
       <label for="player-${playerNumString}">Player Level:</label>
-      <select name="players" class="player-lvl" id="player-${playerNumString}" onchange="updateXPThresholds()">
+      <select name="players" class="player-lvl" id="player-${playerNumString}">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -79,162 +187,164 @@ function refreshPlayerList() {
           <option value="20">20</option>
       </select>
     </div>
-  `
+    `
   }
 }
 
-function updateXPThresholds() {
-  //Reset thresholds to zero
-  easyXPThreshold = 0;
-  mediumXPThreshold = 0;
-  hardXPThreshold = 0;
-  deadlyXPThreshold = 0;
+function updateXpThresholds() {
+
+  let xpThresholds = {
+    easyXpThreshold: 0,
+    mediumXpThreshold: 0,
+    hardXpThreshold: 0,
+    deadlyXpThreshold: 0
+  }
 
   let playerLevels = document.querySelectorAll(".player-lvl");
 
   for (let i = 0; i < playerLevels.length; i++) {
     switch (playerLevels[i].value) {
       case "1":
-        easyXPThreshold += 25;
-        mediumXPThreshold += 50;
-        hardXPThreshold += 75;
-        deadlyXPThreshold += 100;
+        xpThresholds.easyXpThreshold += 25;
+        xpThresholds.mediumXpThreshold += 50;
+        xpThresholds.hardXpThreshold += 75;
+        xpThresholds.deadlyXpThreshold += 100;
         break;
       case "2":
-        easyXPThreshold += 50;
-        mediumXPThreshold += 100;
-        hardXPThreshold += 150;
-        deadlyXPThreshold += 200;
+        xpThresholds.easyXpThreshold += 50;
+        xpThresholds.mediumXpThreshold += 100;
+        xpThresholds.hardXpThreshold += 150;
+        xpThresholds.deadlyXpThreshold += 200;
         break;
       case "3":
-        easyXPThreshold += 75;
-        mediumXPThreshold += 150;
-        hardXPThreshold += 225;
-        deadlyXPThreshold += 400;
+        xpThresholds.easyXpThreshold += 75;
+        xpThresholds.mediumXpThreshold += 150;
+        xpThresholds.hardXpThreshold += 225;
+        xpThresholds.deadlyXpThreshold += 400;
         break;
       case "4":
-        easyXPThreshold += 125;
-        mediumXPThreshold += 250;
-        hardXPThreshold += 375;
-        deadlyXPThreshold += 500;
+        xpThresholds.easyXpThreshold += 125;
+        xpThresholds.mediumXpThreshold += 250;
+        xpThresholds.hardXpThreshold += 375;
+        xpThresholds.deadlyXpThreshold += 500;
         break;
       case "5":
-        easyXPThreshold += 250;
-        mediumXPThreshold += 500;
-        hardXPThreshold += 750;
-        deadlyXPThreshold += 1000;
+        xpThresholds.easyXpThreshold += 250;
+        xpThresholds.mediumXpThreshold += 500;
+        xpThresholds.hardXpThreshold += 750;
+        xpThresholds.deadlyXpThreshold += 1000;
         break;
       case "6":
-        easyXPThreshold += 300;
-        mediumXPThreshold += 600;
-        hardXPThreshold += 900;
-        deadlyXPThreshold += 1400;
+        xpThresholds.easyXpThreshold += 300;
+        xpThresholds.mediumXpThreshold += 600;
+        xpThresholds.hardXpThreshold += 900;
+        xpThresholds.deadlyXpThreshold += 1400;
         break;
       case "7":
-        easyXPThreshold += 350;
-        mediumXPThreshold += 750;
-        hardXPThreshold += 1100;
-        deadlyXPThreshold += 1700;
+        xpThresholds.easyXpThreshold += 350;
+        xpThresholds.mediumXpThreshold += 750;
+        xpThresholds.hardXpThreshold += 1100;
+        xpThresholds.deadlyXpThreshold += 1700;
         break;
       case "8":
-        easyXPThreshold += 450;
-        mediumXPThreshold += 900;
-        hardXPThreshold += 1400;
-        deadlyXPThreshold += 2100;
+        xpThresholds.easyXpThreshold += 450;
+        xpThresholds.mediumXpThreshold += 900;
+        xpThresholds.hardXpThreshold += 1400;
+        xpThresholds.deadlyXpThreshold += 2100;
         break;
       case "9":
-        easyXPThreshold += 550;
-        mediumXPThreshold += 1100;
-        hardXPThreshold += 1600;
-        deadlyXPThreshold += 2400;
+        xpThresholds.easyXpThreshold += 550;
+        xpThresholds.mediumXpThreshold += 1100;
+        xpThresholds.hardXpThreshold += 1600;
+        xpThresholds.deadlyXpThreshold += 2400;
         break;
       case "10":
-        easyXPThreshold += 600;
-        mediumXPThreshold += 1200;
-        hardXPThreshold += 1900;
-        deadlyXPThreshold += 2800;
+        xpThresholds.easyXpThreshold += 600;
+        xpThresholds.mediumXpThreshold += 1200;
+        xpThresholds.hardXpThreshold += 1900;
+        xpThresholds.deadlyXpThreshold += 2800;
         break;
       case "11":
-        easyXPThreshold += 800;
-        mediumXPThreshold += 1600;
-        hardXPThreshold += 2400;
-        deadlyXPThreshold += 3600;
+        xpThresholds.easyXpThreshold += 800;
+        xpThresholds.mediumXpThreshold += 1600;
+        xpThresholds.hardXpThreshold += 2400;
+        xpThresholds.deadlyXpThreshold += 3600;
         break;
       case "12":
-        easyXPThreshold += 1000;
-        mediumXPThreshold += 2000;
-        hardXPThreshold += 3000;
-        deadlyXPThreshold += 4000;
+        xpThresholds.easyXpThreshold += 1000;
+        xpThresholds.mediumXpThreshold += 2000;
+        xpThresholds.hardXpThreshold += 3000;
+        xpThresholds.deadlyXpThreshold += 4000;
         break;
       case "13":
-        easyXPThreshold += 1100;
-        mediumXPThreshold += 2200;
-        hardXPThreshold += 3400;
-        deadlyXPThreshold += 5100;
+        xpThresholds.easyXpThreshold += 1100;
+        xpThresholds.mediumXpThreshold += 2200;
+        xpThresholds.hardXpThreshold += 3400;
+        xpThresholds.deadlyXpThreshold += 5100;
         break;
       case "14":
-        easyXPThreshold += 1250;
-        mediumXPThreshold += 2500;
-        hardXPThreshold += 3800;
-        deadlyXPThreshold += 5700;
+        xpThresholds.easyXpThreshold += 1250;
+        xpThresholds.mediumXpThreshold += 2500;
+        xpThresholds.hardXpThreshold += 3800;
+        xpThresholds.deadlyXpThreshold += 5700;
         break;
       case "15":
-        easyXPThreshold += 1400;
-        mediumXPThreshold += 2800;
-        hardXPThreshold += 4300;
-        deadlyXPThreshold += 6400;
+        xpThresholds.easyXpThreshold += 1400;
+        xpThresholds.mediumXpThreshold += 2800;
+        xpThresholds.hardXpThreshold += 4300;
+        xpThresholds.deadlyXpThreshold += 6400;
         break;
       case "16":
-        easyXPThreshold += 1600;
-        mediumXPThreshold += 3200;
-        hardXPThreshold += 4800;
-        deadlyXPThreshold += 7200;
+        xpThresholds.easyXpThreshold += 1600;
+        xpThresholds.mediumXpThreshold += 3200;
+        xpThresholds.hardXpThreshold += 4800;
+        xpThresholds.deadlyXpThreshold += 7200;
         break;
       case "17":
-        easyXPThreshold += 2000;
-        mediumXPThreshold += 3900;
-        hardXPThreshold += 5900;
-        deadlyXPThreshold += 8800;
+        xpThresholds.easyXpThreshold += 2000;
+        xpThresholds.mediumXpThreshold += 3900;
+        xpThresholds.hardXpThreshold += 5900;
+        xpThresholds.deadlyXpThreshold += 8800;
         break;
       case "18":
-        easyXPThreshold += 2100;
-        mediumXPThreshold += 4200;
-        hardXPThreshold += 6300;
-        deadlyXPThreshold += 9500;
+        xpThresholds.easyXpThreshold += 2100;
+        xpThresholds.mediumXpThreshold += 4200;
+        xpThresholds.hardXpThreshold += 6300;
+        xpThresholds.deadlyXpThreshold += 9500;
         break;
       case "19":
-        easyXPThreshold += 2400;
-        mediumXPThreshold += 4900;
-        hardXPThreshold += 7300;
-        deadlyXPThreshold += 10900;
+        xpThresholds.easyXpThreshold += 2400;
+        xpThresholds.mediumXpThreshold += 4900;
+        xpThresholds.hardXpThreshold += 7300;
+        xpThresholds.deadlyXpThreshold += 10900;
         break;
       case "20":
-        easyXPThreshold += 2800;
-        mediumXPThreshold += 5700;
-        hardXPThreshold += 8500;
-        deadlyXPThreshold += 12700;
+        xpThresholds.easyXpThreshold += 2800;
+        xpThresholds.mediumXpThreshold += 5700;
+        xpThresholds.hardXpThreshold += 8500;
+        xpThresholds.deadlyXpThreshold += 12700;
         break;
     }
   }
   updateDifficultyIndicator();
 
   document.getElementById("player-summary-right").innerHTML = `
-    <p>${easyXPThreshold}XP</p>
-    <p>${mediumXPThreshold}XP</p>
-    <p>${hardXPThreshold}XP</p>
-    <p>${deadlyXPThreshold}XP</p>
+    <p id="easy-xp">${xpThresholds.easyXpThreshold}XP</p>
+    <p id="medium-xp">${xpThresholds.mediumXpThreshold}XP</p>
+    <p id="hard-xp">${xpThresholds.hardXpThreshold}XP</p>
+    <p id="deadly-xp">${xpThresholds.deadlyXpThreshold}XP</p>
   `
 }
 
 
-//////////////////////////////Encounter Functions
+//////////////////////////////Encounter Section//////////////////////////////
 
 function addToEncounter(name) {
   for (let i = 0; i < monsterArray.results.length; i++) {
     if (name == monsterArray.results[i].name) {
-      let CR = convertCRToXP(monsterArray.results[i].challenge_rating);
-      XPTotal += CR;
-      monsterCount++;
+      let CR = convertCrToXp(monsterArray.results[i].challenge_rating);
+      keyStats.xpTotal += CR;
+      keyStats.monsterCount++;
       if (encounterArray.length == 0) {
         encounterArray.push(
           {
@@ -266,17 +376,50 @@ function addToEncounter(name) {
       }
     }
   }
-  updateMonsterSummary();
   updateEncounterList();
 }
 
+function removeFromEncounter(i) {
+  keyStats.xpTotal -= encounterArray[i].xp;
+  keyStats.monsterCount--;
+  encounterArray[i].count--;
+  keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
+  if (encounterArray[i].count == 0) {
+    encounterArray.splice(i, 1);
+  }
+  updateEncounterList();
+}
+
+function calculateMultiplier(count) {
+  if (count == 1){
+    keyStats.groupMultiplier = 1;
+    return keyStats.groupMultiplier;
+  } else if (count == 2) {
+    keyStats.groupMultiplier = 1.5;
+    return keyStats.groupMultiplier;
+  } else if (count >= 3 && count <= 6) {
+    keyStats.groupMultiplier = 2;
+    return keyStats.groupMultiplier;
+  } else if (count >= 7 && count <= 10) {
+    keyStats.groupMultiplier = 2.5;
+    return keyStats.groupMultiplier;
+  } else if (count >= 11 && count <= 14) {
+    keyStats.groupMultiplier = 3;
+    return keyStats.groupMultiplier;
+  } else if (count >= 15) {
+    keyStats.groupMultiplier = 4;
+    return keyStats.groupMultiplier;
+  }
+}
+
 function updateEncounterList(){
+  console.log("running updateEncounterList");
   document.getElementById("encounter-top").innerHTML = "";
 
   for (let i = 0; i < encounterArray.length; i++){
     document.getElementById("encounter-top").innerHTML += `
       <div class="encounter-list-item">
-        <div class="encounter-list-close" onclick="removeMonster(${i})">
+        <div id="close-${i}" class="encounter-list-close">
         &#10005;
         </div>
         <div class="encounter-list-left">
@@ -290,18 +433,25 @@ function updateEncounterList(){
         </div>
       </div>
     `
+
+    document.getElementById(`close-${i}`).addEventListener("click", function() {
+      removeFromEncounter();
+    });
   }
+  for (let i = 0; i < encounterArray.length; i++){
+    addListener("click", `close-${i}`, removeFromEncounter, `${i}`);
+  }
+  updateMonsterSummary();
 }
 
 function updateMonsterSummary() {
-  multiplier = calculateMultiplier(monsterCount);
+  keyStats.groupMultiplier = calculateMultiplier(keyStats.monsterCount);
 
   document.getElementById("encounter-summary-right").innerHTML = `
-    <p>${XPTotal}XP</p>
-    <p>x${multiplier}</p>
-    <p>${XPTotal * multiplier}XP</p>
+    <p>${keyStats.xpTotal}XP</p>
+    <p>x${keyStats.groupMultiplier}</p>
+    <p>${keyStats.xpTotal * keyStats.groupMultiplier}XP</p>
   `
-
   if (encounterArray.length == 0) {
     document.getElementById("encounter-summary-right").innerHTML = `
     <p>-</p>
@@ -312,134 +462,27 @@ function updateMonsterSummary() {
   updateDifficultyIndicator();
 }
 
-function removeMonster(i) {
-  XPTotal -= encounterArray[i].xp;
-  monsterCount--;
-  encounterArray[i].count--;
-  multiplier = calculateMultiplier(monsterCount);
-  if (encounterArray[i].count == 0) {
-    encounterArray.splice(i, 1);
-  }
-  updateEncounterList();
-  updateMonsterSummary();
-  updateDifficultyIndicator();
-}
-  
 
-//////////////////////////////Monster list section
-
-function populateMonsterList(data) {
-
-  for (let i = 0; i < data.results.length; i++){
-
-      let CR = data.results[i].challenge_rating;
-      let CRid = CR;
-
-      //CODE CHECK move fraction converter into a separate function
-      if (CR == "1/8") {
-        CRid = "eighth";
-      } else if (CR == "1/4") {
-        CRid = "quarter";
-      } else if (CR == "1/2") {
-        CRid = "half";
-      }
-
-      try {
-        document.getElementById(`cr-${CRid}`).innerHTML += `
-        <div class="monster-item">
-          <div class="monster-summary">
-            <h4>${data.results[i].name}</h4><p>CR: ${CR} - XP: ${convertCRToXP(CR)}</p>
-          </div>
-          <div class="add-monster-section">
-            <button onclick="addToEncounter('${data.results[i].name}')">Add</button>
-          </div>
-        </div>
-      `
-      } catch (error) {
-        console.log("Error with item: " + data.results[i].name);
-      }
-  }
-}
-
-function createCollapsibleMonsterSections() {
-  for (let i = 0; i < 31; i++) {
-
-    if (i == 0) {
-      document.getElementById("monsters-section").innerHTML += `
-      <button type="button" class="collapsible">Challenge Rating ${i}</button>
-      <div id="cr-${i}" class="monster-content">
-      </div>
-
-      <button type="button" class="collapsible">Challenge Rating 1/8</button>
-      <div id="cr-eighth" class="monster-content">
-
-      </div>
-
-      <button type="button" class="collapsible">Challenge Rating 1/4</button>
-      <div id="cr-quarter" class="monster-content">
-
-      </div>
-
-      <button type="button" class="collapsible">Challenge Rating 1/2</button>
-      <div id="cr-half" class="monster-content">
-
-      </div>
-      `
-    }
-
-    if (i > 0 && (i < 28 || i == 30)) {
-      document.getElementById("monsters-section").innerHTML += `
-      <button type="button" class="collapsible">Challenge Rating ${i}</button>
-      <div id="cr-${i}" class="monster-content">
-      </div>
-      `
-    }
-  }
-  addEventListenersToCollapsibles();
-}
-
-function addEventListenersToCollapsibles() {
-  let coll = document.getElementsByClassName("collapsible");
-  let collI;
-
-  for (collI = 0; collI < coll.length; collI++) {
-    coll[collI].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var content = this.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    });
-  }
-}
-
-
-//////////////////////////////Tools
-
-function hideLoadingScreen(){
-  document.getElementById("loading-screen").style.display = "none";
-}
+//////////////////////////////Difficulty Indicator//////////////////////////////
 
 function updateDifficultyIndicator() {
 
-  let finalTotal = XPTotal * multiplier;
+  let finalTotal = keyStats.xpTotal * keyStats.groupMultiplier;
   if (encounterArray.length == 0) {
     document.getElementById("difficulty-meter").innerHTML = `
       <h2>Add some monsters to begin!</h2>
     `
   }
   if (encounterArray.length > 0) {
-    if (finalTotal <= easyXPThreshold) {
+    if (finalTotal <= getXpValueFromPlayerSummary("easy-xp")) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be <span style="color: green">EASY</span> for your players!</h2>
       `
-    } else if (finalTotal <= mediumXPThreshold) {
+    } else if (finalTotal <= getXpValueFromPlayerSummary("medium-xp")) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be of <span style="color: yellow">MEDIUM</span> difficulty for your players!</h2>
       `
-    } else if (finalTotal <= hardXPThreshold) {
+    } else if (finalTotal <= getXpValueFromPlayerSummary("hard-xp")) {
       document.getElementById("difficulty-meter").innerHTML = `
         <h2>This encounter will be <span style="color: orange">HARD</span> for your players!</h2>
       `
@@ -448,170 +491,6 @@ function updateDifficultyIndicator() {
         <h2>This encounter will be <span style="color: red">DEADLY</span> for your players!</h2>
       `
     }
-  }
-}
-
-//CODE CHECK Move these long switches into modules
-function convertNumPlayersToString(numPlayersInt) {
-  let numPlayersString;
-
-  switch (numPlayersInt + 1) {
-    case 1:
-      numPlayersString = "one";
-      return numPlayersString;
-    case 2:
-      numPlayersString = "two";
-      return numPlayersString;
-    case 3:
-      numPlayersString = "three";
-      return numPlayersString;
-    case 4:
-      numPlayersString = "four";
-      return numPlayersString;
-    case 5:
-      numPlayersString = "five";
-      return numPlayersString;
-    case 6:
-      numPlayersString = "six";
-      return numPlayersString;
-    case 7:
-      numPlayersString = "seven";
-      return numPlayersString;
-    case 8:
-      numPlayersInt = "eight";
-      return numPlayersString;
-  }
-}
-
-function calculateMultiplier(count) {
-  if (count == 1){
-    multiplier = 1;
-    return multiplier;
-  } else if (count == 2) {
-    multiplier = 1.5;
-    return multiplier;
-  } else if (count >= 3 && count <= 6) {
-    multiplier = 2;
-    return multiplier;
-  } else if (count >= 7 && count <= 10) {
-    multiplier = 2.5;
-    return multiplier;
-  } else if (count >= 11 && count <= 14) {
-    multiplier = 3;
-    return multiplier;
-  } else if (count >= 15) {
-    multiplier = 4;
-    return multiplier;
-  }
-}
-
-//CODE CHECK move to a utilities javascript module
-function convertCRToXP(CR){
-  let XP;
-
-  switch (CR){
-    case "0":
-      XP = 10;
-      return XP;
-    case "1/8":
-      XP = 25;
-      return XP;
-    case "1/4":
-      XP = 50;
-      return XP;
-    case "1/2":
-      XP = 100;
-      return XP;
-    case "1":
-      XP = 200;
-      return XP;
-    case "2":
-      XP = 450;
-      return XP;
-    case "3":
-      XP = 700;
-      return XP;
-    case "4":
-      XP = 1100;
-      return XP;
-    case "5":
-      XP = 1800;
-      return XP;
-    case "6":
-      XP = 2300;
-      return XP;
-    case "7":
-      XP = 2900;
-      return XP;
-    case "8":
-      XP = 3900;
-      return XP;
-    case "9":
-      XP = 5000;
-      return XP;
-    case "10":
-      XP = 5900;
-      return XP;
-    case "11":
-      XP = 7200;
-      return XP;
-    case "12":
-      XP = 8400;
-      return XP;
-    case "13":
-      XP = 10000;
-      return XP;
-    case "14":
-      XP = 11500;
-      return XP;
-    case "15":
-      XP = 13000;
-      return XP;
-    case "16":
-      XP = 15000;
-      return XP;
-    case "17":
-      XP = 18000;
-      return XP;
-    case "18":
-      XP = 20000;
-      return XP;
-    case "19":
-      XP = 22000;
-      return XP;
-    case "20":
-      XP = 25000;
-      return XP;
-    case "21":
-      XP = 33000;
-      return XP;
-    case "22":
-      XP = 41000;
-      return XP;
-    case "23":
-      XP = 50000;
-      return XP;
-    case "24":
-      XP = 62000;
-      return XP;
-    case "25":
-      XP = 75000;
-      return XP;
-    case "26":
-      XP = 90000;
-      return XP;
-    case "27":
-      XP = 105000;
-      return XP;
-    case "28":
-      XP = 120000;
-      return XP;
-    case "29":
-      XP = 135000;
-      return XP;
-    case "30":
-      XP = 155000;
-      return XP;
   }
 }
 
