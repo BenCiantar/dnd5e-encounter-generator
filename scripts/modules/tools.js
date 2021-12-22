@@ -1,14 +1,3 @@
-
-// export function fetchApi(url) {
-//     fetch(url, {
-//         })
-//         .then((response) => response.json())
-//         .then((data) => {
-
-//         return data;
-//     });
-// }
-
 export function addListener(type, id, callback, param){
     document.getElementById(id).addEventListener(type, function (){
       callback(param);
