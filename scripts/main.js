@@ -98,12 +98,12 @@ function addEventListenersToCollapsibles() {
 
 function renderMonsters(monsters) {
   for (let monster of monsters){
-    const CR = monster.challenge_rating;
-    const XP = convertCrToXp(CR);
-    const ID = convertChallengeRating(CR);
+    const cr = monster.challenge_rating;
+    const xp = convertCrToXp(cr);
+    const id = convertChallengeRating(cr);
     
     try {
-      renderMonsterItem(`cr-${ID}`, `${monster.name}`, XP, CR);
+      renderMonsterItem(`cr-${id}`, `${monster.name}`, xp, cr);
     } catch (error) {
       console.log("Error with item: " + monster.name);
     }
@@ -113,11 +113,11 @@ function renderMonsters(monsters) {
   }
 }
 
-function renderMonsterItem(ID, name, XP, CR) {
-  document.getElementById(ID).innerHTML += `
+function renderMonsterItem(id, name, xp, cr) {
+  document.getElementById(id).innerHTML += `
   <div class="monster-item">
     <div class="monster-summary">
-      <h4>${name}</h4><p>CR: ${CR} - XP: ${XP}</p>
+      <h4>${name}</h4><p>CR: ${cr} - XP: ${xp}</p>
     </div>
     <div class="add-monster-section">
       <button id="${name}-btn">Add</button>
@@ -199,12 +199,12 @@ function addToEncounter(name) {
 
   for (let monster of monsters) {
     if (name == monster.name) {
-      const XP = convertCrToXp(monster.challenge_rating);
-      keyStats.xpTotal += XP;
+      const xp = convertCrToXp(monster.challenge_rating);
+      keyStats.xpTotal += xp;
       keyStats.monsterCount++;
 
       if (encounterArray.length == 0) {
-        addEntry(name, XP);
+        addEntry(name, xp);
         break;
       }
 
@@ -218,18 +218,18 @@ function addToEncounter(name) {
       } 
 
       if (!monsterExists) {
-        addEntry(name, CR);
+        addEntry(name, xp);
       }
     }
   }
   updateEncounterList();
 }
 
-function addEntry(name, XP) {
+function addEntry(name, xp) {
   encounterArray.push(
     {
       name: name,
-      xp: XP,
+      xp: xp,
       count: 1
     }
   )
