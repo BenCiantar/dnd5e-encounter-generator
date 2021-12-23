@@ -312,8 +312,8 @@ export function calculateXpValues(){
         xpThresholds.deadlyXpThreshold += 12700;
         break;
     }
-    return xpThresholds;
   }
+  return xpThresholds;
 }
 
 export function setDifficultyMessage(finalTotal) {

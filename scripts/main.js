@@ -138,7 +138,6 @@ function updatePlayerList() {
 
   for (let i = 0; i < numPlayers; i++) {
     const numPlayersString = convertNumPlayersToString(i);
-
     addListener("change", `player-${numPlayersString}`, updateXpThresholds);
   }
   updateXpThresholds();
@@ -181,7 +180,7 @@ function renderLevelSelectorsList(numPlayers){
 
 function updateXpThresholds() {
   const xpThresholds = calculateXpValues();
-
+  console.log(xpThresholds);
   document.getElementById("player-summary-right").innerHTML = `
     <p id="easy-xp">${xpThresholds.easyXpThreshold}XP</p>
     <p id="medium-xp">${xpThresholds.mediumXpThreshold}XP</p>
