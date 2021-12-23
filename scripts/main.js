@@ -126,6 +126,13 @@ function renderMonsters(monsters) {
   }
 }
 
+/**
+ * 
+ * @param {*} id ID of element to insert monster into
+ * @param {*} name Monster name
+ * @param {*} xp Experience gained from killing the monster
+ * @param {*} cr The monster's challenge rating
+ */
 function renderMonsterItem(id, name, xp, cr) {
   document.getElementById(id).innerHTML += `
   <div class="monster-item">
