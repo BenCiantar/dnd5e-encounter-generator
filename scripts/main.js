@@ -135,7 +135,7 @@ function updatePlayerList() {
   renderLevelSelectorsList(numPlayers);
 
   for (let i = 0; i < numPlayers; i++) {
-    const numPlayersString = convertNumPlayersToString(i);
+    const numPlayersString = convertNumPlayersToString(i + 1);
     addListener("change", `player-${numPlayersString}`, updateXpThresholds);
   }
   updateXpThresholds();
@@ -144,7 +144,7 @@ function updatePlayerList() {
 function renderLevelSelectorsList(numPlayers){
   for (let i = 0; i < numPlayers; i++) {
 
-    const numPlayersString = convertNumPlayersToString(i);
+    const numPlayersString = convertNumPlayersToString(i + 1);
 
     document.getElementById("player-display").innerHTML += `
     <div class="player-level-selector">
@@ -178,7 +178,6 @@ function renderLevelSelectorsList(numPlayers){
 
 function updateXpThresholds() {
   const xpThresholds = calculateXpValues();
-  console.log(xpThresholds);
   document.getElementById("player-summary-right").innerHTML = `
     <p id="easy-xp">${xpThresholds.easyXpThreshold}XP</p>
     <p id="medium-xp">${xpThresholds.mediumXpThreshold}XP</p>

@@ -114,33 +114,23 @@ export function convertCrToXp(CR){
   }
   
 export function convertNumPlayersToString(numPlayersInt) {
-  let numPlayersString;
-
-  switch (numPlayersInt + 1) {
+  switch (numPlayersInt) {
     case 1:
-      numPlayersString = "one";
-      return numPlayersString;
+      return "one";
     case 2:
-      numPlayersString = "two";
-      return numPlayersString;
+      return "two";
     case 3:
-      numPlayersString = "three";
-      return numPlayersString;
+      return "three";
     case 4:
-      numPlayersString = "four";
-      return numPlayersString;
+      return "four";
     case 5:
-      numPlayersString = "five";
-      return numPlayersString;
+      return "five";
     case 6:
-      numPlayersString = "six";
-      return numPlayersString;
+      return "six";
     case 7:
-      numPlayersString = "seven";
-      return numPlayersString;
+      return "seven";
     case 8:
-      numPlayersInt = "eight";
-      return numPlayersString;
+      return "eight";
   }
 }
 
