@@ -136,14 +136,7 @@ export function formatCrAsIdString(rating) {
       return "quarter";
     case "1/2":
       return "half";
-    default:
+    default:s
       return rating;
   }
 }
-
-export function getXpValueFromPlayerSummary(id) {
-    let xpValue = document.getElementById(id).innerHTML;
-    xpValue = xpValue.replace(/\D/g,'');
-    xpValue = parseInt(xpValue);
-    return xpValue;
-  }
