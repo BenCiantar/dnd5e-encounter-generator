@@ -1,4 +1,16 @@
-import { setDifficultyMessage, calculateXpValues, calculateMultiplier, convertCrToXp, addListener, convertNumPlayersToString, formatCrAsIdString } from './modules/tools.js';
+import { 
+  addListener, 
+  calculateMultiplier, 
+  calculateXpValues, 
+  setDifficultyMessage 
+} from './modules/utils.js';
+
+import { 
+  convertCrToXp, 
+  convertNumPlayersToString, 
+  formatCrAsIdString 
+} from './modules/converters.js';
+
 
 //--Global Variables
 const defaultApiUrl = "https://api.open5e.com/";
