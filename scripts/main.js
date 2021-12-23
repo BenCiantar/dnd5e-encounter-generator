@@ -1,4 +1,4 @@
-import { setDifficultyMessage, calculateXpValues, calculateMultiplier, convertCrToXp, addListener, getXpValueFromPlayerSummary, convertNumPlayersToString, convertChallengeRating } from './modules/tools.js';
+import { setDifficultyMessage, calculateXpValues, calculateMultiplier, convertCrToXp, addListener, convertNumPlayersToString, convertChallengeRating } from './modules/tools.js';
 
 //--Global Variables
 const defaultApiUrl = "https://api.open5e.com/monsters/?limit=2000";
@@ -301,8 +301,9 @@ function updateMonsterSummary() {
 //////////////////////////////Difficulty Indicator//////////////////////////////
 
 function updateDifficultyIndicator() {
+  const multiplier = calculateMultiplier(keyStats.monsterCount);
 
-  const finalTotal = keyStats.xpTotal * keyStats.groupMultiplier;
+  const finalTotal = keyStats.xpTotal * multiplier;
   if (encounterArray.length == 0) {
     document.getElementById("difficulty-meter").innerHTML = `
       <h2>Add some monsters to begin!</h2>

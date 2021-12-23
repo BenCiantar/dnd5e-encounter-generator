@@ -112,13 +112,6 @@ export function convertCrToXp(CR){
         return XP;
     }
   }
-
-export function getXpValueFromPlayerSummary(id) {
-  let xpValue = document.getElementById(id).innerHTML;
-  xpValue = xpValue.replace(/\D/g,'');
-  xpValue = parseInt(xpValue);
-  return xpValue;
-}
   
 export function convertNumPlayersToString(numPlayersInt) {
   let numPlayersString;
@@ -341,4 +334,11 @@ export function setDifficultyMessage(finalTotal) {
       <h2>This encounter will be <span style="color: red">DEADLY</span> for your players!</h2>
     `
   }
+}
+
+export function getXpValueFromPlayerSummary(id) {
+  let xpValue = document.getElementById(id).innerHTML;
+  xpValue = xpValue.replace(/\D/g,'');
+  xpValue = parseInt(xpValue);
+  return xpValue;
 }
