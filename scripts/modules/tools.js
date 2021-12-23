@@ -134,7 +134,7 @@ export function convertNumPlayersToString(numPlayersInt) {
   }
 }
 
-export function convertChallengeRating(rating) {
+export function convertCrToString(rating) {
   switch (rating) {
     case "1/8":
       return "eighth";
