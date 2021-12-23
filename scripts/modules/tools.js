@@ -169,15 +169,13 @@ export function calculateMultiplier(count) {
   }
 }
 
-export function calculateXpValues(){
+export function calculateXpValues(playerLevels){
   let xpThresholds = {
     easyXpThreshold: 0,
     mediumXpThreshold: 0,
     hardXpThreshold: 0,
     deadlyXpThreshold: 0
   }
-
-  const playerLevels = document.querySelectorAll(".player-lvl");
 
   for (let i = 0; i < playerLevels.length; i++) {
     switch (playerLevels[i].value) {

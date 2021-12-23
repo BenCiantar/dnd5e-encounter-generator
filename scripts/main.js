@@ -177,7 +177,8 @@ function renderLevelSelectorsList(numPlayers){
 }
 
 function updateXpThresholds() {
-  const xpThresholds = calculateXpValues();
+  const playerLevels = document.querySelectorAll(".player-lvl");
+  const xpThresholds = calculateXpValues(playerLevels);
   document.getElementById("player-summary-right").innerHTML = `
     <p id="easy-xp">${xpThresholds.easyXpThreshold}XP</p>
     <p id="medium-xp">${xpThresholds.mediumXpThreshold}XP</p>
