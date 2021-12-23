@@ -100,7 +100,7 @@ export function formatCrAsIdString(rating) {
       return "quarter";
     case "1/2":
       return "half";
-    default:s
+    default:
       return rating;
   }
 }
