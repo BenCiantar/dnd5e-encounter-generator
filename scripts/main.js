@@ -11,21 +11,6 @@ let keyStats = {
   monsterCount: 0,
 }
 
-
-//////////////////////////////Render Page//////////////////////////////
-
-//--Event Listeners
-document.addEventListener("DOMContentLoaded", function() {
-  fetchMonsters(defaultApiUrl);
-  createCollapsibleMonsterSections();
-  renderPlayerList();
-  initApp();
-});
-
-addListener("change", "number-of-players", renderPlayerList);
-addListener("change", "player-one", updateXpThresholds);
-
-//--Data Retrieval
 async function fetchMonsters() {
   return fetch(`${defaultApiUrl}monsters/?limit=2000`, {})
     .then((response) => response.json())
@@ -38,6 +23,20 @@ async function initApp(){
   renderMonsters(monsters);
   hideLoadingScreen();
 }
+
+//--Event Listeners
+document.addEventListener("DOMContentLoaded", function() {
+  fetchMonsters(defaultApiUrl);
+  createCollapsibleMonsterSections();
+  renderPlayerList();
+  initApp();
+});
+
+addListener("change", "number-of-players", renderPlayerList);
+addListener("change", "player-one", updateXpThresholds);
+
+
+//////////////////////////////Render Page//////////////////////////////
 
 //--Page Structure
 function hideLoadingScreen(){
