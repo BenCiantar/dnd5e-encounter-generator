@@ -134,7 +134,7 @@ export function convertNumPlayersToString(numPlayersInt) {
   }
 }
 
-export function convertCrToString(rating) {
+export function formatCrAsIdString(rating) {
   switch (rating) {
     case "1/8":
       return "eighth";

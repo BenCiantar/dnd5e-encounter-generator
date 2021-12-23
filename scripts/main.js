@@ -1,4 +1,4 @@
-import { setDifficultyMessage, calculateXpValues, calculateMultiplier, convertCrToXp, addListener, convertNumPlayersToString, convertCrToString } from './modules/tools.js';
+import { setDifficultyMessage, calculateXpValues, calculateMultiplier, convertCrToXp, addListener, convertNumPlayersToString, formatCrAsIdString } from './modules/tools.js';
 
 //--Global Variables
 const defaultApiUrl = "https://api.open5e.com/";
@@ -98,7 +98,7 @@ function renderMonsters(monsters) {
   for (let monster of monsters){
     const cr = monster.challenge_rating;
     const xp = convertCrToXp(cr);
-    const id = convertCrToString(cr);
+    const id = formatCrAsIdString(cr);
     
     try {
       renderMonsterItem(`cr-${id}`, `${monster.name}`, xp, cr);
