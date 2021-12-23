@@ -18,11 +18,11 @@ let keyStats = {
 document.addEventListener("DOMContentLoaded", function() {
   fetchMonsters(defaultApiUrl);
   createCollapsibleMonsterSections();
-  updatePlayerList();
+  renderPlayerList();
   initApp();
 });
 
-addListener("change", "number-of-players", updatePlayerList);
+addListener("change", "number-of-players", renderPlayerList);
 addListener("change", "player-one", updateXpThresholds);
 
 //--Data Retrieval
@@ -127,7 +127,7 @@ function renderMonsterItem(id, name, xp, cr) {
 
 //////////////////////////////Player Section//////////////////////////////
 
-function updatePlayerList() {
+function renderPlayerList() {
   document.getElementById("player-display").innerHTML = ``
 
   const numPlayers = document.getElementById('number-of-players').value;
