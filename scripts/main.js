@@ -1,7 +1,7 @@
 import { setDifficultyMessage, calculateXpValues, calculateMultiplier, convertCrToXp, addListener, convertNumPlayersToString, convertChallengeRating } from './modules/tools.js';
 
 //--Global Variables
-const defaultApiUrl = "https://api.open5e.com/monsters/?limit=2000";
+const defaultApiUrl = "https://api.open5e.com/";
 
 let monsterArray = [];
 let encounterArray = [];
@@ -27,17 +27,15 @@ addListener("change", "player-one", updateXpThresholds);
 
 //--Data Retrieval
 async function fetchMonsters() {
-  return fetch(defaultApiUrl, {})
+  return fetch(`${defaultApiUrl}monsters/?limit=2000`, {})
     .then((response) => response.json())
-    .then((data) => data);
+    .then((data) => data.results);
 }
 
 async function initApp(){
   const monsters = await fetchMonsters();
-  //Still need to store the api data globally to access it in the 
-  //add/remove monster from encounter. Haven't found a way around this yet
   monsterArray = monsters;
-  renderMonsters(monsters.results);
+  renderMonsters(monsters);
   hideLoadingScreen();
 }
 
@@ -195,7 +193,7 @@ function updateXpThresholds() {
 //////////////////////////////Encounter Section//////////////////////////////
 
 function addToEncounter(name) {
-  const monsters = monsterArray.results;
+  const monsters = monsterArray;
 
   for (let monster of monsters) {
     if (name == monster.name) {
