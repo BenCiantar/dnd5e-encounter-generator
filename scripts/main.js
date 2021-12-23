@@ -45,9 +45,10 @@ function hideLoadingScreen(){
 }
 
 function createCollapsibleMonsterSections() {
-  for (let i = 0; i < 31; i++) {
-
-    if (i == 0) {
+  const highestCr = 30;
+  const lowestCr = 0;
+  for (let i = lowestCr; i <= highestCr; i++) {
+    if (i == lowestCr) {
       document.getElementById("monsters-section").innerHTML += `
       <button type="button" class="collapsible">Challenge Rating ${i}</button>
       <div id="cr-${i}" class="monster-content">
@@ -67,7 +68,10 @@ function createCollapsibleMonsterSections() {
       `
     }
 
-    if (i > 0 && (i < 28 || i == 30)) {
+    const emptyCat1 = 28;
+    const emptyCat2 = 29;
+
+    if (i != lowestCr && i != emptyCat1 && i != emptyCat2) {
       document.getElementById("monsters-section").innerHTML += `
       <button type="button" class="collapsible">Challenge Rating ${i}</button>
       <div id="cr-${i}" class="monster-content">
