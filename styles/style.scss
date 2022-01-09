@@ -7,6 +7,7 @@ html {
   background-image: url('/assets/images/paper-background.jpg');
   background-blend-mode: lighten;
   background-size: cover;
+  font-size: 100%;
 }
 ::-webkit-scrollbar {
   width: 0;  /* Remove scrollbar space */
@@ -216,6 +217,7 @@ body{
       width: 38vw;
       min-width: 218px;
       margin-right: 10px;
+      font-size: 16px;
       display: flex;
       flex-direction: column;
       #encounter-top{
