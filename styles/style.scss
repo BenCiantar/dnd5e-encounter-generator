@@ -26,28 +26,28 @@ html {
   font-family: $texgyrebonum;
   p {
     color: $black;
-    font-size: 15px; 
+    font-size: $medium-large-text; 
   }
   h1 {
-    font-size: 60px;
+    font-size: $banner-text;
   }
   select {
-    font-size: 15px;
+    font-size: $medium-large-text;
   }
   label {
-    font-size: 15px;
+    font-size: $medium-large-text;
   }
 }
 @media only screen and (max-width: 760px) {
   * {
     p {
-      font-size: 10px; 
+      font-size: $small-text; 
     }
     select {
-      font-size: 10px;
+      font-size: $small-text;
     }
     label {
-      font-size: 10px;
+      font-size: $small-text;
     }
   }
 }
@@ -71,7 +71,7 @@ html {
   justify-content: center;
   align-items: center;
   h1{
-    font-size: 50px;
+    font-size: $huge-text;
   }
   img{
     width: 75%;
@@ -84,21 +84,21 @@ html {
 @media only screen and (max-width: 760px) {
   #loading-screen {
     h1 {
-      font-size: 25px;
+      font-size: $very-large-text;
     }
   }
 }
 @media only screen and (max-width: 400px) {
   #loading-screen {
     h1 {
-      font-size: 20px;
+      font-size: $large-text;
     }
   }
 }
 @media only screen and (max-width: 300px) {
   #loading-screen {
     h1 {
-      font-size: 15px;
+      font-size: $medium-large-text;
     }
   }
 }
@@ -143,7 +143,7 @@ body{
       background-color: transparent;
       h2{
         display: inline-block;
-        font-size: 25px;
+        font-size: $very-large-text;
       }
       @media only screen and (max-width: 760px) {
         h2 {
@@ -285,7 +285,7 @@ body{
     }
     @media only screen and (max-width: 760px) {
       #encounter-section {
-        font-size: 10px; 
+        font-size: $small-text; 
       }
     }
     #monsters-section{
@@ -309,11 +309,11 @@ body{
         }
         h3{
           font-weight: normal;
-          font-size: 14px;
+          font-size: $medium-text;
         }
         @media only screen and (max-width: 760px) {
           h3 {
-            font-size: 9px; 
+            font-size: $very-small-text; 
           }
         }
         .monster-item{
@@ -330,7 +330,7 @@ body{
           }
           @media only screen and (max-width: 760px) {
             p {
-              font-size: 9px; 
+              font-size: $very-small-text; 
             }
           }
           .monster-summary{
@@ -350,7 +350,7 @@ body{
             }
             @media only screen and (max-width: 760px) {
               button {
-                font-size: 9px;
+                font-size: $very-small-text;
               }
             }
           }
@@ -376,11 +376,11 @@ body{
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
+  font-size: $medium-large-text;
 }
 @media only screen and (max-width: 760px) {
   .collapsible {
-    font-size: 10px; 
+    font-size: $small-text; 
   }
 }
 
@@ -391,14 +391,14 @@ body{
 
 .collapsible:after {
   content: '\02795'; /* Unicode character for "plus" sign (+) */
-  font-size: 10px;
+  font-size: $small-text;
   color: white;
   float: right;
   margin-left: 5px;
 }
 @media only screen and (max-width: 760px) {
   .collapsible:after {
-    font-size: 8px; 
+    font-size: $tiny-text; 
   }
 }
 

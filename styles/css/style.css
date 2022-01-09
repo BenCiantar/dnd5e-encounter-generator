@@ -39,30 +39,30 @@ html {
 
 * p {
   color: #000000;
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 * h1 {
-  font-size: 60px;
+  font-size: 3.75rem;
 }
 
 * select {
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 * label {
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 @media only screen and (max-width: 760px) {
   * p {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   * select {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   * label {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
@@ -96,7 +96,7 @@ html {
 }
 
 #loading-screen h1 {
-  font-size: 50px;
+  font-size: 3.125rem;
 }
 
 #loading-screen img {
@@ -109,19 +109,19 @@ html {
 
 @media only screen and (max-width: 760px) {
   #loading-screen h1 {
-    font-size: 25px;
+    font-size: 1.563rem;
   }
 }
 
 @media only screen and (max-width: 400px) {
   #loading-screen h1 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 
 @media only screen and (max-width: 300px) {
   #loading-screen h1 {
-    font-size: 15px;
+    font-size: 0.938rem;
   }
 }
 
@@ -200,7 +200,7 @@ body nav #difficulty-meter {
 
 body nav #difficulty-meter h2 {
   display: inline-block;
-  font-size: 25px;
+  font-size: 1.563rem;
 }
 
 @media only screen and (max-width: 760px) {
@@ -403,7 +403,7 @@ body main #encounter-section #encounter-bottom #encounter-summary-right {
 
 @media only screen and (max-width: 760px) {
   body main #encounter-section {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
@@ -434,12 +434,12 @@ body main #monsters-section .monster-content p {
 
 body main #monsters-section .monster-content h3 {
   font-weight: normal;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 @media only screen and (max-width: 760px) {
   body main #monsters-section .monster-content h3 {
-    font-size: 9px;
+    font-size: 0.563rem;
   }
 }
 
@@ -467,7 +467,7 @@ body main #monsters-section .monster-content .monster-item p {
 
 @media only screen and (max-width: 760px) {
   body main #monsters-section .monster-content .monster-item p {
-    font-size: 9px;
+    font-size: 0.563rem;
   }
 }
 
@@ -501,7 +501,7 @@ body main #monsters-section .monster-content .monster-item .add-monster-section 
 
 @media only screen and (max-width: 760px) {
   body main #monsters-section .monster-content .monster-item .add-monster-section button {
-    font-size: 9px;
+    font-size: 0.563rem;
   }
 }
 
@@ -519,12 +519,12 @@ body main #monsters-section .monster-content .monster-item:hover {
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 @media only screen and (max-width: 760px) {
   .collapsible {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
@@ -536,7 +536,7 @@ body main #monsters-section .monster-content .monster-item:hover {
 .collapsible:after {
   content: '\02795';
   /* Unicode character for "plus" sign (+) */
-  font-size: 10px;
+  font-size: 0.625rem;
   color: white;
   float: right;
   margin-left: 5px;
@@ -544,7 +544,7 @@ body main #monsters-section .monster-content .monster-item:hover {
 
 @media only screen and (max-width: 760px) {
   .collapsible:after {
-    font-size: 8px;
+    font-size: 0.5rem;
   }
 }
 
