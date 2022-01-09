@@ -1,16 +1,15 @@
-import { 
-  addListener, 
-  calculateMultiplier, 
-  calculateXpValues, 
-  setDifficultyMessage 
-} from './modules/utils.js';
+import {
+  addListener,
+  calculateMultiplier,
+  calculateXpValues,
+  setDifficultyMessage,
+} from "./modules/utils.js";
 
-import { 
-  convertCrToXp, 
-  convertNumPlayersToString, 
-  formatCrAsIdString 
-} from './modules/converters.js';
-
+import {
+  convertCrToXp,
+  convertNumPlayersToString,
+  formatCrAsIdString,
+} from "./modules/converters.js";
 
 //--Global Variables
 const defaultApiUrl = "https://api.open5e.com/";
@@ -21,24 +20,24 @@ let encounterArray = [];
 let keyStats = {
   xpTotal: 0,
   monsterCount: 0,
+};
+
+async function fetchMonsters(Url) {
+  const response = await fetch(`${Url}monsters/?limit=2000`);
+  const data = await response.json();
+  return data.results;
 }
 
-async function fetchMonsters() {
-  return fetch(`${defaultApiUrl}monsters/?limit=2000`, {})
-    .then((response) => response.json())
-    .then((data) => data.results);
-}
-
-async function initApp(){
-  const monsters = await fetchMonsters();
+async function initApp() {
+  const monsters = await fetchMonsters(defaultApiUrl);
+  console.log("initApp ", monsters);
   monsterArray = monsters;
   renderMonsters(monsters);
   hideLoadingScreen();
 }
 
 //--Event Listeners
-document.addEventListener("DOMContentLoaded", function() {
-  fetchMonsters(defaultApiUrl);
+document.addEventListener("DOMContentLoaded", function () {
   createCollapsibleMonsterSections();
   renderPlayerList();
   initApp();
@@ -47,11 +46,10 @@ document.addEventListener("DOMContentLoaded", function() {
 addListener("change", "number-of-players", renderPlayerList);
 addListener("change", "player-one", updateXpThresholds);
 
-
 //////////////////////////////Render Page//////////////////////////////
 
 //--Page Structure
-function hideLoadingScreen(){
+function hideLoadingScreen() {
   document.getElementById("loading-screen").style.display = "none";
 }
 
@@ -76,7 +74,7 @@ function createCollapsibleMonsterSections() {
       <button type="button" class="collapsible">Challenge Rating 1/2</button>
       <div id="cr-half" class="monster-content">
       </div>
-      `
+      `;
     }
 
     const emptyCat1 = 28;
@@ -87,7 +85,7 @@ function createCollapsibleMonsterSections() {
       <button type="button" class="collapsible">Challenge Rating ${i}</button>
       <div id="cr-${i}" class="monster-content">
       </div>
-      `
+      `;
     }
   }
   addEventListenersToCollapsibles();
@@ -97,7 +95,7 @@ function addEventListenersToCollapsibles() {
   const coll = document.getElementsByClassName("collapsible");
 
   for (let i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
+    coll[i].addEventListener("click", function () {
       this.classList.toggle("active");
       const content = this.nextElementSibling;
       if (content.style.display === "block") {
@@ -110,24 +108,29 @@ function addEventListenersToCollapsibles() {
 }
 
 function renderMonsters(monsters) {
-  for (let monster of monsters){
+  for (const monster of monsters) {
     const cr = monster.challenge_rating;
     const xp = convertCrToXp(cr);
     const id = formatCrAsIdString(cr);
-    
+
     try {
       renderMonsterItem(`cr-${id}`, `${monster.name}`, xp, cr);
     } catch (error) {
       console.log("Error with item: " + monster.name);
     }
   }
-  for (let monster of monsters){
-    addListener("click", `${monster.name}-btn`, addToEncounter, `${monster.name}`);
+  for (const monster of monsters) {
+    addListener(
+      "click",
+      `${monster.name}-btn`,
+      addToEncounter,
+      `${monster.name}`
+    );
   }
 }
 
 /**
- * 
+ *
  * @param {*} id ID of element to insert monster into
  * @param {*} name Monster name
  * @param {*} xp Experience gained from killing the monster
@@ -143,16 +146,15 @@ function renderMonsterItem(id, name, xp, cr) {
       <button id="${name}-btn">Add</button>
     </div>
   </div>
-`
+`;
 }
-
 
 //////////////////////////////Player Section//////////////////////////////
 
 function renderPlayerList() {
-  document.getElementById("player-display").innerHTML = ``
+  document.getElementById("player-display").innerHTML = ``;
 
-  const numPlayers = document.getElementById('number-of-players').value;
+  const numPlayers = document.getElementById("number-of-players").value;
 
   renderLevelSelectorsList(numPlayers);
 
@@ -163,9 +165,8 @@ function renderPlayerList() {
   updateXpThresholds();
 }
 
-function renderLevelSelectorsList(numPlayers){
+function renderLevelSelectorsList(numPlayers) {
   for (let i = 0; i < numPlayers; i++) {
-
     const numPlayersString = convertNumPlayersToString(i + 1);
 
     document.getElementById("player-display").innerHTML += `
@@ -194,7 +195,7 @@ function renderLevelSelectorsList(numPlayers){
           <option value="20">20</option>
       </select>
     </div>
-    `
+    `;
   }
 }
 
@@ -206,11 +207,10 @@ function updateXpThresholds() {
     <p id="medium-xp">${xpThresholds.mediumXpThreshold}XP</p>
     <p id="hard-xp">${xpThresholds.hardXpThreshold}XP</p>
     <p id="deadly-xp">${xpThresholds.deadlyXpThreshold}XP</p>
-  `
+  `;
 
   updateDifficultyIndicator();
 }
-
 
 //////////////////////////////Encounter Section//////////////////////////////
 
@@ -230,12 +230,12 @@ function addToEncounter(name) {
 
       let monsterExists = false;
 
-      for (let entry of encounterArray){
-        if (name == entry.name){
+      for (let entry of encounterArray) {
+        if (name == entry.name) {
           entry.count++;
           monsterExists = true;
         }
-      } 
+      }
 
       if (!monsterExists) {
         addEntry(name, xp);
@@ -246,13 +246,11 @@ function addToEncounter(name) {
 }
 
 function addEntry(name, xp) {
-  encounterArray.push(
-    {
-      name: name,
-      xp: xp,
-      count: 1
-    }
-  )
+  encounterArray.push({
+    name: name,
+    xp: xp,
+    count: 1,
+  });
 }
 
 function removeFromEncounter(i) {
@@ -265,20 +263,25 @@ function removeFromEncounter(i) {
   updateEncounterList();
 }
 
-function updateEncounterList(){
+function updateEncounterList() {
   document.getElementById("encounter-top").innerHTML = "";
 
-  for (let i = 0; i < encounterArray.length; i++){
+  for (let i = 0; i < encounterArray.length; i++) {
     const xpToInt = parseInt(encounterArray[i].xp);
-    renderEncounterList(i, encounterArray[i].name, encounterArray[i].count, xpToInt);
+    renderEncounterList(
+      i,
+      encounterArray[i].name,
+      encounterArray[i].count,
+      xpToInt
+    );
   }
-  for (let i = 0; i < encounterArray.length; i++){
+  for (let i = 0; i < encounterArray.length; i++) {
     addListener("click", `close-${i}`, removeFromEncounter, `${i}`);
   }
   updateMonsterSummary();
 }
 
-function renderEncounterList(i, name, count, XP){
+function renderEncounterList(i, name, count, XP) {
   document.getElementById("encounter-top").innerHTML += `
     <div class="encounter-list-item">
       <div id="close-${i}" class="encounter-list-close">
@@ -294,7 +297,7 @@ function renderEncounterList(i, name, count, XP){
         ${XP * count}xp
       </div>
     </div>
-  `
+  `;
 }
 
 function updateMonsterSummary() {
@@ -305,17 +308,16 @@ function updateMonsterSummary() {
     <p>-</p>
     <p>-</p>
     <p>-</p>
-  `
+  `;
   } else {
     document.getElementById("encounter-summary-right").innerHTML = `
     <p>${keyStats.xpTotal}XP</p>
     <p>x${multiplier}</p>
     <p>${keyStats.xpTotal * multiplier}XP</p>
-  `
+  `;
   }
   updateDifficultyIndicator();
 }
-
 
 //////////////////////////////Difficulty Indicator//////////////////////////////
 
@@ -326,12 +328,9 @@ function updateDifficultyIndicator() {
   if (encounterArray.length == 0) {
     document.getElementById("difficulty-meter").innerHTML = `
       <h2>Add some monsters to begin!</h2>
-    `
+    `;
   }
   if (encounterArray.length > 0) {
     setDifficultyMessage(finalTotal);
   }
 }
-
-
-
