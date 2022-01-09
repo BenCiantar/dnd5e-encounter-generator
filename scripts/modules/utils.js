@@ -162,20 +162,40 @@ export function calculateXpValues(playerLevels){
 }
 
 export function setDifficultyMessage(finalTotal) {
-  if (finalTotal <= getXpValueFromPlayerSummary("easy-xp")) {
-    document.getElementById("difficulty-meter").innerHTML = `
+  const easyXp = getXpValueFromPlayerSummary("easy-xp");
+  const mediumXp = getXpValueFromPlayerSummary("medium-xp");
+  const hardXp = getXpValueFromPlayerSummary("hard-xp");
+  const deadlyXp = getXpValueFromPlayerSummary("deadly-xp");
+
+  const diffMeter = document.getElementById("difficulty-meter");
+
+  const difficultyThresholds = [
+    easyXp,
+    mediumXp,
+    hardXp,
+    deadlyXp
+  ];
+
+  difficultyThresholds.sort((a, b) => {
+    return Math.abs(finalTotal - a) - Math.abs(finalTotal - b);
+})
+
+console.log(difficultyThresholds[0]);
+
+  if (difficultyThresholds[0] == easyXp) {
+    diffMeter.innerHTML = `
       <h2>This encounter will be <span style="color: green">EASY</span> for your players!</h2>
     `
-  } else if (finalTotal <= getXpValueFromPlayerSummary("medium-xp")) {
-    document.getElementById("difficulty-meter").innerHTML = `
+  } else if (difficultyThresholds[0] == mediumXp) {
+    diffMeter.innerHTML = `
       <h2>This encounter will be of <span style="color: yellow">MEDIUM</span> difficulty for your players!</h2>
     `
-  } else if (finalTotal <= getXpValueFromPlayerSummary("hard-xp")) {
-    document.getElementById("difficulty-meter").innerHTML = `
+  } else if (difficultyThresholds[0] == hardXp) {
+    diffMeter.innerHTML = `
       <h2>This encounter will be <span style="color: orange">HARD</span> for your players!</h2>
     `
-  } else {
-    document.getElementById("difficulty-meter").innerHTML = `
+  } else if (difficultyThresholds[0] == deadlyXp) {
+    diffMeter.innerHTML = `
       <h2>This encounter will be <span style="color: red">DEADLY</span> for your players!</h2>
     `
   }
