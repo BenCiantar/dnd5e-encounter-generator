@@ -430,13 +430,13 @@ body main #monsters-section .monster-content p {
   margin: 0;
 }
 
-body main #monsters-section .monster-content h4 {
+body main #monsters-section .monster-content h3 {
   font-weight: normal;
   font-size: 14px;
 }
 
 @media only screen and (max-width: 760px) {
-  body main #monsters-section .monster-content h4 {
+  body main #monsters-section .monster-content h3 {
     font-size: 9px;
   }
 }

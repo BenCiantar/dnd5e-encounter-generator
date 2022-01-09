@@ -140,7 +140,7 @@ function renderMonsterItem(id, name, xp, cr) {
   document.getElementById(id).innerHTML += `
   <div class="monster-item">
     <div class="monster-summary">
-      <h4>${name}</h4><p>CR: ${cr} - XP: ${xp}</p>
+      <h3>${name}</h3><p>CR: ${cr} - XP: ${xp}</p>
     </div>
     <div class="add-monster-section">
       <button id="${name}-btn">Add</button>
