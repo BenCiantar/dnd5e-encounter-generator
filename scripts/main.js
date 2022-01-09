@@ -129,6 +129,24 @@ function renderMonsters(monsters) {
   }
 }
 
+function hideMonstersSection(){
+  document.getElementById("monsters-section").classList.remove('visible');
+  document.getElementById("toggle-monsters-btn").innerHTML = ">> Show Monsters >>";
+};
+
+function showMonstersSection(){
+  document.getElementById("monsters-section").classList.add('visible');
+  document.getElementById("toggle-monsters-btn").innerHTML = "<< Hide Monsters <<";
+};
+
+document.getElementById("toggle-monsters-btn").addEventListener('click', () => {
+  if(!document.getElementById("monsters-section").classList.contains('visible')) {
+    showMonstersSection();
+  } else {
+    hideMonstersSection();
+  }
+});
+
 /**
  *
  * @param {*} id ID of element to insert monster into

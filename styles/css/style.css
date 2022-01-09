@@ -242,13 +242,23 @@ body main #players-section {
 body main #players-section #players-top {
   height: 70%;
   width: 100%;
-  padding: 15px;
+  padding: 15px 15px 10px 15px;
   background-color: transparent;
   border-width: 0 0 2px 0;
   border-style: solid;
   border-color: #8A624A;
   overflow-y: scroll;
   overflow-x: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 body main #players-section #players-top .player-level-selector {
@@ -262,8 +272,27 @@ body main #players-section #players-top #player-select {
 }
 
 body main #players-section #players-top #player-display {
-  height: 90%;
+  height: 80%;
   width: 100%;
+}
+
+body main #players-section #players-top #mobile-monster-controls {
+  height: 5%;
+  text-align: center;
+  width: 100%;
+  font-size: 0.625rem;
+}
+
+body main #players-section #players-top #mobile-monster-controls #toggle-monsters-btn {
+  background-color: transparent;
+  border-style: none;
+  font-size: 0.625rem;
+}
+
+@media only screen and (min-width: 760px) {
+  body main #players-section #players-top #mobile-monster-controls #toggle-monsters-btn {
+    display: none;
+  }
 }
 
 body main #players-section #players-bottom {
@@ -520,10 +549,19 @@ body main #monsters-section .monster-content .monster-item:hover {
 @media only screen and (max-width: 760px) {
   body main #monsters-section {
     position: absolute;
-    height: 49vh;
+    height: 45vh;
     width: 44vw;
     top: 26.5vh;
+    -webkit-transform: translateX(-800px);
+            transform: translateX(-800px);
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
   }
+}
+
+.visible {
+  -webkit-transform: translateX(0px) !important;
+          transform: translateX(0px) !important;
 }
 
 /* Style the button that is used to open and close the collapsible content */

@@ -171,13 +171,16 @@ body{
       #players-top{
         height: 70%;
         width: 100%;
-        padding: 15px;
+        padding: 15px 15px 10px 15px;
         background-color: transparent;
         border-width: 0 0 2px 0;
         border-style: solid;
         border-color: $border-color;
         overflow-y: scroll;
         overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         .player-level-selector{
           margin-top: 5px;
         }
@@ -187,8 +190,24 @@ body{
           margin-bottom: 15px;
         }
         #player-display{
-          height: 90%;
+          height: 80%;
           width: 100%;
+        }
+        #mobile-monster-controls{
+          height: 5%;
+          text-align: center;
+          width: 100%;
+          font-size: $small-text;
+          #toggle-monsters-btn {
+            background-color: transparent;
+            border-style: none;
+            font-size: $small-text;
+          }
+          @media only screen and (min-width: 760px) {
+            #toggle-monsters-btn {
+              display: none;
+            }
+          }
         }
       }
       #players-bottom{
@@ -372,13 +391,18 @@ body{
     main {
       #monsters-section{
         position: absolute;
-        height: 49vh;
+        height: 45vh;
         width: 44vw;
         top: 26.5vh;
-        // display: none;
+        transform: translateX(-800px); //Default setting on page load
+        transition: all .5s ease-in-out;
       }
     }
   }
+}
+
+.visible {
+  transform: translateX(0px) !important;
 }
 
 /* Style the button that is used to open and close the collapsible content */
