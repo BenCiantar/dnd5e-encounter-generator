@@ -129,6 +129,24 @@ function renderMonsters(monsters) {
   }
 }
 
+function hideMonstersSection(){
+  document.getElementById("monsters-section").classList.remove('visible');
+  document.getElementById("toggle-monsters-btn").innerHTML = ">> Show Monsters >>";
+};
+
+function showMonstersSection(){
+  document.getElementById("monsters-section").classList.add('visible');
+  document.getElementById("toggle-monsters-btn").innerHTML = "<< Hide Monsters <<";
+};
+
+document.getElementById("toggle-monsters-btn").addEventListener('click', () => {
+  if(!document.getElementById("monsters-section").classList.contains('visible')) {
+    showMonstersSection();
+  } else {
+    hideMonstersSection();
+  }
+});
+
 /**
  *
  * @param {*} id ID of element to insert monster into
@@ -140,7 +158,7 @@ function renderMonsterItem(id, name, xp, cr) {
   document.getElementById(id).innerHTML += `
   <div class="monster-item">
     <div class="monster-summary">
-      <h4>${name}</h4><p>CR: ${cr} - XP: ${xp}</p>
+      <h3>${name}</h3><p>CR: ${cr} - XP: ${xp}</p>
     </div>
     <div class="add-monster-section">
       <button id="${name}-btn">Add</button>

@@ -14,6 +14,7 @@ html {
   background-image: url("/assets/images/paper-background.jpg");
   background-blend-mode: lighten;
   background-size: cover;
+  font-size: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -38,30 +39,30 @@ html {
 
 * p {
   color: #000000;
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 * h1 {
-  font-size: 60px;
+  font-size: 3.75rem;
 }
 
 * select {
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 * label {
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 @media only screen and (max-width: 760px) {
   * p {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   * select {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   * label {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
@@ -95,7 +96,7 @@ html {
 }
 
 #loading-screen h1 {
-  font-size: 50px;
+  font-size: 3.125rem;
 }
 
 #loading-screen img {
@@ -108,19 +109,19 @@ html {
 
 @media only screen and (max-width: 760px) {
   #loading-screen h1 {
-    font-size: 25px;
+    font-size: 1.563rem;
   }
 }
 
 @media only screen and (max-width: 400px) {
   #loading-screen h1 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 
 @media only screen and (max-width: 300px) {
   #loading-screen h1 {
-    font-size: 15px;
+    font-size: 0.938rem;
   }
 }
 
@@ -199,19 +200,20 @@ body nav #difficulty-meter {
 
 body nav #difficulty-meter h2 {
   display: inline-block;
-  font-size: 25px;
+  text-align: center;
+  font-size: 1.563rem;
 }
 
 @media only screen and (max-width: 760px) {
   body nav #difficulty-meter h2 {
-    font-size: 18px;
+    font-size: 1rem;
   }
 }
 
 body main {
   height: 75vh;
   width: 100vw;
-  padding: 10px 15px 10px 10px;
+  padding: 10px 10px 10px 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -224,7 +226,7 @@ body main {
 body main #players-section {
   height: 100%;
   width: 24vw;
-  min-width: 142px;
+  min-width: 100px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -240,13 +242,23 @@ body main #players-section {
 body main #players-section #players-top {
   height: 70%;
   width: 100%;
-  padding: 15px;
+  padding: 15px 15px 10px 15px;
   background-color: transparent;
   border-width: 0 0 2px 0;
   border-style: solid;
   border-color: #8A624A;
   overflow-y: scroll;
   overflow-x: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 body main #players-section #players-top .player-level-selector {
@@ -260,8 +272,27 @@ body main #players-section #players-top #player-select {
 }
 
 body main #players-section #players-top #player-display {
-  height: 90%;
+  height: 80%;
   width: 100%;
+}
+
+body main #players-section #players-top #mobile-monster-controls {
+  height: 5%;
+  text-align: center;
+  width: 100%;
+  font-size: 0.625rem;
+}
+
+body main #players-section #players-top #mobile-monster-controls #toggle-monsters-btn {
+  background-color: transparent;
+  border-style: none;
+  font-size: 0.625rem;
+}
+
+@media only screen and (min-width: 760px) {
+  body main #players-section #players-top #mobile-monster-controls #toggle-monsters-btn {
+    display: none;
+  }
 }
 
 body main #players-section #players-bottom {
@@ -287,20 +318,27 @@ body main #players-section #players-bottom p {
 }
 
 body main #players-section #players-bottom #player-summary-left {
-  width: 75%;
+  width: 50%;
   text-align: left;
 }
 
 body main #players-section #players-bottom #player-summary-right {
-  width: 25%;
+  width: 50%;
   text-align: right;
+}
+
+@media only screen and (max-width: 760px) {
+  body main #players-section {
+    width: 50vw;
+  }
 }
 
 body main #encounter-section {
   height: 100%;
   width: 38vw;
-  min-width: 218px;
+  min-width: 100px;
   margin-right: 10px;
+  font-size: 16px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -390,25 +428,26 @@ body main #encounter-section #encounter-bottom p {
 }
 
 body main #encounter-section #encounter-bottom #encounter-summary-left {
-  width: 75%;
+  width: 50%;
   text-align: left;
 }
 
 body main #encounter-section #encounter-bottom #encounter-summary-right {
-  width: 25%;
+  width: 50%;
   text-align: right;
 }
 
 @media only screen and (max-width: 760px) {
   body main #encounter-section {
-    font-size: 10px;
+    width: 50vw;
+    font-size: 0.625rem;
   }
 }
 
 body main #monsters-section {
   height: 95%;
   width: 38vw;
-  min-width: 158px;
+  min-width: 100px;
   padding: 0;
   background-color: transparent;
   overflow-y: scroll;
@@ -430,14 +469,14 @@ body main #monsters-section .monster-content p {
   margin: 0;
 }
 
-body main #monsters-section .monster-content h4 {
+body main #monsters-section .monster-content h3 {
   font-weight: normal;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 @media only screen and (max-width: 760px) {
-  body main #monsters-section .monster-content h4 {
-    font-size: 9px;
+  body main #monsters-section .monster-content h3 {
+    font-size: 0.563rem;
   }
 }
 
@@ -465,7 +504,7 @@ body main #monsters-section .monster-content .monster-item p {
 
 @media only screen and (max-width: 760px) {
   body main #monsters-section .monster-content .monster-item p {
-    font-size: 9px;
+    font-size: 0.563rem;
   }
 }
 
@@ -499,12 +538,30 @@ body main #monsters-section .monster-content .monster-item .add-monster-section 
 
 @media only screen and (max-width: 760px) {
   body main #monsters-section .monster-content .monster-item .add-monster-section button {
-    font-size: 9px;
+    font-size: 0.563rem;
   }
 }
 
 body main #monsters-section .monster-content .monster-item:hover {
   background-color: rgba(243, 196, 66, 0.726);
+}
+
+@media only screen and (max-width: 760px) {
+  body main #monsters-section {
+    position: absolute;
+    height: 45vh;
+    width: 44vw;
+    top: 26.5vh;
+    -webkit-transform: translateX(-800px);
+            transform: translateX(-800px);
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+  }
+}
+
+.visible {
+  -webkit-transform: translateX(0px) !important;
+          transform: translateX(0px) !important;
 }
 
 /* Style the button that is used to open and close the collapsible content */
@@ -517,12 +574,19 @@ body main #monsters-section .monster-content .monster-item:hover {
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 @media only screen and (max-width: 760px) {
   .collapsible {
-    font-size: 10px;
+    font-size: 0.625rem;
+    background-color: #ce901e;
+  }
+}
+
+@media only screen and (max-width: 445px) {
+  .collapsible {
+    font-size: 0.563rem;
   }
 }
 
@@ -531,10 +595,17 @@ body main #monsters-section .monster-content .monster-item:hover {
   background-color: rgba(102, 73, 19, 0.726);
 }
 
+@media only screen and (max-width: 760px) {
+  .active, .collapsible:hover {
+    background-color: #664913;
+    color: #EEEEEE;
+  }
+}
+
 .collapsible:after {
   content: '\02795';
   /* Unicode character for "plus" sign (+) */
-  font-size: 10px;
+  font-size: 0.625rem;
   color: white;
   float: right;
   margin-left: 5px;
@@ -542,7 +613,13 @@ body main #monsters-section .monster-content .monster-item:hover {
 
 @media only screen and (max-width: 760px) {
   .collapsible:after {
-    font-size: 8px;
+    font-size: 0.5rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .collapsible:after {
+    content: '';
   }
 }
 

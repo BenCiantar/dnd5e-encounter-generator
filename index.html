@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="./styles/css/style.css">
  </head>
  <div id="loading-screen">
-    <img src="assets/images/dragon.png">
+    <img src="assets/images/dragon.png" alt="Large dragon">
     <h1>Retrieving monsters...</h1>
  </div>
  <body>
     <nav>
       <section id="banner">
-         <img src="assets/images/title_image.png">
+         <img src="assets/images/title_image.png" alt="Banner text image">
       </section>
       <section id="difficulty-meter">
          <h2>Add some monsters to begin!</h2>
@@ -66,6 +66,9 @@
                   </select>
                </div>
             </div>
+            <div id="mobile-monster-controls">
+               <button id="toggle-monsters-btn">>> Show Monsters >></button>
+            </div>
          </div>
          <div id="players-bottom">
             <div id="player-summary-left">
@@ -88,9 +91,9 @@
          </div>
          <div id="encounter-bottom">
             <div id="encounter-summary-left">
-               <p>Sum of all monsters: </p>
-               <p>Monster quantity multiplier: </p>
-               <p>Final XP total: </p>
+               <p>Sum: </p>
+               <p>Multiplier: </p>
+               <p>XP: </p>
              </div>
              <div id="encounter-summary-right">
                <p>-</p>

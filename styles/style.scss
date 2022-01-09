@@ -7,6 +7,7 @@ html {
   background-image: url('/assets/images/paper-background.jpg');
   background-blend-mode: lighten;
   background-size: cover;
+  font-size: 100%;
 }
 ::-webkit-scrollbar {
   width: 0;  /* Remove scrollbar space */
@@ -25,28 +26,28 @@ html {
   font-family: $texgyrebonum;
   p {
     color: $black;
-    font-size: 15px; 
+    font-size: $medium-large-text; 
   }
   h1 {
-    font-size: 60px;
+    font-size: $banner-text;
   }
   select {
-    font-size: 15px;
+    font-size: $medium-large-text;
   }
   label {
-    font-size: 15px;
+    font-size: $medium-large-text;
   }
 }
 @media only screen and (max-width: 760px) {
   * {
     p {
-      font-size: 10px; 
+      font-size: $small-text; 
     }
     select {
-      font-size: 10px;
+      font-size: $small-text;
     }
     label {
-      font-size: 10px;
+      font-size: $small-text;
     }
   }
 }
@@ -70,7 +71,7 @@ html {
   justify-content: center;
   align-items: center;
   h1{
-    font-size: 50px;
+    font-size: $huge-text;
   }
   img{
     width: 75%;
@@ -83,21 +84,21 @@ html {
 @media only screen and (max-width: 760px) {
   #loading-screen {
     h1 {
-      font-size: 25px;
+      font-size: $very-large-text;
     }
   }
 }
 @media only screen and (max-width: 400px) {
   #loading-screen {
     h1 {
-      font-size: 20px;
+      font-size: $large-text;
     }
   }
 }
 @media only screen and (max-width: 300px) {
   #loading-screen {
     h1 {
-      font-size: 15px;
+      font-size: $medium-large-text;
     }
   }
 }
@@ -142,11 +143,12 @@ body{
       background-color: transparent;
       h2{
         display: inline-block;
-        font-size: 25px;
+        text-align: center;
+        font-size: $very-large-text;
       }
       @media only screen and (max-width: 760px) {
         h2 {
-          font-size: 18px; 
+          font-size: $user-text;
         }
       }
     }
@@ -154,13 +156,13 @@ body{
   main{
     height: 75vh;
     width: 100vw;
-    padding: 10px 15px 10px 10px;
+    padding: 10px 10px 10px 10px;
     display: flex;
     flex-direction: row;
     #players-section{
       height: 100%;
       width: 24vw;
-      min-width: 142px;
+      min-width: 100px;
       display: flex;
       flex-direction: column;
       border-width: 0 2px 0 0;
@@ -169,13 +171,16 @@ body{
       #players-top{
         height: 70%;
         width: 100%;
-        padding: 15px;
+        padding: 15px 15px 10px 15px;
         background-color: transparent;
         border-width: 0 0 2px 0;
         border-style: solid;
         border-color: $border-color;
         overflow-y: scroll;
         overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         .player-level-selector{
           margin-top: 5px;
         }
@@ -185,8 +190,24 @@ body{
           margin-bottom: 15px;
         }
         #player-display{
-          height: 90%;
+          height: 80%;
           width: 100%;
+        }
+        #mobile-monster-controls{
+          height: 5%;
+          text-align: center;
+          width: 100%;
+          font-size: $small-text;
+          #toggle-monsters-btn {
+            background-color: transparent;
+            border-style: none;
+            font-size: $small-text;
+          }
+          @media only screen and (min-width: 760px) {
+            #toggle-monsters-btn {
+              display: none;
+            }
+          }
         }
       }
       #players-bottom{
@@ -202,20 +223,26 @@ body{
           margin-bottom: 5px;
         }
         #player-summary-left{
-          width: 75%;
+          width: 50%;
           text-align: left;
         }
         #player-summary-right{
-          width: 25%;
+          width: 50%;
           text-align: right;
         }
+      }
+    }
+    @media only screen and (max-width: 760px) {
+      #players-section {
+        width: 50vw;
       }
     }
     #encounter-section{
       height: 100%;
       width: 38vw;
-      min-width: 218px;
+      min-width: 100px;
       margin-right: 10px;
+      font-size: 16px;
       display: flex;
       flex-direction: column;
       #encounter-top{
@@ -272,24 +299,25 @@ body{
           margin-bottom: 5px;
         }
         #encounter-summary-left{
-          width: 75%;
+          width: 50%;
           text-align: left;
         }
         #encounter-summary-right{
-          width: 25%;
+          width: 50%;
           text-align: right;
         }
       }
     }
     @media only screen and (max-width: 760px) {
       #encounter-section {
-        font-size: 10px; 
+        width: 50vw;
+        font-size: $small-text; 
       }
     }
     #monsters-section{
       height: 95%;
       width: 38vw;
-      min-width: 158px;
+      min-width: 100px;
       padding: 0;
       background-color: transparent;
       overflow-y: scroll;
@@ -305,13 +333,13 @@ body{
         p{
           margin: 0;
         }
-        h4{
+        h3{
           font-weight: normal;
-          font-size: 14px;
+          font-size: $medium-text;
         }
         @media only screen and (max-width: 760px) {
-          h4 {
-            font-size: 9px; 
+          h3 {
+            font-size: $very-small-text; 
           }
         }
         .monster-item{
@@ -328,7 +356,7 @@ body{
           }
           @media only screen and (max-width: 760px) {
             p {
-              font-size: 9px; 
+              font-size: $very-small-text; 
             }
           }
           .monster-summary{
@@ -348,7 +376,7 @@ body{
             }
             @media only screen and (max-width: 760px) {
               button {
-                font-size: 9px;
+                font-size: $very-small-text;
               }
             }
           }
@@ -359,10 +387,23 @@ body{
       }
     }
   }
+  @media only screen and (max-width: 760px) {
+    main {
+      #monsters-section{
+        position: absolute;
+        height: 45vh;
+        width: 44vw;
+        top: 26.5vh;
+        transform: translateX(-800px); //Default setting on page load
+        transition: all .5s ease-in-out;
+      }
+    }
+  }
 }
 
-  
-  
+.visible {
+  transform: translateX(0px) !important;
+}
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
@@ -374,11 +415,17 @@ body{
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
+  font-size: $medium-large-text;
 }
 @media only screen and (max-width: 760px) {
   .collapsible {
-    font-size: 10px; 
+    font-size: $small-text; 
+    background-color: rgba(206, 144, 30, 1);
+  }
+}
+@media only screen and (max-width: 445px) {
+  .collapsible {
+    font-size: $very-small-text; 
   }
 }
 
@@ -386,17 +433,28 @@ body{
 .active, .collapsible:hover {
   background-color: rgba(102, 73, 19, 0.726);
 }
+@media only screen and (max-width: 760px) {
+  .active, .collapsible:hover {
+    background-color: rgba(102, 73, 19, 1);
+    color: $white;
+  }
+}
 
 .collapsible:after {
   content: '\02795'; /* Unicode character for "plus" sign (+) */
-  font-size: 10px;
+  font-size: $small-text;
   color: white;
   float: right;
   margin-left: 5px;
 }
 @media only screen and (max-width: 760px) {
   .collapsible:after {
-    font-size: 8px; 
+    font-size: $tiny-text; 
+  }
+}
+@media only screen and (max-width: 400px) {
+  .collapsible:after {
+    content: '';
   }
 }
 
