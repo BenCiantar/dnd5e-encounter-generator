@@ -12,6 +12,8 @@ Key Learnings:
     Rapid development of a web app.
     
     Incorporating a public API into my project.
+    
+    Using asynchronous functions to manage importing data.
 
     Handling complex logic and calculations.
                 
