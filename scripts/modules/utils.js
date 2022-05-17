@@ -205,5 +205,6 @@ export function getXpValueFromPlayerSummary(id) {
   let xpValue = document.getElementById(id).innerHTML;
   xpValue = xpValue.replace(/\D/g,'');
   xpValue = parseInt(xpValue);
+  console.log("xpValue contains: " + xpValue);
   return xpValue;
 }
